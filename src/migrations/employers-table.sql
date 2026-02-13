@@ -1,0 +1,15 @@
+CREATE TABLE employers(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employer_name VARCHAR(100) NOT NULL,
+    employer_address VARCHAR(200) NOT NULL,
+    phone VARCHAR(12) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    employer_role ENUM('REGULAR-USER', 'ADMIN', 'SUPPER-ADMIN') DEFAULT 'REGULAR-USER',
+    is_admin BOOLEAN DEFAULT FALSE,
+    deleted_by VARCHAR(100) NULL,
+    updated_by VARCHAR(100) NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_employers_email ON employers(email);
