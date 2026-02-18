@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es2017", // Tell typescript to assume modern javascript support.
+        "esModuleInterop": true, // Makes imports from commonjs libraries work smoothly.
+        "types": ["node"], // Specify type package names to be included without being referenced in a source file
+        "strict": true, // Turn ON maximum type safety checks.
+        "verbatimModuleSyntax": true, // Stop typescript from rewriting your imports/exports.
+        "module": "nodenext", // Uses Node.js native ESM module rules.
+        "skipLibCheck": true, // Skips type-checking third-party libraries to speed things up.
+        "outDir": "dist", // Defines where compile file would go.
+        "rootDir": "src", // Specify the root folder within your source files.
+        //"erasableSyntaxOnly": true, // Ensures typescript can be removed without runtime impact. 
+    },
+    "include": ["src"]
+}
