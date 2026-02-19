@@ -12,7 +12,7 @@ export const userRole: Role = {
     SUPER   : "SUPER-ADMIN"
 };
 interface UserAttribute {
-    id          : number;
+    id?          : number;
     username    : string;
     password    : string;
     userAddress : string;
@@ -24,7 +24,7 @@ interface UserAttribute {
 };
 
 export class User extends Model<UserAttribute> implements UserAttribute {
-    public id!          : number;
+    public id?          : number;
     public username!    : string;
     public password!    : string;
     public userAddress! : string;
