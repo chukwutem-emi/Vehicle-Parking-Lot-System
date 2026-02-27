@@ -1,19 +1,4 @@
-
-export interface ValidateAble {
-    value                         : string | number;
-    required?                     : boolean;
-    maximumLength?                : number;
-    minimumLength?                : number;
-    maxNumber?                    : number;
-    minNumber?                    : number;
-    isEmail?                      : boolean;
-    isPhone?                      : boolean;
-    passwordMinUppercase?         : number;
-    passwordMinDigitNumbers?      : number;
-    passwordMinSpecialCharacters? : number;
-    addressMinHouseNumber?        : number;
-};
-
+;
 /**
  * /.../ → Regular expression (regex) delimiters in javaScript.
  * \. → literal dot.
@@ -27,24 +12,27 @@ export interface ValidateAble {
 → followed by one or more non-space/non-@ characters.
 $ → End of string, nothing is allowed after the email.
  */
-
-export const validate = (validationInputs: ValidateAble) => {
+export const validate = (validationInputs) => {
     let validInput = true;
     if (validationInputs.required) {
         validInput = validInput && validationInputs.value.toString().trim().length !== 0;
-    };
+    }
+    ;
     if (validationInputs.maximumLength != null && typeof validationInputs.value === "string") {
         validInput = validInput && validationInputs.value.length <= validationInputs.maximumLength;
-    };
+    }
+    ;
     if (validationInputs.minimumLength != null && typeof validationInputs.value === "string") {
         validInput = validInput && validationInputs.value.length >= validationInputs.minimumLength;
     }
     if (validationInputs.maxNumber != null && typeof validationInputs.value === "number") {
         validInput = validInput && validationInputs.value <= validationInputs.maxNumber;
-    };
+    }
+    ;
     if (validationInputs.minNumber != null && typeof validationInputs.value === "number") {
         validInput = validInput && validationInputs.value >= validationInputs.minNumber;
-    };
+    }
+    ;
     // email validation.
     if (validationInputs.isEmail && typeof validationInputs.value === "string") {
         const emailRegex = /^[\s@]+@[\s@]+\.[\s@]+$/;
@@ -61,23 +49,28 @@ export const validate = (validationInputs: ValidateAble) => {
             const passwordMinUpperCaseRegex = /[A-Z]g/;
             const count = (validationInputs.value.match(passwordMinUpperCaseRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinUppercase;
-        };
+        }
+        ;
         if (validationInputs.passwordMinDigitNumbers != null) {
             const passwordMinNumbersRegex = /[0-9]g/;
             const count = (validationInputs.value.match(passwordMinNumbersRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinDigitNumbers;
-        };
+        }
+        ;
         if (validationInputs.passwordMinSpecialCharacters != null) {
             const passwordMinSpecialCharactersRegex = /[^A-Za-z0-9]g/;
             const count = (validationInputs.value.match(passwordMinSpecialCharactersRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinSpecialCharacters;
-        };
-    };
+        }
+        ;
+    }
+    ;
     // Address validation
     if (validationInputs.addressMinHouseNumber != null && typeof validationInputs.value === "string") {
         const addressMinHouseNumberRegex = /[0-9]g/;
         const count = (validationInputs.value.match(addressMinHouseNumberRegex) || []).length;
         validInput = validInput && count >= validationInputs.addressMinHouseNumber;
-    };
+    }
+    ;
     return validInput;
 };

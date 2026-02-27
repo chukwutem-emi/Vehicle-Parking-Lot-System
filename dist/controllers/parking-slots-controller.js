@@ -26,7 +26,7 @@ export const getAvailableSlot = async (req, res, next) => {
  * Get available slot for a specific vehicle type.
  */
 export const getAvailableSlotWithId = async (req, res, next) => {
-    const vehicleTypeId = req.body.slotId;
+    const vehicleTypeId = req.body.vehicleTypeId;
     try {
         const getWithVehicleTypeId = await ParkingSlot.findOne({
             where: {

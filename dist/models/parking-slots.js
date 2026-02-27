@@ -24,7 +24,8 @@ ParkingSlot.init({
     },
     availableCapacity: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 10
     },
     updatedBy: {
         type: DataTypes.STRING(100),

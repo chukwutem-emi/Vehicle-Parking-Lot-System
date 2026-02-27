@@ -5,9 +5,9 @@ import { DataTypes, Model, type Optional } from "sequelize";
 interface ParkingSlotAttributes {
     id: number;
     slotCode: string;
-    isAvailable: boolean;
-    maximumCapacity: number;
-    availableCapacity: number;
+    isAvailable?: boolean;
+    maximumCapacity?: number;
+    availableCapacity?: number;
     updatedBy?: string;
     vehicleTypeId?: number;
 };
@@ -17,7 +17,7 @@ interface ParkingSlotCreationAttributes extends Optional<ParkingSlotAttributes, 
 export class ParkingSlot extends Model<ParkingSlotAttributes, ParkingSlotCreationAttributes> implements ParkingSlotAttributes {
     public id!: number;
     public slotCode!: string;
-    public isAvailable!: boolean;
+    public isAvailable?: boolean;
     public maximumCapacity!: number;
     public availableCapacity!: number;
     public updatedBy?: string;
@@ -45,7 +45,8 @@ ParkingSlot.init(
         },
         availableCapacity: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: true,
+            defaultValue: 10
         },
         updatedBy: {
             type: DataTypes.STRING(100),

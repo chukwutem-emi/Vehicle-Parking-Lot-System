@@ -28,7 +28,7 @@ User.init({
         allowNull: false
     },
     phone: {
-        type: DataTypes.STRING(12),
+        type: DataTypes.STRING(1),
         allowNull: false,
         unique: true
     },
@@ -47,6 +47,14 @@ User.init({
     },
     updatedBy: {
         type: DataTypes.STRING(100),
+        allowNull: true
+    },
+    resetToken: {
+        type: DataTypes.STRING(200),
+        allowNull: true
+    },
+    resetTokenExpiration: {
+        type: DataTypes.DATE,
         allowNull: true
     }
 }, {

@@ -12,27 +12,31 @@ export const userRole: Role = {
     SUPER   : "SUPER-ADMIN"
 };
 interface UserAttribute {
-    id?          : number;
-    username    : string;
-    password    : string;
-    userAddress : string;
-    phone       : string;
-    email       : string;
-    userRole?    : string;
-    isAdmin?     : boolean;
-    updatedBy?   : string;
+    id?                  : number;
+    username             : string;
+    password             : string;
+    userAddress          : string;
+    phone                : string;
+    email                : string;
+    userRole?            : string;
+    isAdmin?             : boolean;
+    updatedBy?           : string;
+    resetToken?          : string;
+    resetTokenExpiration? : Date
 };
 
 export class User extends Model<UserAttribute> implements UserAttribute {
-    public id?          : number;
-    public username!    : string;
-    public password!    : string;
-    public userAddress! : string;
-    public phone!       : string;
-    public email!       : string;
-    public userRole?    : string;
-    public isAdmin?     : boolean;
-    public updatedBy?   : string;
+    public id?                   : number;
+    public username!             : string;
+    public password!             : string;
+    public userAddress!          : string;
+    public phone!                : string;
+    public email!                : string;
+    public userRole?             : string;
+    public isAdmin?              : boolean;
+    public updatedBy?            : string;
+    public resetToken?           : string;
+    public resetTokenExpiration? : Date;
 };
 User.init(
     {
@@ -54,7 +58,7 @@ User.init(
             allowNull: false
         },
         phone: {
-            type: DataTypes.STRING(12),
+            type: DataTypes.STRING(1),
             allowNull: false,
             unique: true
         },
@@ -73,6 +77,14 @@ User.init(
         },
         updatedBy: {
             type: DataTypes.STRING(100),
+            allowNull: true
+        },
+        resetToken: {
+            type: DataTypes.STRING(200),
+            allowNull: true
+        },
+        resetTokenExpiration: {
+            type: DataTypes.DATE,
             allowNull: true
         }
     },
