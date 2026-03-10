@@ -8,7 +8,7 @@ export const createSessionLambda = (stack: Stack, envVars: Record<string, string
     const createParkingSessionLambda = createLambda({stack, envVars}, "createParkingSessionLambda", "handlers/parkingSession/createParkingSession.ts", "createParkingSessionHandler", ["sequelize", "aws-lambda"]);
     createParkingSessionLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
-    const getAllParkingSessionLambda = createLambda({stack, envVars}, "getAllParkingSessionLambda", "handlers/parkSession/getAllParkingSession.ts", "getAllParkingSessionHandler", ["aws-lambda", "sequelize"]);
+    const getAllParkingSessionLambda = createLambda({stack, envVars}, "getAllParkingSessionLambda", "handlers/parkingSession/getAllParkingSession.ts", "getAllParkingSessionHandler", ["aws-lambda", "sequelize"]);
     getAllParkingSessionLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
     const getParkingSessionLambda = createLambda({stack, envVars}, "getParkingSessionLambda", "handlers/parkingSession/getParkingSession.ts", "getParkingSessionHandler", ["aws-lambda", "sequelize"]);
