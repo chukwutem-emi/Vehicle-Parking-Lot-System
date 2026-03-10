@@ -20,7 +20,7 @@ export const createLambda = (
         minify: true
     };
     return new NodejsFunction(stack, id, {
-        runtime: lambda.Runtime.NODEJS_20_X,
+        runtime: lambda.Runtime.NODEJS_24_X,
         entry: entry,
         handler: handler,
         environment: envVars,
