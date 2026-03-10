@@ -1,7 +1,7 @@
 // Model
 import {User, userRole} from "../../models/user.js";
 // Express types
-import type{Request, Response, NextFunction} from "express";
+import type {Request, Response, NextFunction} from "express";
 
 
 export const promoteUser = async (req: Request, res: Response, next: NextFunction) => {

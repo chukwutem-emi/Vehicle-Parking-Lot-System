@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "./envConfig/env.js";
 import express from "express";
 import bodyParser from "body-parser";
 import { ParkingSession } from "./models/parking-sessions.js";
@@ -15,7 +15,6 @@ import { userDeviceRouter } from "./routes/user-device-routes.js";
 import { socketIOServer } from "./socket-io.js";
 import { Conversation } from "./models/conversation.js";
 import { Message } from "./models/message.js";
-dotenv.config();
 const app = express();
 app.set("trust proxy", true);
 app.use(bodyParser.json());

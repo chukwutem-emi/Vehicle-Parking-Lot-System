@@ -72,7 +72,7 @@ export const getAvailableSlotWithId = async (req: Request, res: Response, next: 
             }
         });
         if (!getWithVehicleTypeId) {
-            return res.status(200).json({message: "No available parking slot found for the specified vehicle type. Please ensure the vehicle type ID is correct or check back later when more parking slots are available."});
+            return res.status(404).json({message: "No available parking slot found for the specified vehicle type. Please ensure the vehicle type ID is correct or check back later when more parking slots are available."});
         };
         return res.status(200).json({AvailableSlot: getWithVehicleTypeId});
     } catch(err: any) {

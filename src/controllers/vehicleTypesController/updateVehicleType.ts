@@ -48,7 +48,7 @@ export const updateVehicleType = async (req: Request, res: Response, next: NextF
         getVehicleById.hourlyRate  = newHourlyRate;
         getVehicleById.updatedBy   = currentUser.username;
         
-        getVehicleById.save();
+        await getVehicleById.save();
         return res.status(200).json({message: "Vehicle-type updated successfully.", details: getVehicleById});
     } catch (err: any) {
         next(err);

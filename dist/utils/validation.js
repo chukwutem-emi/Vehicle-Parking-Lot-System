@@ -3,7 +3,7 @@
  * /.../ → Regular expression (regex) delimiters in javaScript.
  * \. → literal dot.
  * [] → means character class.
- * Full Explanation of "/^[\s@]+@[\s@]+\.[\s@]+$/".
+ * Full Explanation of "/^[^\s@]+@[^\s@]+\.[^\s@]+$/".
  * ^ → Means match must begin at the start, so nothing before the email.
  * one or more non-space/non-@ characters
 → followed by @
@@ -35,30 +35,30 @@ export const validate = (validationInputs) => {
     ;
     // email validation.
     if (validationInputs.isEmail && typeof validationInputs.value === "string") {
-        const emailRegex = /^[\s@]+@[\s@]+\.[\s@]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         validInput = validInput && emailRegex.test(validationInputs.value.trim());
     }
     // phone number validation.
     if (validationInputs.isPhone && typeof validationInputs.value === "string") {
-        const phoneRegex = /^\+?[0-9]{7-15}$/;
+        const phoneRegex = /^\+?[0-9]{7,15}$/;
         validInput = validInput && phoneRegex.test(validationInputs.value);
     }
     // password validation.
     if (typeof validationInputs.value === "string") {
         if (validationInputs.passwordMinUppercase != null) {
-            const passwordMinUpperCaseRegex = /[A-Z]g/;
+            const passwordMinUpperCaseRegex = /[A-Z]/g;
             const count = (validationInputs.value.match(passwordMinUpperCaseRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinUppercase;
         }
         ;
         if (validationInputs.passwordMinDigitNumbers != null) {
-            const passwordMinNumbersRegex = /[0-9]g/;
+            const passwordMinNumbersRegex = /[0-9]/g;
             const count = (validationInputs.value.match(passwordMinNumbersRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinDigitNumbers;
         }
         ;
         if (validationInputs.passwordMinSpecialCharacters != null) {
-            const passwordMinSpecialCharactersRegex = /[^A-Za-z0-9]g/;
+            const passwordMinSpecialCharactersRegex = /[^A-Za-z0-9]/g;
             const count = (validationInputs.value.match(passwordMinSpecialCharactersRegex) || []).length;
             validInput = validInput && count >= validationInputs.passwordMinSpecialCharacters;
         }
@@ -67,7 +67,7 @@ export const validate = (validationInputs) => {
     ;
     // Address validation
     if (validationInputs.addressMinHouseNumber != null && typeof validationInputs.value === "string") {
-        const addressMinHouseNumberRegex = /[0-9]g/;
+        const addressMinHouseNumberRegex = /[0-9]/g;
         const count = (validationInputs.value.match(addressMinHouseNumberRegex) || []).length;
         validInput = validInput && count >= validationInputs.addressMinHouseNumber;
     }

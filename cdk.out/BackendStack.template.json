@@ -1,0 +1,379 @@
+{
+ "Resources": {
+  "createUserLambdaServiceRole77D6A031": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/createUserLambda/ServiceRole/Resource"
+   }
+  },
+  "createUserLambda12655EED": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-623277214924-eu-north-1",
+     "S3Key": "d7aab7f893145a2fc10e61a83b5df88d3ca881bc0506a298f986222622fd7137.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "DB_NAME": "vehicle_parking_lot",
+      "DB_HOST": "localhost",
+      "DB_PASSWORD": "chukwutem1994####****",
+      "DB_USER": "root"
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "createUserLambdaServiceRole77D6A031",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x"
+   },
+   "DependsOn": [
+    "createUserLambdaServiceRole77D6A031"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/createUserLambda/Resource",
+    "aws:asset:path": "asset.d7aab7f893145a2fc10e61a83b5df88d3ca881bc0506a298f986222622fd7137",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ParkingAPI08AF6DB0": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "ParkingAPI"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Resource"
+   }
+  },
+  "ParkingAPICloudWatchRoleD36AC61E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/CloudWatchRole/Resource"
+   }
+  },
+  "ParkingAPIAccountBC1576D5": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ParkingAPICloudWatchRoleD36AC61E",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ParkingAPI08AF6DB0"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Account"
+   }
+  },
+  "ParkingAPIDeploymentEE61E4CDc5c6546e4dc1f700beca754ef8f729eb": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "ParkingAPI08AF6DB0"
+    }
+   },
+   "DependsOn": [
+    "ParkingAPIauthregisterPOSTFF839601",
+    "ParkingAPIauthregisterDDB2CCA1",
+    "ParkingAPIauth092CC055"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ParkingAPIDeploymentStageprod372EF26A": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ParkingAPIDeploymentEE61E4CDc5c6546e4dc1f700beca754ef8f729eb"
+    },
+    "RestApiId": {
+     "Ref": "ParkingAPI08AF6DB0"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "ParkingAPIAccountBC1576D5"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/DeploymentStage.prod/Resource"
+   }
+  },
+  "ParkingAPIauth092CC055": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ParkingAPI08AF6DB0",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "auth",
+    "RestApiId": {
+     "Ref": "ParkingAPI08AF6DB0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Default/auth/Resource"
+   }
+  },
+  "ParkingAPIauthregisterDDB2CCA1": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ParkingAPIauth092CC055"
+    },
+    "PathPart": "register",
+    "RestApiId": {
+     "Ref": "ParkingAPI08AF6DB0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Default/auth/register/Resource"
+   }
+  },
+  "ParkingAPIauthregisterPOSTApiPermissionBackendStackParkingAPI219E6057POSTauthregister67093750": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "createUserLambda12655EED",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-north-1:623277214924:",
+       {
+        "Ref": "ParkingAPI08AF6DB0"
+       },
+       "/",
+       {
+        "Ref": "ParkingAPIDeploymentStageprod372EF26A"
+       },
+       "/POST/auth/register"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Default/auth/register/POST/ApiPermission.BackendStackParkingAPI219E6057.POST..auth.register"
+   }
+  },
+  "ParkingAPIauthregisterPOSTApiPermissionTestBackendStackParkingAPI219E6057POSTauthregisterCC725269": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "createUserLambda12655EED",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-north-1:623277214924:",
+       {
+        "Ref": "ParkingAPI08AF6DB0"
+       },
+       "/test-invoke-stage/POST/auth/register"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Default/auth/register/POST/ApiPermission.Test.BackendStackParkingAPI219E6057.POST..auth.register"
+   }
+  },
+  "ParkingAPIauthregisterPOSTFF839601": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:eu-north-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "createUserLambda12655EED",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ParkingAPIauthregisterDDB2CCA1"
+    },
+    "RestApiId": {
+     "Ref": "ParkingAPI08AF6DB0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ParkingAPI/Default/auth/register/POST/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QWW6EQAxEzzL/PQ5hkgMwRPnLIuYAyNMY0ixuhN1BI8Tdo4ZsX1Uuy08lp5A+JJAccJajrbpj766wXBRtZ3CWculxuFZYsq+oFXjd5DmwVefZOBxgKXxPJq856mrkVKIIqUAWxcgJzsF2pGcUMjsNlrzmX0he8ztNgxNxnleDo2tQacYbLAWJZqPb6H82s9YHVvNEY+9vA7HG9N90UWy2SrspSHyYLG0NfoZv5u5fSD98FaPdravZ2sd7x01cvAUdg64mPgJauftMU7h/hOTQinPHKbC6gaDY9QuJCJUyVQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ParkingAPIEndpoint0A98CA39": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ParkingAPI08AF6DB0"
+      },
+      ".execute-api.eu-north-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ParkingAPIDeploymentStageprod372EF26A"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

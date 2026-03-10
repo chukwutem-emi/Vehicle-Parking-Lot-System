@@ -4,6 +4,10 @@ import { User, userRole } from "../../models/user.js";
 // Express types imports
 import type {Request, Response, NextFunction} from "express";
 
+const convertUTCToLocal = (utcDate: string | Date, timeZone="Africa/Lagos") => {
+    return new Date(utcDate).toLocaleString("en-Us", {timeZone: timeZone, hour12: true});
+};
+
 export const getLoggedInUserDevice = async (req: Request, res: Response, next: NextFunction) => {
     const userId: number = Number(req.params.userId);
 
@@ -22,7 +26,11 @@ export const getLoggedInUserDevice = async (req: Request, res: Response, next: N
         if (!loggedInUserDevice) {
             return res.status(404).json({message: "Logged-in user device with the provided userID not found."});
         };
-        return res.status(200).json({message: "Logged-in user device retrieved successfully.", userDevice: loggedInUserDevice});
+        const deviceWithLocalTime = {
+            ...loggedInUserDevice.toJSON(),
+            loginTime: loggedInUserDevice.loginTime ? convertUTCToLocal(loggedInUserDevice.loginTime) : null
+        }
+        return res.status(200).json({message: "Logged-in user device retrieved successfully.", userDevice: deviceWithLocalTime});
     } catch (err: any) {
         next(err)
     }
@@ -41,7 +49,11 @@ export const getAllLoggedInUserDevices = async (req: Request, res: Response, nex
         if (!loggedInUserDevices) {
             return res.status(204).json({message: "UserDevices database table is empty.", loggedInUserDevices: []});
         };
-        return res.status(200).json({message: "UserDevices retrieved successfully.", userDevices: loggedInUserDevices});
+        const deviceWithLocalTime = loggedInUserDevices.map((device) => ({
+            ...device.toJSON(),
+            loginTime: device.loginTime ? convertUTCToLocal(device.loginTime) : null
+        }))
+        return res.status(200).json({message: "UserDevices retrieved successfully.", userDevices: deviceWithLocalTime});
     } catch (err: any) {
         next(err)
     }

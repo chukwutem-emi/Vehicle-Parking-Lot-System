@@ -46,9 +46,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const result      = parser.getResult();
 
         const deviceType       = result.device.type || "desktop";
-        const os      : string = `${result.os.name ?? ""} ${result.os.version ?? ""}`.trim();  // "??" => nullish coercion. meaning if the left side is null, then use the right.
-        const browser : string = `${result.browser.name ?? ""} ${result.browser.version ?? ""}`.trim();
-        const ip = req.ip ?? "0.0.0.0";
+        const os      : string = `${result.os.name ?? "unknown os"} ${result.os.version ?? ""}`.trim();  // "??" => nullish coercion. meaning if the left side is null, then use the right.
+        const browser : string = `${result.browser.name ?? "unknown browser"} ${result.browser.version ?? ""}`.trim();
+        const ip = req.ip === "::1" ? "127.0.0.1" : req.ip ?? "0.0.0.0";
         const deviceLabel = `${browser} on ${os} (${deviceType})`;
         const geo      = geoIp.lookup(ip);
         const location = geo ? `${geo.city}, ${geo.country}` : "Unknown";

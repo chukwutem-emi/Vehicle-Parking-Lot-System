@@ -1,0 +1,46 @@
+name: CDK Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      CDK_DEFAULT_ACCOUNT: ${{secrets.CDK_DEFAULT_ACCOUNT}}
+      CDK_DEFAULT_REGION: ${{secrets.CDK_DEFAULT_REGION}}
+      DB_NAME: ${{secrets.DB_NAME}}    
+      DB_HOST: ${{secrets.DB_HOST}}    
+      DB_USER: ${{secrets.DB_USER}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      PORT: ${{secrets.PORT}}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      RESET_PASSWORD: ${{ secrets.RESET_PASSWORD }}    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile CDK (TypeScript)
+        run: npm run compile:cdk
+      
+      - name: CDK Synth
+        run: npx cdk synth
+        
+      - name: Deploy with CDK
+        run: npx cdk deploy --require-approval never --ci
+
+      - name: Show API URL
+        run: npx cdk output ParkingAPIEndpoint
+            

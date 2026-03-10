@@ -43,5 +43,6 @@ UserDevices.init({
     }
 }, {
     sequelize,
-    modelName: "user_devices"
+    modelName: "user_devices",
+    timestamps: false
 });

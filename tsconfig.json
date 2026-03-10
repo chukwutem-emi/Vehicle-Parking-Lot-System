@@ -11,5 +11,5 @@
         "rootDir": "src", // Specify the root folder within your source files.
         //"erasableSyntaxOnly": true, // Ensures typescript can be removed without runtime impact. 
     },
-    "include": ["src"]
+    "include": ["src"],
 }

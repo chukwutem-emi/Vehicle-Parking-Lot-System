@@ -43,9 +43,9 @@ export const login = async (req, res, next) => {
         const parser = new UAParser(uaString);
         const result = parser.getResult();
         const deviceType = result.device.type || "desktop";
-        const os = `${(_b = result.os.name) !== null && _b !== void 0 ? _b : ""} ${(_c = result.os.version) !== null && _c !== void 0 ? _c : ""}`.trim(); // "??" => nullish coercion. meaning if the left side is null, then use the right.
-        const browser = `${(_d = result.browser.name) !== null && _d !== void 0 ? _d : ""} ${(_e = result.browser.version) !== null && _e !== void 0 ? _e : ""}`.trim();
-        const ip = (_f = req.ip) !== null && _f !== void 0 ? _f : "0.0.0.0";
+        const os = `${(_b = result.os.name) !== null && _b !== void 0 ? _b : "unknown os"} ${(_c = result.os.version) !== null && _c !== void 0 ? _c : ""}`.trim(); // "??" => nullish coercion. meaning if the left side is null, then use the right.
+        const browser = `${(_d = result.browser.name) !== null && _d !== void 0 ? _d : "unknown browser"} ${(_e = result.browser.version) !== null && _e !== void 0 ? _e : ""}`.trim();
+        const ip = req.ip === "::1" ? "127.0.0.1" : (_f = req.ip) !== null && _f !== void 0 ? _f : "0.0.0.0";
         const deviceLabel = `${browser} on ${os} (${deviceType})`;
         const geo = geoIp.lookup(ip);
         const location = geo ? `${geo.city}, ${geo.country}` : "Unknown";

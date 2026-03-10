@@ -19,4 +19,5 @@ export const isAuth = (req, res, next) => {
         return res.status(401).json({ message: "Invalid token, Please login." });
     }
     req.userId = decodedToken.userId;
+    next();
 };

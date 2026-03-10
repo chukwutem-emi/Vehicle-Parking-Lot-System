@@ -68,7 +68,7 @@ export const createUser = async (req, res, next) => {
             isPhone: true
         };
         if (!validation.validate(phoneInput)) {
-            return res.status(400).json({ phoneInputError: `Invalid phone number. Phone number is required and it must be a valid phone number with a length of ${phoneInput.minimumLength} - ${phoneInput.maximumLength} characters. Please ensure your phone number meets these requirements.` });
+            return res.status(400).json({ phoneInputError: `Invalid phone number. Phone number is required and it must be a valid phone number with a length of ${phoneInput.minimumLength} - ${phoneInput.maximumLength} digit numbers. Please ensure your phone number meets these requirements.` });
         }
         ;
         // check if email already exist.
