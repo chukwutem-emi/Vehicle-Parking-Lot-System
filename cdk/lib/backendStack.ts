@@ -55,7 +55,7 @@ export class BackendStack extends Stack {
         vehicleTypeEndpoints(api, vehicleTypeLambda);
 
         // Output API URL
-        new CfnOutput(this, "ParkingAPIEndpoint", {
+        new CfnOutput(this, `${api.node.id}Output`, {
             value: api.url,
             exportName: "ParkingAPIEndpoint"
         });
