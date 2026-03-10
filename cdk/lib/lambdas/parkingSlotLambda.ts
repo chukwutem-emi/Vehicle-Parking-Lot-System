@@ -14,7 +14,7 @@ export const createSlotLambda = (stack: Stack, envVars: Record<string, string>) 
     const getAvailableSlotWithIdLambda = createLambda({stack, envVars}, "getAvailableSlotWithIdLambda", "handlers/parkingSlot/fetchWithID.ts", "getAvailableSlotWithIdHandler", ["aws-lambda", "sequelize"]);
     getAvailableSlotWithIdLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
-    const updateParkingSlotLambda = createLambda({stack, envVars}, "updateParkingSlotLambda", "handlers/parkingSlot/ updateParkingSlot.ts", "updateParkingSlotHandler", ["aws-lambda", "sequelize"]);
+    const updateParkingSlotLambda = createLambda({stack, envVars}, "updateParkingSlotLambda", "handlers/parkingSlot/updateParkingSlot.ts", "updateParkingSlotHandler", ["aws-lambda", "sequelize"]);
     updateParkingSlotLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
     const parkingSlotLambda = {
