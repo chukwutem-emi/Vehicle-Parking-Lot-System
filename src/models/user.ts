@@ -18,7 +18,7 @@ interface UserAttribute {
     userAddress          : string;
     phone                : string;
     email                : string;
-    userRole?            : string;
+    userRole             : string;
     isAdmin?             : boolean;
     updatedBy?           : string;
     resetToken?          : string;
@@ -32,7 +32,7 @@ export class User extends Model<UserAttribute> implements UserAttribute {
     public userAddress!          : string;
     public phone!                : string;
     public email!                : string;
-    public userRole?             : string;
+    public userRole!             : string;
     public isAdmin?              : boolean;
     public updatedBy?            : string;
     public resetToken?           : string;
