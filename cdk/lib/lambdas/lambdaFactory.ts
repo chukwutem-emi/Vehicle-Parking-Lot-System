@@ -12,21 +12,17 @@ export const createLambda = (
     {stack, envVars} : LambdaFactoryProps,
     id: string,
     entry: string,
-    handler: string,
-    nodeModules: string[]
+    handler: string
 ) => {
-    const commonBundling = {
-        externalModules: ["aws-sdk", "pg", "pg-hstore"],
-        minify: true
-    };
     return new NodejsFunction(stack, id, {
         runtime: lambda.Runtime.NODEJS_24_X,
         entry: entry,
         handler: handler,
         environment: envVars,
         bundling: {
-            ...commonBundling,
-            nodeModules: nodeModules
+            minify: true,
+            externalModules: ["aws-sdk"],
+            nodeModules: ["ua-parser-js", "jsonwebtoken", "bcryptjs", "geoip-lite", "sequelize", "mysql2"]
         }
     });
 };

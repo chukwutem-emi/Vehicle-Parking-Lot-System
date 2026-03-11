@@ -5,13 +5,13 @@ import {createLambda} from "./lambdaFactory.js";
 
 
 export const createVehicleTypeLambda = (stack: Stack, envVars: Record<string, string>) => {
-    const uploadVehicleTypeLambda = createLambda({stack, envVars}, "uploadVehicleTypeLambda", "src/handlers/vehicleType/createVehicleType.ts", "uploadVehicleTypeHandler", ["aws-lambda", "sequelize"]);
+    const uploadVehicleTypeLambda = createLambda({stack, envVars}, "uploadVehicleTypeLambda", "src/handlers/vehicleType/createVehicleType.ts", "uploadVehicleTypeHandler");
     uploadVehicleTypeLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
-    const fetchVehicleTypeLambda = createLambda({stack, envVars}, "fetchVehicleTypeLambda", "src/handlers/vehicleType/fetchVehicleType.ts", "fetchVehicleTypeHandler", ["aws-lambda", "sequelize"]);
+    const fetchVehicleTypeLambda = createLambda({stack, envVars}, "fetchVehicleTypeLambda", "src/handlers/vehicleType/fetchVehicleType.ts", "fetchVehicleTypeHandler");
     fetchVehicleTypeLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
-    const updateVehicleTypeLambda = createLambda({stack, envVars}, "updateVehicleTypeLambda", "src/handlers/vehicleType/updateVehicleType.ts", "updateVehicleTypeHandler", ["aws-lambda", "sequelize"]);
+    const updateVehicleTypeLambda = createLambda({stack, envVars}, "updateVehicleTypeLambda", "src/handlers/vehicleType/updateVehicleType.ts", "updateVehicleTypeHandler");
     updateVehicleTypeLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
     const vehicleTypeLambda = {
