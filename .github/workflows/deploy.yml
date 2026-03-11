@@ -45,8 +45,12 @@ jobs:
         run: npx cdk synth
         
       - name: Deploy with CDK
-        run: npx cdk deploy --require-approval never --ci
+        run: npx cdk deploy --require-approval never --ci --outputs-file cdk-outputs.json
 
       - name: Show API URL
-        run: npx cdk stack-output BackendStack ParkingAPIEndpoint
+        id: show-api
+        run: |
+          API_URL=$(jq -r '.BackendStack.ParkingAPIEndpoint' cdk-outputs.json)
+          echo "Parking API Endpoint: $API_URL"
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
             
