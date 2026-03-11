@@ -57,5 +57,5 @@ jobs:
       - name: Test API URL
         run: |
           echo "Using Parking API URL: $API_URL"
-          curl -s "$API_URL"
+          curl -s "$API_URL/auth/users"
             
