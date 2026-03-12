@@ -1,5 +1,12 @@
-# Vehicle Parking Lot System - Project Documentation
 
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue) ![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![Express](https://img.shields.io/badge/Express-5.x-black) ![License](https://img.shields.io/badge/license-ISC-orange) ![AWS CDK](https://img.shields.io/badge/AWS-CDK-yellow)
+
+```bash
+curl -X POST http://localhost:3000/auth/login \
+-H "Content-Type: application/json" \
+-d '{"email":"user@email.com","password":"123456"}'
+```
+# 🚗 Vehicle Parking Lot System
 
 ## 📋 Project Overview
 Vehicle Parking Lot System is a TypeScript-based backend application for managing vehicle parking operations. The system provides real-time parking slot management, user authentication, conversation/messaging capabilities, and AWS CDK infrastructure as code.
@@ -12,69 +19,171 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 - Last Updated: March 12, 2026.
 
 
+## 🚀 Features
+
+| Feature | Description |
+|-------|-------------|
+| Authentication | JWT-based user authentication |
+| Parking Management | Manage parking slots and sessions |
+| Messaging | Real-time messaging with Socket.IO |
+| Device Tracking | Track user devices |
+| AWS Deployment | Infrastructure with AWS CDK |
+
+```mermaid
+graph TD
+  Client[Client / Frontend] --> API[Express API]
+
+API --> Auth[Auth Controller]
+API --> Parking[Parking Controller]
+API --> Message[Message Controller]
+API --> Socket[Socket.IO Server]
+
+Auth --> DB[(MySQL Database)]
+Parking --> DB
+Message --> DB
+```
 ## 🏗️ Project Architecture
 
 ### Directory Structure
-```
+<details>
+<summary> View Full Project Structure </summary>
+
+```bash
 Vehicle-Parking-Lot-System/
-├── src/
-│   ├── app.ts                          # Main application entry point
-│   ├── socket-io.ts                    # WebSocket/Socket.IO configuration
-│   ├── controllers/
-│   │   ├── authController/             # Authentication logic
-│   │   ├── messageController/          # Message handling
-│   │   ├── parkingSessionController/   # Parking session operations
-│   │   ├── parkingSlotController/      # Parking slot management
-│   │   ├── userDeviceController/       # User device tracking
-│   │   └── vehicleTypesController/     # Vehicle type management
-│   ├── models/
-│   │   |── user.ts                     # User model
-│   │   ├── conversation.ts             # Conversation model
-│   │   ├── message.ts                  # Message model
-│   │   ├── parking-sessions.ts         # Parking session model
-│   │   ├── parking-slots.ts            # Parking slot model
-│   │   ├── user-devices.ts             # User device model
-│   │   └── vehicle-types.ts            # Vehicle type model
-│   ├── routes/
-│   │   ├── auth-routes.ts              # Authentication endpoints
-│   │   ├── message-routes.ts           # Message endpoints
-│   │   ├── parking-session-routes.ts   # Parking session endpoints
-│   │   ├── parking-slot-routes.ts      # Parking slot endpoints
-│   │   ├── user-device-routes.ts       # User device endpoints
-│   │   └── vehicle-type-routes.ts      # Vehicle type endpoints
-│   ├── handlers/                       # Event & Lambda handlers
-│   │   ├── corsHeaders.ts              # CORS configuration
-│   │   ├── lambdaAuth.ts               # AWS Lambda authentication wrapper
-│   │   ├── auth/                       # Auth event handlers
-│   │   ├── model/                      # Model handlers
-│   │   ├── parkingSession/             # Parking session handlers
-│   │   ├── parkingSlot/                # Parking slot handlers
-│   │   ├── validation/                 # Validation handlers
-│   │   └── vehicleType/                # Vehicle type handlers
-│   ├── middleware/
-│   │   └── is-auth.ts                  # JWT authentication middleware
-│   ├── validation/
-│   │   ├── createUserInputs.ts         # User creation validation
-│   │   ├── loginInputs.ts              # Login validation
-│   │   ├── resetPasswordInput.ts       # Password reset validation
-│   │   ├── updateUserDetailsInput.ts   # User update validation
-│   │   └── createVehicleTypeInput.ts   # Vehicle type validation
-│   ├── utils/
-│   │   ├── db_helpers.ts               # Database utility functions
-│   │   ├── send-mail.ts                # Email sending utility
-│   │   └── validation.ts               # General validation utilities
-│   ├── types/                          # TypeScript type definitions
-│   └── envConfig/                      # Environment configuration
-├── cdk/                                # AWS CDK infrastructure
-│   ├── bin/                            # CDK app entry point
-│   └── lib/                            # CDK stack definitions
-├── migrations/                         # Database migrations (Sequelize)
-├── models/                             # Sequelize model index
-├── dist/                               # Compiled JavaScript output
-├── package.json                        # Project dependencies
-├── tsconfig.json                       # TypeScript configuration
-└── cdk.json                            # CDK configuration
+├── README.md
+├── cdk
+│   ├── bin
+│   │   └── main.ts
+│   ├── lib
+│   │   ├── backendStack.ts
+│   │   ├── endpoints
+│   │   │   ├── authEndpoints.ts
+│   │   │   ├── parkingSessionEndpoint.ts
+│   │   │   ├── parkingSlotEndpoint.ts
+│   │   │   └── vehicleTypeEndpoint.ts
+│   │   └── lambdas
+│   │       ├── authLambdas.ts
+│   │       ├── lambdaFactory.ts
+│   │       ├── parkingSessionLambda.ts
+│   │       ├── parkingSlotLambda.ts
+│   │       └── vehicleTypeLambda.ts
+│   └── tsconfig.json
+├── cdk.json
+├── cdk.out
+├── models
+│   └── index.js
+├── package-lock.json
+├── package.json
+├── seeders
+├── src
+│   ├── app.ts
+│   ├── controllers
+│   │   ├── authController
+│   │   │   ├── deleteUser.ts
+│   │   │   ├── demoteUser.ts
+│   │   │   ├── getAllUsers.ts
+│   │   │   ├── getUser.ts
+│   │   │   ├── login.ts
+│   │   │   ├── promoteUser.ts
+│   │   │   ├── resetPassword.ts
+│   │   │   ├── signup.ts
+│   │   │   └── updateUserDetails.ts
+│   │   ├── messageController
+│   │   │   └── conversation.ts
+│   │   ├── parkingSessionController
+│   │   │   ├── createParkingSession.ts
+│   │   │   ├── getAllParkingSessions.ts
+│   │   │   ├── getParkingSession.ts
+│   │   │   └── vehicleExitTime.ts
+│   │   ├── parkingSlotController
+│   │   │   ├── createParkingSlot.ts
+│   │   │   ├── fetchParkingSlot.ts
+│   │   │   └── updateParkingSlot.ts
+│   │   ├── userDeviceController
+│   │   │   └── userDevice.ts
+│   │   └── vehicleTypesController
+│   │       ├── createVehicleType.ts
+│   │       ├── fetchVehicleType.ts
+│   │       └── updateVehicleType.ts
+│   ├── envConfig
+│   │   └── env.ts
+│   ├── handlers
+│   │   ├── auth
+│   │   │   ├── createUser.ts
+│   │   │   ├── deleteUser.ts
+│   │   │   ├── demoteUser.ts
+│   │   │   ├── getAllUsers.ts
+│   │   │   ├── getUser.ts
+│   │   │   ├── login.ts
+│   │   │   ├── promoteUser.ts
+│   │   │   ├── resetPassword.ts
+│   │   │   ├── updatePassword.ts
+│   │   │   └── updateUserDetails.ts
+│   │   ├── corsHeaders.ts
+│   │   ├── lambdaAuth.ts
+│   │   ├── model
+│   │   │   └── index.ts
+│   │   ├── parkingSession
+│   │   │   ├── createParkingSession.ts
+│   │   │   ├── getAllParkingSession.ts
+│   │   │   ├── getParkingSession.ts
+│   │   │   └── vehicleExitTime.ts
+│   │   ├── parkingSlot
+│   │   │   ├── createParkingSlot.ts
+│   │   │   ├── fetchParkingSlot.ts
+│   │   │   ├── fetchWithID.ts
+│   │   │   └── updateParkingSlot.ts
+│   │   ├── validation
+│   │   │   ├── createPSessionInput.ts
+│   │   │   ├── createParkingSlotInputs.ts
+│   │   │   ├── createUserInputs.ts
+│   │   │   ├── createVehicleTypeInput.ts
+│   │   │   ├── fetchVehicleTypeInput.ts
+│   │   │   ├── loginInputs.ts
+│   │   │   ├── resetPasswordInput.ts
+│   │   │   ├── updateParkingSlotInput.ts
+│   │   │   ├── updateUserDetailsInput.ts
+│   │   │   ├── updateVehicleTypeInputs.ts
+│   │   │   └── vehicleExitTimeInput.ts
+│   │   └── vehicleType
+│   │       ├── createVehicleType.ts
+│   │       ├── fetchVehicleType.ts
+│   │       └── updateVehicleType.ts
+│   ├── middleware
+│   │   └── is-auth.ts
+│   ├── models
+│   │   ├── conversation.ts
+│   │   ├── message.ts
+│   │   ├── parking-sessions.ts
+│   │   ├── parking-slots.ts
+│   │   ├── user-devices.ts
+│   │   ├── user.ts
+│   │   └── vehicle-types.ts
+│   ├── routes
+│   │   ├── auth-routes.ts
+│   │   ├── message-routes.ts
+│   │   ├── parking-session-routes.ts
+│   │   ├── parking-slot-routes.ts
+│   │   ├── user-device-routes.ts
+│   │   └── vehicle-type-routes.ts
+│   ├── socket-io.ts
+│   ├── types
+│   │   ├── express.d.ts
+│   │   └── socket.d.ts
+│   ├── utils
+│   │   ├── db_helpers.ts
+│   │   ├── send-mail.ts
+│   │   └── validation.ts
+│   └── validation
+│       ├── createUserInputs.ts
+│       ├── createVehicleTypeInput.ts
+│       ├── loginInputs.ts
+│       ├── resetPasswordInput.ts
+│       └── updateUserDetailsInput.ts
+└── tsconfig.json
 ```
+
+</details>
 
 ## 🔧 Technology Stack
 ### Core Technologies
@@ -266,11 +375,11 @@ Manages Cross-Origin Resource Sharing (CORS) headers for the application.
 - Permits Content-Type and Authorization headers.
 
 ⚠️ Security Note: The wildcard origin (*) is used for development. In production, restrict to specific domains:
-```
+```bash
 "Access-Control-Allow-Origin": "https://yourdomain.com"
 ```
 #### Usage:
-```
+```bash
 # For Example
 if (event.httpMethod === "OPTIONS") {
     return {
@@ -308,7 +417,7 @@ Higher-order function that wraps AWS Lambda handlers with JWT authentication.
 - AuthHandler: Function signature for Lambda handlers receiving authenticated events.
 
 #### Example Usage:
-```
+```bash
 import { withAuth } from "../lambdaAuth.js";
 
 const getUserHandler = withAuth( async (event) => {
@@ -358,7 +467,7 @@ const getUserHandler = withAuth( async (event) => {
 });
 ```
 #### Request Flow:
-```
+```bash
 1. API Gateway sends request with Authorization header.
 2. withAuth wrapper intercepts the event.
 3. Extracts and validates JWT token.
@@ -371,23 +480,16 @@ const getUserHandler = withAuth( async (event) => {
 ### Handler Subdirectories
 The handlers folder contains organized subdirectories for different business domains:
 
-```markdown
-|-------------------------------------------------|
-|    Directory	  | Purpose                       |
-|-------------------------------------------------|
-| auth/	          | Authentication event handlers |
-|-------------------------------------------------|
-| model/	        | Model-specific event handlers |
-|-------------------------------------------------|
-| parkingSession/	| Parking session event handlers|
-|-------------------------------------------------|
-| parkingSlot/	  | Parking slot event handlers   |
-|-------------------------------------------------|
-| validation/	    | Validation-related handlers   |
-|-------------------------------------------------|
-| vehicleType/    | Vehicle type event handlers   |
-|-------------------------------------------------|
-```
+
+| Directory | Purpose |
+|-----------|---------|
+| auth/ | Authentication event handlers |
+| model/ | Model-specific event handlers |
+| parkingSession/ | Parking session event handlers |
+| parkingSlot/ | Parking slot event handlers |
+| validation/ | Validation-related handlers |
+| vehicleType/ | Vehicle type event handlers |
+
 ## 🔐 Authentication Flow
 ### Express Middleware - src/middleware/is-auth.ts
 Middleware for protecting Express routes with JWT authentication.
@@ -401,7 +503,7 @@ Middleware for protecting Express routes with JWT authentication.
 - Continues to next middleware on success.
 
 ### Usage in Routes:
-```
+```bash
 import { isAuth } from "./middleware/is-auth.js";
 
 router.get('/protected-route', isAuth, (req, res, next) => {
@@ -416,32 +518,24 @@ router.get('/protected-route', isAuth, (req, res, next) => {
 - 401 Invalid token, Please login.
 
 ## 🔄 Authentication Comparison
-```markdown
-|-----------------------------------------------------------------------------------|
-| Aspect	         | Express Middleware	       | Lambda Handler                     |
-|-----------------------------------------------------------------------------------|
-| File	           | is-auth.ts	               | lambdaAuth.ts                      |
-|-----------------------------------------------------------------------------------|
-| Environment	     | Express.js routes	       | AWS Lambda/API Gateway             |
-|-----------------------------------------------------------------------------------|
-| Pattern	         | Middleware	               | Higher-order function              |
-|-----------------------------------------------------------------------------------|
-| Integration	     | router.use(isAuth)	       | export const handler = withAuth(fn)|
-|-----------------------------------------------------------------------------------|
-| Error Response	 | JSON in response	         | API Gateway proxy result           |
-|-----------------------------------------------------------------------------------|
-| Header Access	   | req.get("Authorization")	 | event.headers.Authorization        |
-|-----------------------------------------------------------------------------------|
-| User ID Storage	 | req.userId	               | event.userId                       |
-|-----------------------------------------------------------------------------------|
-```
+
+| Aspect | Express Middleware | Lambda Handler |
+|--------|--------------------|----------------|
+| File | is-auth.ts | lambdaAuth.ts |
+| Environment | Express.js routes | AWS Lambda/API Gateway |
+| Pattern | Middleware | Higher-order function |
+| Integration | router.use(isAuth) | export const handler = withAuth(fn)|
+| Error Response | JSON in response | API Gateway proxy result |
+| Header Access | req.get("Authorization") | event.headers.Authorization |
+| User ID Storage | req.userId | event.userId |
+
 
 
 ## 📋 Request/Response Examples
 ### Express Authentication Flow
 
 #### Request:
-```json
+```bash
 GET /api/protected-route HTTP/1.1
 Authorization: Bearer token
 ```
@@ -519,7 +613,7 @@ All authentication tokens follow this structure:
 SECRET_KEY=your-secret-key-for-jwt-signing
 ```
 ### Production CORS Configuration
-```
+```bash
 // corsHeaders.ts - Production version
 export const corsHeaders = {
     "Access-Control-Allow-Origin": process.env.ALLOWED_ORIGINS || "https://yourdomain.com",
@@ -564,7 +658,7 @@ export const corsHeaders = {
 ## 🌐 Real-time Communication
 
 The system uses Socket.IO for real-time features:
-```
+```bash
 // Socket.IO Server Setup
 export const socketIOServer = (httpServer: http.Server) => {
   const io = new Server(httpServer);
@@ -603,7 +697,7 @@ export const socketIOServer = (httpServer: http.Server) => {
 
 ## 🧪 Testing
 The project includes testing infrastructure:
-```
+```bash
 npm run test
 ```
 
@@ -622,7 +716,7 @@ npm run test
 
 ## 🚢 Deployment
 ### Using AWS CDK
-```
+```bash
 # Compile CDK
 npm run compile:cdk
 
@@ -631,27 +725,16 @@ npx cdk deploy
 ```
 
 ## 📚 Project Metadata
-```markdown
-|----------------------------------------------------------------------------|
-| Property     | Value                                                       |
-|--------------|-------------------------------------------------------------|
-| Repository   | https://github.com/chukwutem-emi/Vehicle-Parking-Lot-System |
-|----------------------------------------------------------------------------|
-| Language     | TypeScript                                                  |
-|----------------------------------------------------------------------------|
-| License      | ISC                                                         |
-|----------------------------------------------------------------------------|
-| Version      | 1.0.0                                                       |
-|----------------------------------------------------------------------------|
-| Author       | Chukwutem Stephen Emi                                       |
-|----------------------------------------------------------------------------|
-| Created      |                                                             |
-|----------------------------------------------------------------------------|
-| Last updated | March 12, 2026                                              |
-|----------------------------------------------------------------------------|
-| Size         | 560KB                                                       |
-|----------------------------------------------------------------------------|
-```
+| Property | Value |
+|----------|-------|
+| Repository | https://github.com/chukwutem-emi/Vehicle-Parking-Lot-System |
+| Language | TypeScript |
+| License | ISC |
+| Version | 1.0.0 |
+| Author | Chukwutem Stephen Emi |
+| Created | February 14, 2026 |
+| Last updated | March 12, 2026 |
+| Size | 560KB |
 
 
 ## 🤝 Contributing
