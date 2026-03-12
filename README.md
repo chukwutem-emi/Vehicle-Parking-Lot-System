@@ -370,6 +370,7 @@ const getUserHandler = withAuth( async (event) => {
 
 ### Handler Subdirectories
 The handlers folder contains organized subdirectories for different business domains:
+
 ```markdown
 |-------------------------------------------------|
 |    Directory	  | Purpose                       |
@@ -415,7 +416,7 @@ router.get('/protected-route', isAuth, (req, res, next) => {
 - 401 Invalid token, Please login.
 
 ## 🔄 Authentication Comparison
-```
+```markdown
 |-----------------------------------------------------------------------------------|
 | Aspect	         | Express Middleware	       | Lambda Handler                     |
 |-----------------------------------------------------------------------------------|
