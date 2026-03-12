@@ -371,21 +371,21 @@ const getUserHandler = withAuth( async (event) => {
 ### Handler Subdirectories
 The handlers folder contains organized subdirectories for different business domains:
 ```markdown
-|--------------------------------------------------------------|
-|    Directory	  |                  Purpose                   |
-|-----------------|--------------------------------------------|
-| auth/	          | Authentication event handlers              |
-|-----------------|--------------------------------------------|
-| model/	        | Model-specific event handlers              |
-|-----------------|--------------------------------------------|
-| parkingSession/	| Parking session event handlers             |
-|-----------------|--------------------------------------------|
-| parkingSlot/	  | Parking slot event handlers                |
-|-----------------|--------------------------------------------|
-| validation/	    | Validation-related handlers                |
-|-----------------|--------------------------------------------|
-| vehicleType/    | Vehicle type event handlers                |
-|--------------------------------------------------------------|
+|-------------------------------------------------|
+|    Directory	  | Purpose                       |
+|-----------------|-------------------------------|
+| auth/	          | Authentication event handlers |
+|-----------------|-------------------------------|
+| model/	        | Model-specific event handlers |
+|-----------------|-------------------------------|
+| parkingSession/	| Parking session event handlers|
+|-----------------|-------------------------------|
+| parkingSlot/	  | Parking slot event handlers   |
+|-----------------|-------------------------------|
+| validation/	    | Validation-related handlers   |
+|-----------------|-------------------------------|
+| vehicleType/    | Vehicle type event handlers   |
+|-------------------------------------------------|
 ```
 ## 🔐 Authentication Flow
 ### Express Middleware - src/middleware/is-auth.ts
@@ -416,23 +416,23 @@ router.get('/protected-route', isAuth, (req, res, next) => {
 
 ## 🔄 Authentication Comparison
 ```
-|-----------------------------------------------------------------------------------------------------|
-| Aspect	                | Express Middleware	                | Lambda Handler                      |
-|-------------------------|-------------------------------------|-------------------------------------|
-| File	                  | is-auth.ts	                        | lambdaAuth.ts                       |
-|-----------------------------------------------------------------------------------------------------|
-| Environment	            | Express.js routes	                  | AWS Lambda/API Gateway              |
-|-------------------------|-------------------------------------|-------------------------------------|
-| Pattern	                | Middleware	                        | Higher-order function               |
-|-------------------------|-------------------------------------|-------------------------------------|
-| Integration	            | router.use(isAuth)	                | export const handler = withAuth(fn) |
-|-------------------------|-------------------------------------|-------------------------------------|
-| Error Response	        | JSON in response	                  | API Gateway proxy result            |
-|-------------------------|-------------------------------------|-------------------------------------|
-| Header Access	          | req.get("Authorization")	          | event.headers.Authorization         |
-|-------------------------|-------------------------------------|-------------------------------------|
-| User ID Storage	        | req.userId	                        | event.userId                        |
-|-------------------------|-------------------------------------|-------------------------------------|
+|-----------------------------------------------------------------------------------|
+| Aspect	         | Express Middleware	       | Lambda Handler                     |
+|------------------|---------------------------|------------------------------------|
+| File	           | is-auth.ts	               | lambdaAuth.ts                      |
+|------------------|---------------------------|------------------------------------|
+| Environment	     | Express.js routes	       | AWS Lambda/API Gateway             |
+|------------------|---------------------------|------------------------------------|
+| Pattern	         | Middleware	               | Higher-order function              |
+|------------------|---------------------------|------------------------------------|
+| Integration	     | router.use(isAuth)	       | export const handler = withAuth(fn)|
+|------------------|---------------------------|------------------------------------|
+| Error Response	 | JSON in response	         | API Gateway proxy result           |
+|------------------|---------------------------|------------------------------------|
+| Header Access	   | req.get("Authorization")	 | event.headers.Authorization        |
+|------------------|---------------------------|------------------------------------|
+| User ID Storage	 | req.userId	               | event.userId                       |
+|------------------|-------------------------- |------------------------------------|
 ```
 
 
