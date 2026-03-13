@@ -31,9 +31,11 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 | Device Tracking | Track user devices |
 | AWS Deployment | Infrastructure with AWS CDK |
 
-##  Project Architecture Diagrams
+## 🏗️ Project Architecture
+### Architecture Diagrams
 
-### Express Architecture (Request Flow)
+#### Express Architecture (Request Flow)
+
 ```mermaid
 graph TD
 %% Frontend
@@ -61,7 +63,8 @@ Message --> DB
 Socket --> DB
 ```
 
-### Lambda Architecture (Request Flow)
+#### Lambda Architecture (Request Flow)
+
 ```mermaid
   graph TD
   %% Frontend
@@ -88,7 +91,6 @@ Socket --> DB
   Message --> DB
   Socket --> DB
 ```
-## 🏗️ Project Architecture
 
 ### Directory Structure
 <details>
