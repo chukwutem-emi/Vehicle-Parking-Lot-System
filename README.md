@@ -369,7 +369,7 @@ npm start
 npm run compile:cdk
 ```
 
-## 🔌 Headers Folder API Documentation
+## 🔌 Handlers Folder API Documentation
 The src/handlers/ folder contains cross-cutting concerns for handling HTTP headers, authentication, and business logic events.
 
 ### Files Overview
