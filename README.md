@@ -31,7 +31,7 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 
 ##  Project Architecture Diagrams
 
-### Express Architecture
+### Express Architecture (Request Flow)
 ```mermaid
 graph TD
   Client[Client / Frontend] --> API[Express API]
@@ -54,11 +54,11 @@ Message --> DB
 Socket --> DB
 ```
 
-### Lambda Architecture
+### Lambda Architecture (Request Flow)
 ```mermaid
   graph TD
-  Client[Client / Frontend] <--> API[API Gateway]
-  Client <--> | Real-time | Socket[Socket.io Server]
+  Client[Client / Frontend] --> API[API Gateway]
+  Client <--> | Real-time Events | Socket[Socket.io Server]
 
   API --> Auth[Auth Lambda Handlers]
   API --> ParkingSession[ParkingSession Lambda Handlers]
