@@ -34,9 +34,10 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 ### Express Architecture (Request Flow)
 ```mermaid
 graph TD
-  Client[Client / Frontend] --> API[Express API]
-  Client <-->|Real-time events| Socket[Socket.io Server]
+%% Frontend
+Client[Client / Frontend] --> API[Express API]
 
+%% API to controllers
 API --> Auth[Auth Controller]
 API --> ParkingSlot[ParkingSlot Controller]
 API --> ParkingSession[ParkingSession Controller]
@@ -45,7 +46,11 @@ API --> Conversation[Conversation Controller]
 API --> Message[Message Controller]
 API --> Socket[Socket.IO Server]
 
-Auth --> DB[(MySQL Database)]
+%% Real-time communication
+Client <-->|Real-time events| Socket[Socket.io Server]
+
+%% Controllers to Database / ORM Models
+Auth --> DB[(MySQL Database / ORM Models)]
 ParkingSlot --> DB
 ParkingSession --> DB
 VehicleType --> DB
@@ -57,9 +62,10 @@ Socket --> DB
 ### Lambda Architecture (Request Flow)
 ```mermaid
   graph TD
+  %% Frontend
   Client[Client / Frontend] --> API[API Gateway]
-  Client <--> | Real-time Events | Socket[Socket.io Server]
 
+  %% API to Lambdas
   API --> Auth[Auth Lambda Handlers]
   API --> ParkingSession[ParkingSession Lambda Handlers]
   API --> ParkingSlot[ParkingSlot Lambda Handlers]
@@ -68,6 +74,10 @@ Socket --> DB
   API --> Message[Message Lambda Handlers]
   API --> Socket[Socket.io Server]
 
+  %% Real-time communication
+  Client <--> | Real-time Events | Socket[Socket.io Lambda / Server]
+
+  %% Lambdas to Database / ORM Models
   Auth --> DB[(MySQL Database / ORM Models)]
   ParkingSession --> DB
   ParkingSlot --> DB
