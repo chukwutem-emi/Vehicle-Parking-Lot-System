@@ -25,6 +25,8 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 |-------|-------------|
 | Authentication | JWT-based user authentication |
 | Parking Management | Manage parking slots and sessions |
+| Vehicle-Type Management| Manage the kinds vehicles that are allowed |
+| Models | Defines the data structures and database tables used in the application |
 | Messaging | Real-time messaging with Socket.IO |
 | Device Tracking | Track user devices |
 | AWS Deployment | Infrastructure with AWS CDK |
@@ -269,71 +271,6 @@ Vehicle-Parking-Lot-System/
 }
 ```
 
-## 📦 Core Features
-
-### 1. Authentication System (authController)
-- User registration and login.
-- JWT-based token authentication.
-- Password hashing with bcryptjs.
-- Secure session management.
-
-### 2. Real-time Messaging (socket-io.ts)
-- WebSocket-based communication using Socket.IO.
-- JWT authentication for socket connections.
-- Features:
-  - Join conversations.
-  - Send and receive messages.
-  - Typing indicators.
-  - Message history retrieval.
-  - Reply-to functionality.
-
-
-### Key Socket Event:
-
-```
-- join_conversation: Join a specific conversation room
-- send_message: Send a new message
-- typing: Indicate when user is typing
-- conversation_history: Receive message history
-- new_message: Receive new messages in real-time
-- user_typing: Receive typing notifications
-- disconnect: Handle disconnections
-```
-
-### 3. Parking Management
-- Parking Slots: Track availability and status.
-- Parking Sessions: Record check-in/check-out operations.
-- Vehicle Types: Manage different vehicle categories.
-
-
-### 4. Data Models
-
-#### User Model
-- User authentication and profile information.
-- Device associations for multi-device support.
-
-#### Parking Session Model.
-- Entry and exit timestamps.
-- Vehicle and slot associations.
-- Fee calculations and payment status.
-
-#### Parking Slot Model.
-- Slot status (available/occupied).
-- Capacity information.
-- Location details.
-
-#### Message & Conversation Models
-- Real-time messaging support.
-- Message threading and replies.
-- Conversation history.
-
-### 5. AWS Integration (cdk/)
-- Infrastructure as Code using AWS CDK.
-- Lambda function support.
-- AWS deployment automation.
-
-
-
 ## 🚀 Getting Started
 ### Prerequisites
 - Node.js (v18 or higher recommended).
@@ -343,7 +280,7 @@ Vehicle-Parking-Lot-System/
 
 ### Installation
 
-```
+```bash
 # Clone the repository
 git clone https://github.com/chukwutem-emi/Vehicle-Parking-Lot-System.git
 cd Vehicle-Parking-Lot-System
@@ -358,20 +295,20 @@ cp .env.example .env
 
 ### Environment Variables
 Create a .env file with:
-```
-DB_NAME=your database_name
-DB_PASSWORD=your database_password
-DB_USER=your database_username
-DB_HOST=your database_host
-SECRET_KEY=your secret_key
-MAILTRAP_API_TOKEN=your email sending platform API token
-RESET_PASSWORD=Your link for resetting password from frontend
-AWS_REGION=your AWS region
-AWS_ACCOUNT_ID=your AWS account_Id
+```bash
+DB_NAME=your_database_name
+DB_PASSWORD=your_database_password
+DB_USER=your_database_username
+DB_HOST=your_database_host
+SECRET_KEY=your_secret_key
+MAILTRAP_API_TOKEN=your_email_sending_platform_API token
+RESET_PASSWORD=Your_link_for_resetting_password_from_frontend
+AWS_REGION=your_AWS_region
+AWS_ACCOUNT_ID=your_AWS_account_Id
 ```
 
 ### Database Setup
-```
+```bash
 # Initialize Sequelize
 npm run init-migration
 
@@ -390,7 +327,7 @@ npm run undo-all-migration
 ```
 
 ### Running the Application
-```
+```bash
 # Development mode with hot reload
 npm run dev-watch
 
@@ -652,10 +589,6 @@ All authentication tokens follow this structure:
 - exp (number): Expiration timestamp.
 
 ## 🛠️ Configuration & Best Practices
-### Environment Variables
-```
-SECRET_KEY=your-secret-key-for-jwt-signing
-```
 ### Production CORS Configuration
 ```bash
 // corsHeaders.ts - Production version
@@ -771,7 +704,7 @@ npx cdk deploy
 ## 📚 Project Metadata
 | Property | Value |
 |----------|-------|
-| Repository | https://github.com/chukwutem-emi/Vehicle-Parking-Lot-System |
+| Repository | [Repository Link](https://github.com/chukwutem-emi/Vehicle-Parking-Lot-System) |
 | Language | TypeScript |
 | License | ISC |
 | Version | 1.0.0 |
