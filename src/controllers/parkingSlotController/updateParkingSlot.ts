@@ -47,7 +47,7 @@ export const updateParkingSlot = async (req: Request, res: Response, next: NextF
         if (!currentUser) {
             return res.status(404).json({message: "We could not find the current logged-in user."});
         }
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(403).json({message: "You do not have permission to update parking slots."});
         };
         const parkingSlot = await ParkingSlot.findOne({where: {vehicleTypeId}});

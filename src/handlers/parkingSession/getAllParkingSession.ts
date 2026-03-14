@@ -8,6 +8,12 @@ import {corsHeaders} from "../corsHeaders.js";
 export const getAllParkingSessionHandler = withAuth( async (event) => {
     await connectDB();
     try {
+        const limit = Number(event.queryStringParameters?.limit) || 1;
+        const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
+        const offset = (currentPage - 1) * limit;
+        const sort = event.queryStringParameters?.sort || "createdAt";
+        const vehicleTypeId = Number(event.queryStringParameters?.vehicleTypeId);
+
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -44,12 +50,39 @@ export const getAllParkingSessionHandler = withAuth( async (event) => {
                 })
             };
         };
-        const parkingSessions = await ParkingSession.findAll();
+        const where: any = {};
+
+        if (vehicleTypeId) {
+            where.vehicleTypeId = vehicleTypeId;
+        };
+
+        let order: any = [["createdAt", "DESC"]];
+
+        if (typeof sort === "string") {
+            if (sort.startsWith("-")) {
+                order = [sort.substring(1), "DESC"];
+            } else {
+                order = [sort, "ASC"];
+            };
+        };
+        const {count, rows} = await ParkingSession.findAndCountAll({
+            where: where,
+            offset: offset,
+            limit: limit,
+            order: order
+        });
         return {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Parking sessions retrieved successfully.", parkingSessions 
+                message: "Parking sessions retrieved successfully.",
+                pagination: {
+                    data: rows,
+                    currentPage,
+                    limit,
+                    total: count,
+                    totalPages: Math.ceil(count / limit)
+                }
             })
         };
     } catch (err: any) {

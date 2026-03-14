@@ -25,7 +25,7 @@ export const getVehicleByName = async (req: Request, res: Response, next: NextFu
         if (!currentUser) {
             return res.status(404).json({message: "User with the Logged-In ID not found!."});
         };
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({message: "Unauthorized request. Only Admins can fetch other users"});
         };
         const vehicleDetails = await VehicleType.findOne({
@@ -45,6 +45,10 @@ export const getVehicleByName = async (req: Request, res: Response, next: NextFu
  * Fetch all vehicle-types. 
  */
 export const getAllVehicles = async (req: Request, res: Response, next: NextFunction) => {
+    const limit = Number(req.query.limit) || 1;
+    const sort = req.query.sort || "createdAt";
+    const currentPage = Number(req.query.currentPage) || 1;
+    const offset = (currentPage - 1) * limit;
     try {
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) {
@@ -53,11 +57,32 @@ export const getAllVehicles = async (req: Request, res: Response, next: NextFunc
         if (!currentUser.isAdmin && currentUser.userRole !== userRole.SUPER) {
             return res.status(401).json({message: "Unauthorized request. Only Super Admins can fetch all vehicle-types."});
         };
-        const fetchAllVehicles = await VehicleType.findAll();
-        if (fetchAllVehicles.length === 0) {
+        let order: any = [["createdAt", "DESC"]];
+
+        if (typeof sort === "string") {
+            if (sort.startsWith("-")) {
+                order = [sort.substring(1), "DESC"];
+            } else {
+                order = [sort, "ASC"];
+            };
+        };
+        const {count, rows} = await VehicleType.findAndCountAll({
+            offset: offset,
+            limit: limit,
+            order: order
+        });
+        if (rows.length === 0) {
             return res.status(200).json({message: "Vehicle database is empty.", fetchAllVehicles: []});
         };
-        return res.status(200).json({Vehicles: fetchAllVehicles});
+        return res.status(200).json({
+            data: rows,
+            pagination: {
+                currentPage,
+                limit,
+                total: count,
+                totalPage: Math.ceil(count / limit)
+            }
+        });
     } catch (err: any) {
         next(err);
     }

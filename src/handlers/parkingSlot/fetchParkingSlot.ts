@@ -9,6 +9,12 @@ import {corsHeaders} from "../corsHeaders.js";
 export const getAvailableSlotHandler = withAuth( async (event) => {
     await connectDB();
     try {
+        const limit = Number(event.queryStringParameters?.limit) || 1;
+        const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
+        const offset = (currentPage - 1) * limit;
+        const sort = event.queryStringParameters?.sort || "createdAt";
+        const vehicleTypeId = Number(event.queryStringParameters?.limit)
+       
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -45,7 +51,22 @@ export const getAvailableSlotHandler = withAuth( async (event) => {
                 })
             };
         };
-        const availableSlots = await ParkingSlot.findAll({
+        const where: any = {};
+
+        if (vehicleTypeId) {
+            where.vehicleTypeId = vehicleTypeId;
+        };
+
+        let order: any = [["createdAt", "DESC"]];
+
+        if (typeof sort === "string") {
+            if (sort.startsWith("-")) {
+                order = [sort.substring(1), "DESC"]
+            } else {
+                order = [sort, "ASC"];
+            };
+        };
+        const {count, rows} = await ParkingSlot.findAndCountAll({
             where: {
                 isAvailable: true,
                 availableCapacity: {
@@ -53,7 +74,7 @@ export const getAvailableSlotHandler = withAuth( async (event) => {
                 }
             }
         });
-        if (!availableSlots || availableSlots.length === 0) {
+        if (!rows || rows.length === 0) {
             return {
                 statusCode: 404,
                 headers: corsHeaders,
@@ -66,7 +87,13 @@ export const getAvailableSlotHandler = withAuth( async (event) => {
             statusCode: 200, 
             headers: corsHeaders,  
             body: JSON.stringify({
-                AvailableSlots: availableSlots
+                data: rows,
+                pagination: {
+                    currentPage,
+                    limit,
+                    total: count,
+                    totalPages: Math.ceil(count / limit)
+                }
             })
         };
     } catch (err: any) {

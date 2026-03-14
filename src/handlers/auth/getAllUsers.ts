@@ -12,6 +12,12 @@ import {corsHeaders} from "../corsHeaders.js";
 export const getAllUsersHandler = withAuth( async (event) => {
     await connectDB();
     try {
+        const limit = Number(event.queryStringParameters?.limit) || 1;
+        const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
+        const sort = event.queryStringParameters?.sort || "createdAt";
+        const role = event.queryStringParameters?.role;
+        const offset = (currentPage - 1) * limit;
+
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -48,8 +54,28 @@ export const getAllUsersHandler = withAuth( async (event) => {
                 })
             };
         };
-        const usersDetails = await User.findAll();
-        if (usersDetails.length === 0) {
+        const where: any = {};
+
+        if (role) {
+            where.userRole = role;
+        };
+
+        let order: any = [["createdAt", "DESC"]];
+
+        if (typeof sort === "string") {
+            if (sort.startsWith("-")) {
+                order = [sort.substring(1), "DESC"];
+            } else {
+                order = [sort, "ASC"];
+            };
+        };
+        const {count, rows} = await User.findAndCountAll({
+            where: where,
+            offset: offset,
+            limit: limit,
+            order: order
+        });
+        if (rows.length === 0) {
             return {
                 statusCode: 200,
                 headers: corsHeaders,
@@ -62,7 +88,13 @@ export const getAllUsersHandler = withAuth( async (event) => {
         return {
             statusCode: 200,
             body: JSON.stringify({
-                usersDetails: usersDetails
+                data: rows,
+                pagination: {
+                    currentPage,
+                    limit,
+                    total: count,
+                    totalPages: Math.ceil(count / limit)
+                }
             })
         };
     } catch (err: any) {
