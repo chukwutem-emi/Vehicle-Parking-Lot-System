@@ -17,6 +17,7 @@ const sequelize = new Sequelize(
     {
         dialect: "mysql",
         host: process.env.DB_HOST as string,
+        port: Number(process.env.DB_PORT),
         define: {
             freezeTableName: true,
             underscored: true
