@@ -9,6 +9,10 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
+      type: {
+        type: Sequelize.STRING(200),
+        defaultValue: "admin_global"
+      },
       createAt: {
         type: Sequelize.DATE,
         field: "created_at",
@@ -17,7 +21,7 @@ module.exports = {
     })
   },
 
-  async down (queryInterface) {
-    await queryInterface.dropTable("conversation");
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('conversation');
   }
 };

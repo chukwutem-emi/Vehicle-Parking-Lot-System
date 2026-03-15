@@ -7,12 +7,16 @@ interface VehicleTypeAttribute {
     vehicleName: string;
     hourlyRate: number;
     updatedBy?: string;
+    createdAt?: Date;
+    updatedAt?: Date
 };
 export class VehicleType extends Model<VehicleTypeAttribute> implements VehicleTypeAttribute {
     id!: number;
     vehicleName!: string;
     hourlyRate!: number;
     updatedBy?: string;
+    createdAt?: Date;
+    updatedAt?: Date
 }
 VehicleType.init(
     {
@@ -33,6 +37,14 @@ VehicleType.init(
         updatedBy: {
             type: DataTypes.STRING(100),
             allowNull: true
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
         }
     },
     {

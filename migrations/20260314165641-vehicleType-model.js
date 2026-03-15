@@ -24,11 +24,22 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true,
         field: "updated_by"
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        field: "created_at"
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        field: "updated_at",
+        onUpdate: Sequelize.NOW
       }
     });
   },
 
   async down (queryInterface) {
-    await queryInterface.dropTable("vehicle_type");
+    await queryInterface.dropTable('vehicle_type');
   }
 };

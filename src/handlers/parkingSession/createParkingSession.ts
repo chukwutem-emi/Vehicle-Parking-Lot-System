@@ -20,9 +20,11 @@ interface ParkingSessionAttributes {
 
 
 export const createParkingSessionHandler = withAuth(async (event) => {
-    await connectDB();
     const t = await sequelize.transaction();
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,

@@ -1,13 +1,11 @@
 'use strict';
 
-const { NOW } = require('sequelize');
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable("user_devices", {
       id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -42,13 +40,13 @@ module.exports = {
       },
       loginTime: {
         type: Sequelize.DATE,
-        defaultValue: NOW,
+        defaultValue: Sequelize.NOW,
         field: "login_time"
       }
     });
   },
 
-  async down (queryInterface) {
-    await queryInterface.dropTable("user_devices");
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('user_devices');
   }
 };

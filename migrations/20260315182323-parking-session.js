@@ -16,7 +16,7 @@ module.exports = {
         field: "vehicle_number"
       },
       vehicleOwnerPhone: {
-        type: Sequelize.STRING(12),
+        type: Sequelize.STRING(15),
         allowNull: false,
         unique: true,
         field: "vehicle_owner_phone"
@@ -32,7 +32,7 @@ module.exports = {
         field: "vehicle_owner_next_of_kin"
       },
       vehicleOwnerNextOfKinPhone: {
-        type: Sequelize.STRING(12),
+        type: Sequelize.STRING(15),
         allowNull: false,
         unique: true,
         field: "vehicle_owner_next_of_kin_phone"
@@ -104,6 +104,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable("parking_session");
+    await queryInterface.dropTable('parking_session');
   }
 };

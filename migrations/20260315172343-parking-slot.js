@@ -27,6 +27,7 @@ module.exports = {
       },
       availableCapacity: {
         type: Sequelize.INTEGER,
+        defaultValue: 10,
         allowNull: true,
         field: "available_capacity"
       },
@@ -45,11 +46,22 @@ module.exports = {
         },
         onDelete: "RESTRICT",
         onUpdate: "CASCADE"
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        field: "created_at"
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        field: "updated_at",
+        onUpdate: Sequelize.NOW
       }
     });
   },
 
-  async down (queryInterface) {
-    await queryInterface.dropTable("parking_slot");
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('parking_slot');
   }
 };

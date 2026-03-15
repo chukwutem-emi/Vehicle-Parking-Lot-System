@@ -10,8 +10,10 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 export const getAllUsersHandler = withAuth( async (event) => {
-    await connectDB();
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         const limit = Number(event.queryStringParameters?.limit) || 1;
         const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
         const sort = event.queryStringParameters?.sort || "createdAt";

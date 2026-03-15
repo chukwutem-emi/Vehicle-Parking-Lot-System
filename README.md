@@ -16,7 +16,7 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 - Github: [chukwutem-emi](https://github.com/chukwutem-emi)
 - License: ISC.
 - Language: TypeScript.
-- Last Updated: March 12, 2026.
+- Last Updated: March 15, 2026.
 
 
 ## 🚀 Features
@@ -711,8 +711,8 @@ npx cdk deploy
 | License | ISC |
 | Version | 1.0.0 |
 | Author | Chukwutem Stephen Emi |
-| Created | February 14, 2026 |
-| Last updated | March 12, 2026 |
+| Created | February 13, 2026 |
+| Last updated | March 15, 2026 |
 | Size | 560KB |
 
 
@@ -733,6 +733,8 @@ For issues and bug reports, please use the [GitHub Issues](https://github.com/ch
 - Sequelize ORM: https://sequelize.org/.
 - AWS CDK: https://aws.amazon.com/cdk/.
 
+## Base URL:
+https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/
 
 ## ⚠️ Warning
 

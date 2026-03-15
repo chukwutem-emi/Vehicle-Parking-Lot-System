@@ -1,7 +1,5 @@
 import { Sequelize } from "sequelize";
 
-console.log("ENV USER =", process.env.DB_USER);
-console.log("ENV PASSWORD =", process.env.DB_PASSWORD);
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,

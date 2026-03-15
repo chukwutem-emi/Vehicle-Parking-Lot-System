@@ -19,8 +19,10 @@ interface UserAttribute {
 };
 
 export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<APIGatewayProxyResult> => {
-    await connectDB();
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,

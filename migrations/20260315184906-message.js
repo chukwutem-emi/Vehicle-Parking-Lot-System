@@ -32,17 +32,23 @@ module.exports = {
       replyTo: {
         type: Sequelize.STRING(200),
         allowNull: true,
-        field: "reply_id"
+        field: "reply_to"
       },
       createdAt: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false,
         field: "created_at"
       }
     });
   },
 
-  async down (queryInterface) {
-    await queryInterface.dropTable("message");
+  async down (queryInterface, Sequelize) {
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
   }
 };

@@ -22,8 +22,10 @@ interface UserAttributes {
 };
 
 export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    await connectDB();
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,

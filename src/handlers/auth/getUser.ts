@@ -9,8 +9,10 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 export const getUserHandler = withAuth( async (event) => {
-    await connectDB();
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,

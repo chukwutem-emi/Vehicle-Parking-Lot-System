@@ -15,9 +15,11 @@ interface VehicleAttributes {
 
 
 export const vehicleExitTimeHandler = withAuth( async (event) => {
-    await connectDB();
     const trans = await sequelize.transaction()
     try {
+        console.log("Connecting database......");
+        await connectDB();
+        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
