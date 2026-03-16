@@ -1,5 +1,5 @@
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs"
-import {Stack} from "aws-cdk-lib"
+import {Duration, Stack} from "aws-cdk-lib"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import path from "path";
 
@@ -19,13 +19,14 @@ export const createLambda = (
         entry: entry,
         handler: handler,
         environment: envVars,
+        timeout: Duration.seconds(15),
         bundling: {
             minify: true,
             externalModules: ["aws-sdk"],
             nodeModules: ["ua-parser-js", "jsonwebtoken", "bcryptjs", "geoip-lite", "sequelize", "mysql2"],
             commandHooks: {
                 beforeBundling(inputDir: string, outputDir: string): string[] {
-                    return [`cp -r ${path.join(inputDir, "src/certificate")} ${outputDir}/`];
+                    return [`cp -r ${path.join(inputDir, "src/certificate/ca.pem")} ${outputDir}/`];
                 },
                 afterBundling(inputDir: string, outputDir: string): string[] {
                 return [];

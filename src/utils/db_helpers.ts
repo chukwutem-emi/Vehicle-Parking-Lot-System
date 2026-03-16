@@ -4,7 +4,7 @@ import path from "path";
 
 
 
-const caPath = path.join(process.cwd(), "certificate/ca.pem");
+const caPath = path.resolve(process.cwd(), "ca.pem");
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
         define: {
             freezeTableName: true,
             underscored: true
-        },
+        } as any,
         dialectOptions: {
             ssl: {
                 ca: fs.readFileSync(caPath),
