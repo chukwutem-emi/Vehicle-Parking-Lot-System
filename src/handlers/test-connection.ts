@@ -5,6 +5,7 @@ import path from "path";
 
 export const handler = async () => {
   try {
+    console.log("File in /var/task:", fs.readdirSync("/var/task"));
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
