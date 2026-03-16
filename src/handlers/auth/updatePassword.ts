@@ -87,7 +87,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                 })
             };
         };
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 10);
     
         getUserDetails.password             = hashedPassword;
         getUserDetails.resetToken           = undefined;

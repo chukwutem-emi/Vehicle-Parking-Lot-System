@@ -75,7 +75,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
             };
         };
         console.log("Hashing Password....");
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 10);
         console.log("Password Hashed");
         console.log("Creating User....");
         await User.create({
