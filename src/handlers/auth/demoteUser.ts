@@ -9,7 +9,7 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 
-export const demoteUserHandler = withAuth( async (event) => {
+export const demoteUserHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

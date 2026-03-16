@@ -15,7 +15,7 @@ interface ParkingSlotAttributes {
 
 
 
-export const updateParkingSlotHandler = withAuth( async (event) => {
+export const updateParkingSlotHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

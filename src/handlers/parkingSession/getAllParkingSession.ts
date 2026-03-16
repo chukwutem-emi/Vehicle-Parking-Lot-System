@@ -5,7 +5,7 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 
-export const getAllParkingSessionHandler = withAuth( async (event) => {
+export const getAllParkingSessionHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

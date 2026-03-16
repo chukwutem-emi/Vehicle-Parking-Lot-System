@@ -1,6 +1,6 @@
 // Third-party modules
 import jwt, {type JwtPayload} from "jsonwebtoken";
-import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
+import type {APIGatewayProxyEvent, APIGatewayProxyResult, Context} from "aws-lambda";
 import {corsHeaders} from "./corsHeaders.js";
 
 
@@ -13,7 +13,8 @@ export interface AuthenticatedEvent extends APIGatewayProxyEvent {
     userId: number
 };
 
-type AuthHandler = (event: AuthenticatedEvent) => Promise<APIGatewayProxyResult>;
+type AuthHandler = (event: AuthenticatedEvent, context: Context) => Promise<APIGatewayProxyResult>;
+
 
 /**
  * Higher-order function to add authentication to Lambda handlers.
@@ -23,7 +24,8 @@ type AuthHandler = (event: AuthenticatedEvent) => Promise<APIGatewayProxyResult>
  * The function checks for the presence of an Authorization header, verifies the JWT token, and extracts the user ID from the token payload. If the token is valid, it adds the user ID to the event object and calls the original handler. If the token is missing or invalid, it returns a 401 Unauthorized response. 
  */
 export const withAuth = (handler: AuthHandler) => {
-    return async (event:AuthenticatedEvent): Promise<APIGatewayProxyResult> => {
+    return async (event:AuthenticatedEvent, context: Context): Promise<APIGatewayProxyResult> => {
+        context.callbackWaitsForEmptyEventLoop = false;
         try {
             const authToken = event.headers.Authorization || event.headers.authorization;
             if (!authToken || !authToken.startsWith("Bearer ")) {
@@ -48,7 +50,7 @@ export const withAuth = (handler: AuthHandler) => {
             };
             const authEvent = event as AuthenticatedEvent;
             authEvent.userId = decode.userId;
-            return await handler(authEvent);
+            return await handler(authEvent, context);
         } catch (err: any) {
             return {
                 statusCode: 401,

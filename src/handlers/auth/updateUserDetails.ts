@@ -22,7 +22,7 @@ interface UpdateUserDetailsAttributes {
 };
 
 
-export const updateUserDetailsHandler = withAuth( async (event) => {
+export const updateUserDetailsHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

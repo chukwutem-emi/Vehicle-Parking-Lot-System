@@ -16,7 +16,7 @@ jobs:
       DB_HOST: ${{secrets.DB_HOST}}    
       DB_USER: ${{secrets.DB_USER}}
       DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-      PORT: ${{secrets.PORT}}
+      DB_PORT: ${{secrets.DB_PORT}}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RESET_PASSWORD: ${{ secrets.RESET_PASSWORD }}    
     steps:
@@ -27,6 +27,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 24
+          cache: npm
       
       - name: Configure Aws Credentials
         uses: aws-actions/configure-aws-credentials@v2

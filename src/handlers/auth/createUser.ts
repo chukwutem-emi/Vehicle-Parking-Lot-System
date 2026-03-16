@@ -2,7 +2,7 @@
 import {connectDB, User} from "../model/index.js";
 // Third-party module
 import bcrypt from "bcryptjs";
-import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
+import type {APIGatewayProxyEvent, APIGatewayProxyResult, Context} from "aws-lambda";
 // Utils
 import {corsHeaders} from "../corsHeaders.js";
 // CreateUser input validation import
@@ -21,7 +21,8 @@ interface CreateUserBody {
 };
 
 
-export const createUserHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const createUserHandler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
+    context.callbackWaitsForEmptyEventLoop = false;
     try {
         console.log("Connecting database......");
         await connectDB();

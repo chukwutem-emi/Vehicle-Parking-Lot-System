@@ -13,7 +13,7 @@ interface VehicleTypeAttribute {
 };
 
 
-export const uploadVehicleTypeHandler = withAuth( async (event) => {
+export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

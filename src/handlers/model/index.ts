@@ -6,9 +6,13 @@ import { ParkingSlot } from "../../models/parking-slots.js";
 import { UserDevices } from "../../models/user-devices.js";
 import { User } from "../../models/user.js";
 import VehicleType from "../../models/vehicle-types.js";
+import fs from "fs";
+import path from "path";
 
 
 
+
+const caPath = path.resolve(__dirname, "../../certificate/ca.pem");
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -21,6 +25,19 @@ const sequelize = new Sequelize(
         define: {
             freezeTableName: true,
             underscored: true
+        },
+        dialectOptions: {
+            ssl: {
+                ca: fs.readFileSync(caPath),
+                rejectUnauthorized: true
+            }
+        },
+        logging: false,
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000,
+            acquire: 30000
         }
     }
 );

@@ -6,7 +6,7 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 
-export const getAvailableSlotHandler = withAuth( async (event) => {
+export const getAvailableSlotHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();

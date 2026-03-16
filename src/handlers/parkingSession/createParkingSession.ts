@@ -19,7 +19,7 @@ interface ParkingSessionAttributes {
 
 
 
-export const createParkingSessionHandler = withAuth(async (event) => {
+export const createParkingSessionHandler = withAuth(async (event, _context) => {
     const t = await sequelize.transaction();
     try {
         console.log("Connecting database......");

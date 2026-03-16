@@ -14,7 +14,7 @@ interface VehicleAttributes {
 
 
 
-export const vehicleExitTimeHandler = withAuth( async (event) => {
+export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
     const trans = await sequelize.transaction()
     try {
         console.log("Connecting database......");

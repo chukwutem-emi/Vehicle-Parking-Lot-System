@@ -8,7 +8,7 @@ import {corsHeaders} from "../corsHeaders.js";
 
 
 
-export const getUserHandler = withAuth( async (event) => {
+export const getUserHandler = withAuth( async (event, _context) => {
     try {
         console.log("Connecting database......");
         await connectDB();
