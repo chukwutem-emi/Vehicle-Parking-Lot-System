@@ -14,13 +14,6 @@ import path from "path";
 
 
 const caPath = path.join(process.cwd(), "certificate/ca.pem");
-let caCert: Buffer;
-try {
-    caCert = fs.readFileSync(caPath);
-} catch (err) {
-    console.error("Failed to read ssl certificate:", err);
-    throw err;
-}
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -36,7 +29,7 @@ const sequelize = new Sequelize(
         },
         dialectOptions: {
             ssl: {
-                ca: fs.readFileSync(caCert),
+                ca: fs.readFileSync(caPath),
                 rejectUnauthorized: true
             }
         } as any,
