@@ -14,7 +14,7 @@ import {fileURLToPath} from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const caPath = path.resolve(__dirname, "../../certificate/ca.pem");
+const caPath = path.resolve(__dirname, "certificate/ca.pem");
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,

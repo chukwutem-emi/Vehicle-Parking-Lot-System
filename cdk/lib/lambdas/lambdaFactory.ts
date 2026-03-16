@@ -25,7 +25,7 @@ export const createLambda = (
             nodeModules: ["ua-parser-js", "jsonwebtoken", "bcryptjs", "geoip-lite", "sequelize", "mysql2"],
             commandHooks: {
                 beforeBundling(inputDir: string, outputDir: string): string[] {
-                    return [`cp -r ${path.join(inputDir, "certificate")} ${outputDir}/`];
+                    return [`cp -r ${path.join(inputDir, "src/certificate")} ${outputDir}/`];
                 },
                 afterBundling(inputDir: string, outputDir: string): string[] {
                 return [];
