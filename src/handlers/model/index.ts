@@ -36,7 +36,7 @@ const sequelize = new Sequelize(
         },
         dialectOptions: {
             ssl: {
-                ca: fs.readFileSync(caPath),
+                ca: fs.readFileSync(caCert),
                 rejectUnauthorized: true
             }
         } as any,
