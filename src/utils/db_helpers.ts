@@ -4,7 +4,7 @@ import path from "path";
 
 
 
-const caPath = path.resolve(process.cwd(), "ca.pem");
+const caPath = path.join(process.cwd(), "certificate/ca.pem");
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
