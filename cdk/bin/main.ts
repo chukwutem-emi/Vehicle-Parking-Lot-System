@@ -13,7 +13,7 @@ new BackendStack(app, "BackendStack", {
         DB_HOST: process.env.DB_HOST!,
         DB_PASSWORD: process.env.DB_PASSWORD!,
         DB_USER: process.env.DB_USER!,
-        PORT: process.env.DB_PORT!,
+        DB_PORT: process.env.DB_PORT!,
         SECRET_KEY: process.env.SECRET_KEY!,
         RESET_PASSWORD: process.env.RESET_PASSWORD!
     }

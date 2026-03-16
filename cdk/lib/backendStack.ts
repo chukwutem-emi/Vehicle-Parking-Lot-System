@@ -19,7 +19,7 @@ interface BackendStackProps extends StackProps {
         DB_HOST: string;
         DB_PASSWORD: string;
         DB_USER: string;
-        PORT:  string;
+        DB_PORT:  string;
         SECRET_KEY: string;
         RESET_PASSWORD: string;
     };
