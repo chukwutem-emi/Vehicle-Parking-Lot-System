@@ -1,6 +1,7 @@
 // test-connection.ts
 import mysql from "mysql2/promise";
 import fs from "fs";
+import path from "path";
 
 export const handler = async () => {
   try {
@@ -9,7 +10,7 @@ export const handler = async () => {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      ssl: { ca: fs.readFileSync("src/certificate/ca.pem") }, // path relative to Lambda
+      ssl: { ca: fs.readFileSync(path.join(process.cwd(), "certificate/ca.pem")) }, // path relative to Lambda
     });
 
     await connection.execute("SELECT 1");
