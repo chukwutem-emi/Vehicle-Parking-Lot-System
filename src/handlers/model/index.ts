@@ -76,9 +76,9 @@ User.hasMany(Message, { foreignKey: 'sender_id' });
 // Lazy connect (only once per Lambda container)
 let connected = false;
 export const connectDB = async () => {
-    console.log("File in /var/task:", fs.readdirSync("/var/task"));
-        console.log("Connecting to:", process.env.DB_HOST, process.env.DB_PORT);
     if (!connected) {
+        console.log("File in /var/task:", fs.readdirSync("/var/task"));
+        console.log("Connecting to:", process.env.DB_HOST, process.env.DB_PORT);
         const start = Date.now();
         await sequelize.authenticate();
         connected = true;
