@@ -14,6 +14,13 @@ import path from "path";
 
 
 const caPath = path.join(process.cwd(), "certificate/ca.pem");
+let caCert: Buffer;
+try {
+    caCert = fs.readFileSync(caPath);
+} catch (err) {
+    console.error("Failed to read ssl certificate:", err);
+    throw err;
+}
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -72,8 +79,10 @@ export const connectDB = async () => {
     console.log("File in /var/task:", fs.readdirSync("/var/task"));
         console.log("Connecting to:", process.env.DB_HOST, process.env.DB_PORT);
     if (!connected) {
+        const start = Date.now();
         await sequelize.authenticate();
         connected = true;
+        console.log("Database connected, took:", Date.now() - start, "ms");
     };
 };
 
