@@ -13,7 +13,7 @@ import path from "path";
 
 
 
-const caPath = path.resolve(process.cwd(), "ca.pem");
+const caPath = path.join(process.cwd(), "certificate/ca.pem");
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -69,6 +69,8 @@ User.hasMany(Message, { foreignKey: 'sender_id' });
 // Lazy connect (only once per Lambda container)
 let connected = false;
 export const connectDB = async () => {
+    console.log("File in /var/task:", fs.readdirSync("/var/task"));
+        console.log("Connecting to:", process.env.DB_HOST, process.env.DB_PORT);
     if (!connected) {
         await sequelize.authenticate();
         connected = true;
