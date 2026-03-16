@@ -1,7 +1,7 @@
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs"
 import {Stack} from "aws-cdk-lib"
 import * as lambda from "aws-cdk-lib/aws-lambda"
-
+import path from "path";
 
 interface LambdaFactoryProps {
     stack: Stack,
@@ -22,7 +22,18 @@ export const createLambda = (
         bundling: {
             minify: true,
             externalModules: ["aws-sdk"],
-            nodeModules: ["ua-parser-js", "jsonwebtoken", "bcryptjs", "geoip-lite", "sequelize", "mysql2"]
+            nodeModules: ["ua-parser-js", "jsonwebtoken", "bcryptjs", "geoip-lite", "sequelize", "mysql2"],
+            commandHooks: {
+                beforeBundling(inputDir: string, outputDir: string): string[] {
+                    return [`cp -r ${path.join(inputDir, "certificate")} ${outputDir}/`];
+                },
+                afterBundling(inputDir: string, outputDir: string): string[] {
+                return [];
+                },
+                beforeInstall(inputDir: string, outputDir: string): string[] {
+                    return [];
+                }
+            }
         }
     });
 };

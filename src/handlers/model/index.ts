@@ -8,9 +8,11 @@ import { User } from "../../models/user.js";
 import VehicleType from "../../models/vehicle-types.js";
 import fs from "fs";
 import path from "path";
+import {fileURLToPath} from "url";
 
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const caPath = path.resolve(__dirname, "../../certificate/ca.pem");
 
