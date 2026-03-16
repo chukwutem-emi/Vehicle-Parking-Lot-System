@@ -20,8 +20,16 @@ export const handler = async () => {
     console.log("ROWS", rows);
     console.log("✅ Connected to Aiven MySQL!");
     await  connection.end();
-    return rows;
-  } catch (err) {
-    console.error("❌ Connection failed:", err);
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "Connected to MySQL!", rows }),
+    };
+  } catch (err: any) {
+    console.error("ERROR:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to connect', error: err.message }),
+    };
   }
 };
