@@ -9,6 +9,8 @@ import {createAuthLambdas} from "./lambdas/authLambdas.js"
 import {createSessionLambda} from "./lambdas/parkingSessionLambda.js";
 import {createSlotLambda} from "./lambdas/parkingSlotLambda.js";
 import {createVehicleTypeLambda} from "./lambdas/vehicleTypeLambda.js";
+import { testConnectionLambda } from "./lambdas/testConnectionLambda.js";
+import { connectionEndpoint } from "./endpoints/testConnectionEndpoint.js";
 
 
 interface BackendStackProps extends StackProps {
@@ -40,6 +42,8 @@ export class BackendStack extends Stack {
         // vehicleTypeLambda
         const vehicleTypeLambda = createVehicleTypeLambda(this, env);
         
+        // connection
+        const connectionLambda = testConnectionLambda(this, env);
         // create API
         const api = new apigw.RestApi(this, "ParkingAPIEndpoint", {
             defaultCorsPreflightOptions: {
@@ -53,6 +57,7 @@ export class BackendStack extends Stack {
         parkingSessionEndpoints(api, parkingSessionLambda);
         parkingSlotEndpoints(api, parkingSlotLambda);
         vehicleTypeEndpoints(api, vehicleTypeLambda);
+        connectionEndpoint(api, connectionLambda)
 
         // Output API URL
         new CfnOutput(this, `${api.node.id}Output`, {
