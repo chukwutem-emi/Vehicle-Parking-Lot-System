@@ -2,9 +2,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue) ![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![Express](https://img.shields.io/badge/Express-5.x-black) ![License](https://img.shields.io/badge/license-ISC-orange) ![AWS CDK](https://img.shields.io/badge/AWS-CDK-yellow)
 
 ```bash
-curl -X POST http://localhost:3000/auth/login \
+curl -X POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/signup \
 -H "Content-Type: application/json" \
--d '{"email":"user@email.com","password":"123456"}'
+-d '{"username": "Stephen", "password": "12345678", "userAddress": "59 example street", "email": "example@gmail.com", "phone": "123456789", "confirmPassword": "123455678"}'
 ```
 # 🚗 Vehicle Parking Lot System
 
@@ -600,7 +600,7 @@ export const corsHeaders = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 ```
-## 🔌 API Routes
+## 🔌 Express.js API Routes
 ### Authentication Routes (src/routes/auth-routes.ts)
 - POST /auth/register - Register new user
 - POST /auth/login - User login
@@ -616,6 +616,28 @@ export const corsHeaders = {
 ### Vehicle Type Routes (src/routes/vehicle-type-routes.ts)
 - Vehicle category management
 
+## Lambda API Gateway
+### Authentication API Gateway (cdk/lib/endpoints/authEndpoints)
+- POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/signup - user signup.
+#### Payload:
+```json
+{
+   "username": "",
+   "password": "",
+   "userAddress": "",
+   "email": "",
+   "phone": "",
+   "confirmPassword": ""
+}
+```
+#### Success Response:
+```json
+"statusCode": 201,
+{
+    "message": "User created successfully!"
+}
+```
+- POST 
 
 ## Security Checklist
 - ✅ Always use HTTPS in production.

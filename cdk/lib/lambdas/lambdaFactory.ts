@@ -19,7 +19,7 @@ export const createLambda = (
         entry: entry,
         handler: handler,
         environment: envVars,
-        timeout: Duration.seconds(15),
+        timeout: Duration.seconds(30),
         bundling: {
             minify: true,
             externalModules: ["aws-sdk"],
