@@ -12,5 +12,5 @@
         //"erasableSyntaxOnly": true, // Ensures typescript can be removed without runtime impact. 
     },
     "include": ["src"],
-    "exclude": ["src/handlers"]
+    "exclude": ["src/handlers", "src/validation"]
 }

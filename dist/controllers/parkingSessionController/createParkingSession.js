@@ -106,11 +106,11 @@ export const createParkingSession = async (req, res, next) => {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });
         }
         ;
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
-            return res.status(403).json({ message: "You do not have permission to access parking sessions. Please ensure you are a super admin user and try again. If you believe this is an error, please contact support." });
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
+            return res.status(403).json({ message: "You do not have permission to access parking sessions. Please ensure you are a super admin or admin user and try again. If you believe this is an error, please contact support." });
         }
         ;
-        const slot = await ParkingSlot.findByPk(slotId, { transaction: t });
+        const slot = await ParkingSlot.findByPk(slotId, { transaction: t, lock: t.LOCK.UPDATE });
         if (!slot) {
             return res.status(404).json({ message: "Parking slot with the specified ID not found. Please ensure the slot ID is correct." });
         }

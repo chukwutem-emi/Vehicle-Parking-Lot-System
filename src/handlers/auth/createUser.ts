@@ -58,13 +58,11 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
         };
 
         // check if email already exist.
-        console.log("Checking E-mail....")
         const checkEmail = await User.findOne({
             where: {
                 email: email
             }
         });
-        console.log("Email Checked.")
         if (checkEmail) {
             return {
                 statusCode: 409,
@@ -74,10 +72,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 })
             };
         };
-        console.log("Hashing Password....");
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log("Password Hashed");
-        console.log("Creating User....");
         await User.create({
             username: username,
             password: hashedPassword,

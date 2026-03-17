@@ -9,27 +9,53 @@ import { Op } from "sequelize";
  * Get all the available slots.
  */
 export const getAvailableSlot = async (req, res, next) => {
+    const limit = Number(req.query.limit) || 1;
+    const sort = req.query.sort || "createdAt";
+    const currentPage = Number(req.query.currentPage) || 1;
+    const offset = (currentPage - 1) * limit;
     try {
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) {
             return res.status(404).json({ message: "We couldn't find the current logged-In user." });
         }
         ;
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({ message: "Unauthorized request. Only Admin users can perform this type of request." });
         }
-        const availableSlots = await ParkingSlot.findAll({
+        let order = [["createdAt", "DESC"]];
+        if (typeof sort === "string") {
+            if (sort.startsWith("-")) {
+                order = [sort.substring(1), "DESC"];
+            }
+            else {
+                order = [sort, "ASC"];
+            }
+            ;
+        }
+        ;
+        const { count, rows } = await ParkingSlot.findAndCountAll({
             where: {
                 isAvailable: true,
                 availableCapacity: {
                     [Op.gt]: 0
                 }
-            }
+            },
+            offset: offset,
+            limit: limit,
+            order: order
         });
-        if (!availableSlots || availableSlots.length === 0) {
+        if (!rows || rows.length === 0) {
             return res.status(200).json({ message: "No available parking slots at the moment." });
         }
-        return res.status(200).json({ AvailableSlots: availableSlots });
+        return res.status(200).json({
+            data: rows,
+            pagination: {
+                currentPage,
+                limit,
+                total: count,
+                totalPage: Math.ceil(count / limit)
+            }
+        });
     }
     catch (err) {
         next(err);
@@ -72,7 +98,7 @@ export const getAvailableSlotWithId = async (req, res, next) => {
             }
         });
         if (!getWithVehicleTypeId) {
-            return res.status(200).json({ message: "No available parking slot found for the specified vehicle type. Please ensure the vehicle type ID is correct or check back later when more parking slots are available." });
+            return res.status(404).json({ message: "No available parking slot found for the specified vehicle type. Please ensure the vehicle type ID is correct or check back later when more parking slots are available." });
         }
         ;
         return res.status(200).json({ AvailableSlot: getWithVehicleTypeId });

@@ -1,5 +1,5 @@
 // Model
-import { User } from "../../models/user.js";
+import { User, userRole } from "../../models/user.js";
 // Utils
 import * as validation from "../../utils/validation.js";
 // Third-party module
@@ -87,7 +87,8 @@ export const createUser = async (req, res, next) => {
             password: hashedPassword,
             userAddress: userAddress,
             phone: phone,
-            email: email
+            email: email,
+            userRole: userRole.REGULAR
         });
         return res.status(201).json({ message: "User created successfully!" });
     }

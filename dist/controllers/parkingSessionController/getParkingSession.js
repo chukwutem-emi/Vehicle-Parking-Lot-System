@@ -13,8 +13,8 @@ export const getParkingSession = async (req, res, next) => {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });
         }
         ;
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
-            return res.status(403).json({ message: "You do not have permission to access this parking session. Please ensure you are an admin user and try again. If you believe this is an error, please contact support." });
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
+            return res.status(403).json({ message: "You do not have permission to access this parking session. Please ensure you are an admin or super user and try again. If you believe this is an error, please contact support." });
         }
         ;
         const parkingSession = await ParkingSession.findByPk(sessionId);

@@ -36,7 +36,7 @@ export const updateVehicleType = async (req, res, next) => {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in." });
         }
         ;
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.SUPER) {
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({ message: "Unauthorized request. Only Admins or Super Admins can update vehicle-type." });
         }
         ;
@@ -48,7 +48,7 @@ export const updateVehicleType = async (req, res, next) => {
         getVehicleById.vehicleName = newVehicleName;
         getVehicleById.hourlyRate = newHourlyRate;
         getVehicleById.updatedBy = currentUser.username;
-        getVehicleById.save();
+        await getVehicleById.save();
         return res.status(200).json({ message: "Vehicle-type updated successfully.", details: getVehicleById });
     }
     catch (err) {

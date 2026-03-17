@@ -31,7 +31,7 @@ export const createParkingSlot = async (req, res, next) => {
             return res.status(404).json({ message: "Current user not found." });
         }
         ;
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {
+        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({ message: "Unauthorized request. You do not have permission to create parking slots. Please contact your administrator if you think you should have access to this resource." });
         }
         ;

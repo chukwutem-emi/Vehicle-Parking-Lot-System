@@ -1,5 +1,5 @@
 // Model
-import { User } from "../../models/user.js";
+import { User, userRole } from "../../models/user.js";
 // Express types
 import type{Request, Response, NextFunction} from "express";
 // Utils
@@ -84,7 +84,8 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
             password: hashedPassword,
             userAddress: userAddress,
             phone: phone,
-            email: email
+            email: email,
+            userRole: userRole.REGULAR
         });
 
         return res.status(201).json({message: "User created successfully!"});
