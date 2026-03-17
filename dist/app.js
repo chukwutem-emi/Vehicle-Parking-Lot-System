@@ -55,8 +55,10 @@ Message.belongsTo(User, { foreignKey: 'sender_id' });
 User.hasMany(Message, { foreignKey: 'sender_id' });
 const server = () => {
     try {
-        const httpServer = app.listen(8080);
+        const PORT = process.env.PORT || 8080;
+        const httpServer = app.listen(PORT);
         socketIOServer(httpServer);
+        console.log(`Server running on: ${PORT}`);
     }
     catch (err) {
         console.log(err);

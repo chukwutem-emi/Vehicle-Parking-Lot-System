@@ -73,7 +73,7 @@ User.hasMany(Message, { foreignKey: 'sender_id' });
 
 const server = () => {
     try {
-        const PORT = process.env.PORT;
+        const PORT = process.env.PORT || 8080;
         const httpServer = app.listen(PORT);
         socketIOServer(httpServer);
         console.log(`Server running on: ${PORT}`);
