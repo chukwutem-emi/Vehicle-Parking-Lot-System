@@ -76,6 +76,7 @@ const server = () => {
         const PORT = process.env.PORT;
         const httpServer = app.listen(PORT);
         socketIOServer(httpServer);
+        console.log(`Server running on: ${PORT}`);
     } catch (err) {
         console.log(err)
     };
