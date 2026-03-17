@@ -4,7 +4,21 @@ import path from "path";
 
 
 
-const caPath = path.join(process.cwd(), "certificate/ca.pem");
+//const caPath = path.join(process.cwd(), "certificate/ca.pem");
+const lambdaCaPath = path.join(process.cwd(), "certificate/ca.pem");
+const renderCaPath = path.resolve(process.cwd(), "src/certificate/ca.pem");
+
+let sslCa: Buffer | string | undefined;
+
+if (fs.existsSync(lambdaCaPath)) {
+    sslCa = fs.readFileSync(lambdaCaPath);
+} else if (fs.existsSync(renderCaPath)) {
+    sslCa = fs.readFileSync(renderCaPath);
+} else if (process.env.CA_PEM) {
+    sslCa = Buffer.from(process.env.CA_PEM.replace("/\\n/g", "\n"));
+} else {
+    console.warn("[db_helpers] No SSL certificate found. MySQL connection will be unencrypted!")
+}
 
 const sequelize = new Sequelize(
     process.env.DB_NAME as string,
@@ -18,12 +32,12 @@ const sequelize = new Sequelize(
             freezeTableName: true,
             underscored: true
         } as any,
-        dialectOptions: {
+        dialectOptions: sslCa ? {
             ssl: {
-                ca: fs.readFileSync(caPath),
+                ca: sslCa,
                 rejectUnauthorized: true
             }
-        },
+        }: {},
         logging: false,
         pool: {
             max: 5,
