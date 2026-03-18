@@ -1,17 +1,24 @@
-// Models
+import { initModels } from "../../models/index.js";
 import {UserDevices} from "../../models/user-devices.js";
 import { User, userRole } from "../../models/user.js";
-// Express types imports
 import type {Request, Response, NextFunction} from "express";
+
+
+
 
 const convertUTCToLocal = (utcDate: string | Date, timeZone="Africa/Lagos") => {
     return new Date(utcDate).toLocaleString("en-Us", {timeZone: timeZone, hour12: true});
 };
 
+const sequelize = initModels();
 export const getLoggedInUserDevice = async (req: Request, res: Response, next: NextFunction) => {
     const userId: number = Number(req.params.userId);
 
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         if (isNaN(userId)) {
             return res.status(400).json({message: "User ID must be a number."});
         };
@@ -36,8 +43,13 @@ export const getLoggedInUserDevice = async (req: Request, res: Response, next: N
     }
 };
 
+
 export const getAllLoggedInUserDevices = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."});

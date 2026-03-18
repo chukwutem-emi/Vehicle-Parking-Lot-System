@@ -1,15 +1,14 @@
-// Models
 import { ParkingSlot } from "../../models/parking-slots.js";
 import { User, userRole } from "../../models/user.js";
-// Express types
 import type { Request, Response, NextFunction } from "express";
-// Utils
 import * as validation from "../../utils/validation.js";
-// Third-party module
 import {Op} from "sequelize";
+import { initModels } from "../../models/index.js";
 
 
 
+
+const sequelize = initModels();
 /**
  * Get all the available slots.
  */
@@ -19,6 +18,10 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
     const currentPage = Number(req.query.currentPage) || 1;
     const offset = (currentPage - 1) * limit;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) {
             return res.status(404).json({message: "We couldn't find the current logged-In user."});

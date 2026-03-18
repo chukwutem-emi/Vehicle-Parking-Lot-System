@@ -1,5 +1,4 @@
-import sequelize from "../utils/db_helpers.js";
-import { DataTypes, Model} from "sequelize";
+import { DataTypes, Model, Sequelize} from "sequelize";
 
 
 interface VehicleTypeAttribute {
@@ -18,38 +17,40 @@ export class VehicleType extends Model<VehicleTypeAttribute> implements VehicleT
     createdAt?: Date;
     updatedAt?: Date
 }
-VehicleType.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
+export const initVehicleTypeModel = (sequelize: Sequelize) => {
+    if (VehicleType.sequelize) return;
+    VehicleType.init(
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+            },
+            vehicleName: {
+                type: DataTypes.STRING(100),
+                allowNull: false,
+                unique: true
+            },
+            hourlyRate: {
+                type: DataTypes.DECIMAL(10, 2),
+                allowNull: false
+            },
+            updatedBy: {
+                type: DataTypes.STRING(100),
+                allowNull: true
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW
+            }
         },
-        vehicleName: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true
-        },
-        hourlyRate: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: false
-        },
-        updatedBy: {
-            type: DataTypes.STRING(100),
-            allowNull: true
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+        {
+            sequelize,
+            modelName: "vehicle_type"
         }
-    },
-    {
-        sequelize,
-        modelName: "vehicle_type"
-    }
-);
-export default VehicleType;
+    );
+};

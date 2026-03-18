@@ -1,16 +1,20 @@
-// Express types
 import type{Response, Request, NextFunction} from "express";
-// Utils
 import * as validation from "../../utils/validation.js";
-// Models
-import VehicleType from "../../models/vehicle-types.js";
+import {VehicleType} from "../../models/vehicle-types.js";
 import {User, userRole} from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
+
+const sequelize = initModels();
 export const uploadVehicleType = async (req: Request, res: Response, next: NextFunction) => {
     const vehicleName : string = req.body.vehicleName;
     const hourlyRate  : number = req.body.hourlyRate;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const vehicleNameInput: validation.ValidateAble = {
             value         : vehicleName,
             required      : true,

@@ -1,17 +1,13 @@
-// Node / Third-party modules
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {UAParser} from "ua-parser-js";
 import geoIp from "geoip-lite";
-import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda"
-// Models
-import {connectDB, User, UserDevices} from "../model/index.js";
-// Utils
+import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
+import {User, UserDevices} from "../model/index.js";
 import { sendMail } from "../../utils/send-mail.js";
-// Login input validation import
 import {loginInputValidation} from "../validation/loginInputs.js";
-// Utils-CORS import 
 import {corsHeaders} from "../corsHeaders.js";
+import { initModels } from "../../models/index.js";
 
 
 
@@ -21,10 +17,12 @@ interface UserAttributes {
     password: string;
 };
 
+const sequelize = initModels();
 export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

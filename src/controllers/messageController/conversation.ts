@@ -1,12 +1,18 @@
 import {Conversation} from "../../models/conversation.js";
 import type {Request, Response, NextFunction} from "express"
 import { User } from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const getConversationId = async (req: Request, res: Response, next: NextFunction) => {
     const type: string = "admin_global";
 
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) return;
         if (!currentUser.isAdmin) return;

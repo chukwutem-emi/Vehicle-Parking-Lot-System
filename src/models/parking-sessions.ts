@@ -1,5 +1,4 @@
-import sequelize from "../utils/db_helpers.js";
-import { DataTypes, Model, type Optional } from "sequelize";
+import { DataTypes, Model, Sequelize, type Optional } from "sequelize";
 
 
 type Status = {
@@ -48,83 +47,86 @@ export class ParkingSession extends Model<ParkingSessionAttribute, ParkingSessio
     public slotId!                       : number;
     public vehicleTypeId!                : number;
 };
-ParkingSession.init(
-    {
-        id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-        },
-        vehicleNumber: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            unique: true
-        },
-        vehicleOwnerPhone: {
-            type: DataTypes.STRING(12),
-            allowNull: false,
-            unique: true
-        },
-        vehicleOwnerAddress: {
-            type: DataTypes.STRING(200),
-            allowNull: false
-        },
-        vehicleOwnerNextOfKin: {
-            type: DataTypes.STRING(100),
-            allowNull: false
-        },
-        vehicleOwnerNextOfKinPhone: {
-            type: DataTypes.STRING(12),
-            allowNull: false,
-            unique: true
-        },
-        vehicleOwnerNextOfKinAddress: {
-            type: DataTypes.STRING(200),
-            allowNull: false
-        },
-        isCleared: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
-        entryTime: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
-        },
-        exitTime: {
-            type: DataTypes.DATE,
-            allowNull: true
-        },
-        parkingStatus: {
-            type: DataTypes.STRING(20),
-            defaultValue: parkingStatus.ACTIVE
-        },
-        totalAmount: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: true
-        },
-        slotId: {
+export const initParkingSessionModel = (sequelize: Sequelize) => {
+    if (ParkingSession.sequelize) return;
+    ParkingSession.init(
+        {
+            id: {
             type: DataTypes.INTEGER,
-            references: {
-                model: "parking_slot",
-                key: "id"
+            autoIncrement: true,
+            primaryKey: true
             },
-            allowNull: false,
-            onDelete: "RESTRICT",
-            onUpdate: "CASCADE"
+            vehicleNumber: {
+                type: DataTypes.STRING(50),
+                allowNull: false,
+                unique: true
+            },
+            vehicleOwnerPhone: {
+                type: DataTypes.STRING(12),
+                allowNull: false,
+                unique: true
+            },
+            vehicleOwnerAddress: {
+                type: DataTypes.STRING(200),
+                allowNull: false
+            },
+            vehicleOwnerNextOfKin: {
+                type: DataTypes.STRING(100),
+                allowNull: false
+            },
+            vehicleOwnerNextOfKinPhone: {
+                type: DataTypes.STRING(12),
+                allowNull: false,
+                unique: true
+            },
+            vehicleOwnerNextOfKinAddress: {
+                type: DataTypes.STRING(200),
+                allowNull: false
+            },
+            isCleared: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            entryTime: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW
+            },
+            exitTime: {
+                type: DataTypes.DATE,
+                allowNull: true
+            },
+            parkingStatus: {
+                type: DataTypes.STRING(20),
+                defaultValue: parkingStatus.ACTIVE
+            },
+            totalAmount: {
+                type: DataTypes.DECIMAL(10, 2),
+                allowNull: true
+            },
+            slotId: {
+                type: DataTypes.INTEGER,
+                references: {
+                    model: "parking_slot",
+                    key: "id"
+                },
+                allowNull: false,
+                onDelete: "RESTRICT",
+                onUpdate: "CASCADE"
+            },
+            vehicleTypeId: {
+                type: DataTypes.INTEGER,
+                references: {
+                    model: "vehicle_type",
+                    key: "id",
+                },
+                allowNull: false,
+                onDelete: "RESTRICT",
+                onUpdate: "CASCADE"
+            }
         },
-        vehicleTypeId: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: "vehicle_type",
-                key: "id",
-            },
-            allowNull: false,
-            onDelete: "RESTRICT",
-            onUpdate: "CASCADE"
+        {
+            sequelize,
+            modelName: "parking_session"
         }
-    },
-    {
-        sequelize,
-        modelName: "parking_session"
-    }
-);
+    );
+};

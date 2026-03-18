@@ -1,12 +1,11 @@
-// Express types
 import type{Request, Response, NextFunction} from "express";
-// Models
 import {User} from "../../models/user.js";
-//  Utils
 import * as validation from "../../utils/validation.js";
 import {sendMail} from "../../utils/send-mail.js";
+import { initModels } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const updateUserDetails = async (req: Request, res: Response, next: NextFunction) => {
     const username        : string = req.body.username;
     const password        : string = req.body.password;
@@ -18,6 +17,10 @@ export const updateUserDetails = async (req: Request, res: Response, next: NextF
     const currentUser              = req.userId;
 
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         if (confirmPassword !== password) {
             return res.status(400).json({confirmPasswordErr: "Password and confirm password do not match. Please ensure both passwords are the same."});
         };

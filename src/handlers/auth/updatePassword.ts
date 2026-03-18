@@ -1,14 +1,10 @@
-// Models
-import {User, connectDB} from "../model/index.js";
-//Third-party module
+import {User} from "../model/index.js";
 import type {APIGatewayProxyResult} from "aws-lambda";
-// Utils import 
 import {corsHeaders} from "../corsHeaders.js";
 import {updatePasswordInputValidation} from "../validation/resetPasswordInput.js";
-// Node / Third-party modules
 import bcrypt from "bcryptjs";
-//lambdaAuth import
 import {type AuthenticatedEvent} from "../lambdaAuth.js";
+import { initModels } from "../../models/index.js";
 
 
 
@@ -18,10 +14,12 @@ interface UserAttribute {
     confirmPassword: string
 };
 
+const sequelize = initModels();
 export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<APIGatewayProxyResult> => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

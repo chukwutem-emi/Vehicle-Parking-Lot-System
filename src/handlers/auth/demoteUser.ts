@@ -1,18 +1,17 @@
-// Models
-import {User, connectDB} from "../model/index.js";
+import {User} from "../model/index.js";
 import {userRole} from "../../models/user.js";
-// Auth Wrapper import
 import {withAuth} from "../lambdaAuth.js";
-// Utils-CORS import 
 import {corsHeaders} from "../corsHeaders.js";
+import { initModels } from "../../models/index.js";
 
 
 
-
+const sequelize = initModels();
 export const demoteUserHandler = withAuth( async (event, _context) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

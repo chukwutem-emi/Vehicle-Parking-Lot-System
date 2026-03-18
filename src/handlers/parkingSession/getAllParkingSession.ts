@@ -1,14 +1,16 @@
-import {connectDB, ParkingSession, User} from "../model/index.js";
+import {ParkingSession, User} from "../model/index.js";
 import {userRole} from "../../models/user.js";
 import { withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
+import { initModels } from "../../models/index.js";
 
 
-
+const sequelize = initModels();
 export const getAllParkingSessionHandler = withAuth( async (event, _context) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         const limit = Number(event.queryStringParameters?.limit) || 1;
         const currentPage = Number(event.queryStringParameters?.currentPage) || 1;

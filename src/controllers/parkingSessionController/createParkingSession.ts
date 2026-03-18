@@ -1,16 +1,16 @@
-// Express types
 import type { Request, Response, NextFunction } from "express";
-// Models
 import {ParkingSession} from "../../models/parking-sessions.js"
 import { ParkingSlot } from "../../models/parking-slots.js";
 import { VehicleType } from "../../models/vehicle-types.js";
-// Utils
 import * as validation from "../../utils/validation.js";
-import sequelize from "../../utils/db_helpers.js";
 import { User, userRole } from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
 
+
+
+const sequelize = initModels()
 /**
  *  Assigning a vehicle and reducing the capacity. When a vehicle parks, I  decrees the capacity.
  */
@@ -26,6 +26,10 @@ export const createParkingSession = async (req: Request, res: Response, next: Ne
 
     const t = await sequelize.transaction();
     try{
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const slotIdInput: validation.ValidateAble = {
             value: slotId,
             required: true,

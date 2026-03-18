@@ -1,9 +1,9 @@
 import {createParkingSlotInputsValidation} from "../validation/createParkingSlotInputs.js";
 import {withAuth} from "../lambdaAuth.js";
-import {ParkingSlot, User, connectDB} from "../model/index.js";
+import {ParkingSlot, User} from "../model/index.js";
 import {userRole} from "../../models/user.js";
 import { corsHeaders } from "../corsHeaders.js";
-
+import {initModels} from "../../models/index.js";
 
 
 interface ParkingSlotAttributes {
@@ -13,11 +13,12 @@ interface ParkingSlotAttributes {
 
 
 
-
+const sequelize = initModels();
 export const createParkingSlotHandler = withAuth( async (event, _context) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

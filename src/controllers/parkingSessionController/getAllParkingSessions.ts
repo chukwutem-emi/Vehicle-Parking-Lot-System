@@ -1,11 +1,10 @@
-// Model
+import { initModels } from '../../models/index.js';
 import { ParkingSession } from '../../models/parking-sessions.js';
 import { User, userRole } from '../../models/user.js';
-// Express types
 import type { Request, Response, NextFunction } from 'express';
 
 
-
+const sequelize = initModels();
 export const getAllParkingSessions = async (req: Request, res: Response, next: NextFunction) => {
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
@@ -13,6 +12,10 @@ export const getAllParkingSessions = async (req: Request, res: Response, next: N
     const offset = (currentPage - 1) * limit;
     const vehicleTypeId = Number(req.query.vehicleTypeId);
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (!currentUser) {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });

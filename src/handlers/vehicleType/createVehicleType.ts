@@ -1,8 +1,9 @@
 import {vehicleTypeInputsValidation} from "../validation/createVehicleTypeInput.js";
-import {VehicleType, connectDB, User} from "../model/index.js";
+import {VehicleType, User} from "../model/index.js";
 import {withAuth} from "../lambdaAuth.js"
 import {corsHeaders} from "../corsHeaders.js";
 import {userRole} from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
 
@@ -13,10 +14,12 @@ interface VehicleTypeAttribute {
 };
 
 
+const sequelize = initModels();
 export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

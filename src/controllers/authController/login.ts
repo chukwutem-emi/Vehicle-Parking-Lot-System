@@ -1,23 +1,25 @@
-// Node / Third-party modules
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {UAParser} from "ua-parser-js";
 import geoIp from "geoip-lite";
-// Express types
 import type{Response, Request, NextFunction} from "express";
-// Models
 import {User} from "../../models/user.js"
 import {UserDevices} from "../../models/user-devices.js";
-// Utils
 import * as validation from "../../utils/validation.js";
 import { sendMail } from "../../utils/send-mail.js";
+import { initModels } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     const email                : string = req.body.email;
     const password             : string = req.body.password;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const passwordInput: validation.ValidateAble = {
             value                        : password,
             required                     : true,

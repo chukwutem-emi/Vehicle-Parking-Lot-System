@@ -1,5 +1,4 @@
-import sequelize from "../utils/db_helpers.js";
-import { DataTypes, Model, type Optional } from "sequelize";
+import { DataTypes, Model, Sequelize, type Optional } from "sequelize";
 
 
 interface ParkingSlotAttributes {
@@ -23,51 +22,54 @@ export class ParkingSlot extends Model<ParkingSlotAttributes, ParkingSlotCreatio
     public updatedBy?: string;
     public vehicleTypeId?: number;
 }
-ParkingSlot.init(
-    {
-        id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-        },
-        slotCode: {
-            type: DataTypes.STRING(10),
-            allowNull: false,
-            unique: true
-        },
-        isAvailable: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: true
-        },
-        maximumCapacity: {
+export const initParkingSlotModel = (sequelize: Sequelize) => {
+    if (ParkingSlot.sequelize) return;
+    ParkingSlot.init(
+        {
+            id: {
             type: DataTypes.INTEGER,
-            defaultValue: 10
-        },
-        availableCapacity: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            defaultValue: 10
-        },
-        updatedBy: {
-            type: DataTypes.STRING(100),
-            allowNull: true
-        },
-        vehicleTypeId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: { 
-                model: "vehicle_type",
-                key: "id"
+            primaryKey: true,
+            autoIncrement: true
             },
-            onDelete: "RESTRICT",
-            onUpdate: "CASCADE"
+            slotCode: {
+                type: DataTypes.STRING(10),
+                allowNull: false,
+                unique: true
+            },
+            isAvailable: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true
+            },
+            maximumCapacity: {
+                type: DataTypes.INTEGER,
+                defaultValue: 10
+            },
+            availableCapacity: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                defaultValue: 10
+            },
+            updatedBy: {
+                type: DataTypes.STRING(100),
+                allowNull: true
+            },
+            vehicleTypeId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: { 
+                    model: "vehicle_type",
+                    key: "id"
+                },
+                onDelete: "RESTRICT",
+                onUpdate: "CASCADE"
+            }
+        },
+        {
+            sequelize,
+            modelName: "parking_slot"
         }
-    },
-    {
-        sequelize,
-        modelName: "parking_slot"
-    }
-);
+    );
+};
 ParkingSlot.beforeCreate((slot) => {
     if (slot.availableCapacity == null) {
         slot.availableCapacity = slot.maximumCapacity

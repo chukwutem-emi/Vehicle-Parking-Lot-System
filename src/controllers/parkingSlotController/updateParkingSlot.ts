@@ -1,18 +1,22 @@
-// Model
 import {User, userRole} from "../../models/user.js";
 import {ParkingSlot} from "../../models/parking-slots.js"; 
-// Express types
 import type {Request, Response, NextFunction} from "express";
-// Utils
 import * as validation from "../../utils/validation.js";
+import { initModels } from "../../models/index.js";
 
 
+
+const sequelize = initModels();
 export const updateParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
     const vehicleTypeId: number = Number(req.params.vehicleTypeId);
     const maximumCapacity: number = req.body.maximumCapacity;
     const availableCapacity: number = req.body.availableCapacity;
     const slotCode: string = req.body.slotCode;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         if (isNaN(vehicleTypeId) || vehicleTypeId <= 0) {
             return res.status(400).json({message: "Invalid vehicleTypeId. It must be a positive integer."});
         };

@@ -1,13 +1,9 @@
-// Models
-import {User, connectDB} from "../model/index.js"
-// Utils
+import {User} from "../model/index.js";
 import {sendMail} from "../../utils/send-mail.js";
-// LambdaAuth import
 import { withAuth } from "../lambdaAuth.js";
-// update userDetails input validation import
 import {updateUserInputValidation} from "../validation/updateUserDetailsInput.js";
-// Utils-CORS import 
 import {corsHeaders} from "../corsHeaders.js";
+import { initModels } from "../../models/index.js";
 
 
 
@@ -22,10 +18,12 @@ interface UpdateUserDetailsAttributes {
 };
 
 
+const sequelize = initModels();
 export const updateUserDetailsHandler = withAuth( async (event, _context) => {
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
@@ -73,7 +71,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 })
             };
         }
-        const currentUser = event.requestContext.authorizer?.userId;
+        const currentUser = event.userId;
         if (!currentUser) {
             return {
                 statusCode: 401,

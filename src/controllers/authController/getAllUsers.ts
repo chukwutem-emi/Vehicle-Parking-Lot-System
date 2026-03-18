@@ -1,9 +1,9 @@
-// Express types
 import type{Request, Response, NextFunction} from "express";
-// Model
 import {User, userRole} from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     const currentPage = Number(req.query.currentPage) || 1;
     const limit = Number(req.query.limit) || 1;
@@ -12,6 +12,10 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
     const sort = req.query.sort || "createdAt"
     const currentUser = req.userId;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const getUser = await User.findByPk(currentUser);
         if (!getUser) {
             return res.status(404).json({message: "We could not find the current logged-in user. Please ensure you are logged in."});

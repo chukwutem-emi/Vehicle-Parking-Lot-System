@@ -1,15 +1,18 @@
-// Models
+import { initModels } from "../../models/index.js";
 import { ParkingSession } from "../../models/parking-sessions.js";
 import { User, userRole } from "../../models/user.js";
-// Express types
 import type { Request, Response, NextFunction } from "express";
 
 
-
+const sequelize = initModels();
 export const getParkingSession = async (req: Request, res: Response, next: NextFunction) => {
     const sessionId : number = Number(req.params.sessionId);
 
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         if (isNaN(sessionId)) {
             return res.status(400).json({message: "Invalid session ID. Session ID must be a number."});
         };

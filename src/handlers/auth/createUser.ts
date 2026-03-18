@@ -1,13 +1,10 @@
-// Model
-import {connectDB, User} from "../model/index.js";
-// Third-party module
+import {User} from "../model/index.js";
 import bcrypt from "bcryptjs";
 import type {APIGatewayProxyEvent, APIGatewayProxyResult, Context} from "aws-lambda";
-// Utils
 import {corsHeaders} from "../corsHeaders.js";
-// CreateUser input validation import
 import {createUserInputValidation} from "../validation/createUserInputs.js";
 import { userRole } from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
 
@@ -20,12 +17,13 @@ interface CreateUserBody {
   phone: string;
 };
 
-
+const sequelize = initModels();
 export const createUserHandler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
     context.callbackWaitsForEmptyEventLoop = false;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
-        await connectDB();
+        await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {

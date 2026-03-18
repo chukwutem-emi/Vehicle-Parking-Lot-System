@@ -1,17 +1,20 @@
-// Express types
 import type{Response, Request, NextFunction} from "express";
-// Utils
 import * as validation from "../../utils/validation.js";
-// Models
-import VehicleType from "../../models/vehicle-types.js";
+import {VehicleType} from "../../models/vehicle-types.js";
 import {User, userRole} from "../../models/user.js";
+import { initModels } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const updateVehicleType = async (req: Request, res: Response, next: NextFunction) => {
     const vehicleId      : number = Number(req.params.vehicleId);
     const newVehicleName : string = req.body.newVehicleName;
     const newHourlyRate  : number = req.body.newHourlyRate;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const vehicleNameInput: validation.ValidateAble = {
             value         : newVehicleName,
             required      : true,
@@ -49,6 +52,7 @@ export const updateVehicleType = async (req: Request, res: Response, next: NextF
         getVehicleById.updatedBy   = currentUser.username;
         
         await getVehicleById.save();
+        
         return res.status(200).json({message: "Vehicle-type updated successfully.", details: getVehicleById});
     } catch (err: any) {
         next(err);

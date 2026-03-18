@@ -1,12 +1,11 @@
-// Model
 import { User, userRole } from "../../models/user.js";
-// Express types
 import type{Request, Response, NextFunction} from "express";
-// Utils
 import * as validation from "../../utils/validation.js";
-// Third-party module
 import bcrypt from "bcryptjs";
+import { initModels } from "../../models/index.js";
 
+
+const sequelize = initModels();
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const username        : string = req.body.username;
     const password        : string = req.body.password;
@@ -15,6 +14,10 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     const phone           : string = req.body.phone;
     const confirmPassword : string = req.body.confirmPassword;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         if (confirmPassword !== password) {
             return res.status(400).json({confirmPasswordErr: "Password and confirm password do not match. Please ensure both passwords are the same."});
         };

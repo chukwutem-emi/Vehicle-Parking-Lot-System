@@ -1,16 +1,19 @@
-// Model
+import { initModels } from "../../models/index.js";
 import {ParkingSlot} from "../../models/parking-slots.js";
 import { User, userRole } from "../../models/user.js";
-// Utils
 import * as validation from "../../utils/validation.js";
-// Express types
 import type{Request, Response, NextFunction} from "express";
 
 
+const sequelize = initModels();
 export const createParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
     const slotCode: string = req.body.slotCode;
     const vehicleTypeId: number = req.body.vehicleTypeId;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const slotCodeInput: validation.ValidateAble = {
             value: slotCode,
             required: true,

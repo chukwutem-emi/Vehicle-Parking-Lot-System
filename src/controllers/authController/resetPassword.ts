@@ -1,18 +1,20 @@
-// Express types
 import type{Request, Response, NextFunction} from "express";
-// Model
 import {User} from "../../models/user.js";
-// Node / Third-party modules
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-// Utils
 import {sendMail} from "../../utils/send-mail.js";
 import * as validation from "../../utils/validation.js";
+import { initModels } from "../../models/index.js";
 
 
+const sequelize = initModels()
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     const email: string = req.body.email;
     try {
+        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database..........");
+        await sequelize.authenticate();
+        console.log("Database connected!");
         const emailInput: validation.ValidateAble = {
             value         : email,
             required      : true,
