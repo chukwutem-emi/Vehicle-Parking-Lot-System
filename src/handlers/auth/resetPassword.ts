@@ -1,10 +1,9 @@
-import {User} from "../model/index.js";
 import type {APIGatewayProxyResult, APIGatewayProxyEvent} from "aws-lambda";
 import {corsHeaders} from "../corsHeaders.js";
 import {resetPasswordInputValidation} from "../validation/resetPasswordInput.js";
 import crypto from "crypto";
 import {sendMail} from "../../utils/send-mail.js";
-import { initModels } from "../../models/index.js";
+import { initModels, User } from "../../models/index.js";
 
 
 
@@ -13,8 +12,8 @@ interface UserAttribute {
     email: string;
 };
 
-const sequelize = initModels();
 export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

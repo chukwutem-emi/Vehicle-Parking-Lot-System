@@ -1,4 +1,4 @@
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 import {UserDevices} from "../../models/user-devices.js";
 import { User, userRole } from "../../models/user.js";
 import type {Request, Response, NextFunction} from "express";
@@ -10,8 +10,8 @@ const convertUTCToLocal = (utcDate: string | Date, timeZone="Africa/Lagos") => {
     return new Date(utcDate).toLocaleString("en-Us", {timeZone: timeZone, hour12: true});
 };
 
-const sequelize = initModels();
 export const getLoggedInUserDevice = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const userId: number = Number(req.params.userId);
 
     try {
@@ -45,6 +45,7 @@ export const getLoggedInUserDevice = async (req: Request, res: Response, next: N
 
 
 export const getAllLoggedInUserDevices = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database..........");

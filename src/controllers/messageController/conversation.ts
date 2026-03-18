@@ -1,11 +1,11 @@
 import {Conversation} from "../../models/conversation.js";
 import type {Request, Response, NextFunction} from "express"
 import { User } from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels();
 export const getConversationId = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const type: string = "admin_global";
 
     try {

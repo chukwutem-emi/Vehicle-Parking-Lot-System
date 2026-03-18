@@ -3,16 +3,16 @@ import { User, userRole } from "../../models/user.js";
 import type { Request, Response, NextFunction } from "express";
 import * as validation from "../../utils/validation.js";
 import {Op} from "sequelize";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
 
-const sequelize = initModels();
 /**
  * Get all the available slots.
- */
+*/
 export const getAvailableSlot = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
     const currentPage = Number(req.query.currentPage) || 1;
@@ -70,7 +70,9 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
  */
 export const getAvailableSlotWithId = async (req: Request, res: Response, next: NextFunction) => {
     const vehicleTypeId: number = Number(req.params.vehicleTypeId);
+    const sequelize = initModels();
     try {
+        await sequelize.authenticate();
         if (isNaN(vehicleTypeId)) {
             return res.status(400).json({message: "VehicleTypeId has to be a number."});
         }

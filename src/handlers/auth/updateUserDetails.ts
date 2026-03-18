@@ -1,9 +1,8 @@
-import {User} from "../model/index.js";
 import {sendMail} from "../../utils/send-mail.js";
 import { withAuth } from "../lambdaAuth.js";
 import {updateUserInputValidation} from "../validation/updateUserDetailsInput.js";
 import {corsHeaders} from "../corsHeaders.js";
-import { initModels } from "../../models/index.js";
+import { initModels, User } from "../../models/index.js";
 
 
 
@@ -18,8 +17,8 @@ interface UpdateUserDetailsAttributes {
 };
 
 
-const sequelize = initModels();
 export const updateUserDetailsHandler = withAuth( async (event, _context) => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

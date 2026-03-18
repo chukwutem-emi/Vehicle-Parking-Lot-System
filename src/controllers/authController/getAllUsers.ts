@@ -1,10 +1,10 @@
 import type{Request, Response, NextFunction} from "express";
 import {User, userRole} from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels();
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const currentPage = Number(req.query.currentPage) || 1;
     const limit = Number(req.query.limit) || 1;
     const offset = (currentPage - 1) * limit;

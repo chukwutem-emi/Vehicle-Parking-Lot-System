@@ -1,9 +1,8 @@
-import {User, ParkingSlot} from "../model/index.js";
 import {userRole} from "../../models/user.js";
 import {withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import {updateParkingSlotInputsValidation} from "../validation/updateParkingSlotInput.js";
-import { initModels } from "../../models/index.js";
+import { initModels, ParkingSlot, User } from "../../models/index.js";
 
 
 
@@ -15,8 +14,8 @@ interface ParkingSlotAttributes {
 
 
 
-const sequelize = initModels()
 export const updateParkingSlotHandler = withAuth( async (event, _context) => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

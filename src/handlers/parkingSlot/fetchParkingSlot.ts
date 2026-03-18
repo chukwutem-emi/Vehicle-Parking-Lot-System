@@ -1,14 +1,13 @@
-import {User, ParkingSlot} from "../model/index.js";
 import {userRole} from "../../models/user.js";
 import {Op} from "sequelize";
 import {withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
-import { initModels } from "../../models/index.js";
+import { initModels, ParkingSlot, User } from "../../models/index.js";
 
 
-const sequelize = initModels();
 
 export const getAvailableSlotHandler = withAuth( async (event, _context) => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

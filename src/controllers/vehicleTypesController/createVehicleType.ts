@@ -2,12 +2,12 @@ import type{Response, Request, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
 import {VehicleType} from "../../models/vehicle-types.js";
 import {User, userRole} from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
-const sequelize = initModels();
 export const uploadVehicleType = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const vehicleName : string = req.body.vehicleName;
     const hourlyRate  : number = req.body.hourlyRate;
     try {

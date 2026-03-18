@@ -2,11 +2,11 @@ import type{Request, Response, NextFunction} from "express";
 import {User} from "../../models/user.js";
 import * as validation from "../../utils/validation.js";
 import {sendMail} from "../../utils/send-mail.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels();
 export const updateUserDetails = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const username        : string = req.body.username;
     const password        : string = req.body.password;
     const userAddress     : string = req.body.userAddress;

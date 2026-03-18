@@ -7,12 +7,12 @@ import {User} from "../../models/user.js"
 import {UserDevices} from "../../models/user-devices.js";
 import * as validation from "../../utils/validation.js";
 import { sendMail } from "../../utils/send-mail.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
-const sequelize = initModels();
 export const login = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const email                : string = req.body.email;
     const password             : string = req.body.password;
     try {

@@ -1,12 +1,12 @@
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 import {ParkingSlot} from "../../models/parking-slots.js";
 import { User, userRole } from "../../models/user.js";
 import * as validation from "../../utils/validation.js";
 import type{Request, Response, NextFunction} from "express";
 
 
-const sequelize = initModels();
 export const createParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const slotCode: string = req.body.slotCode;
     const vehicleTypeId: number = req.body.vehicleTypeId;
     try {

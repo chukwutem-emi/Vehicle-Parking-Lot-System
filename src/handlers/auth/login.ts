@@ -3,11 +3,10 @@ import bcrypt from "bcryptjs";
 import {UAParser} from "ua-parser-js";
 import geoIp from "geoip-lite";
 import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
-import {User, UserDevices} from "../model/index.js";
 import { sendMail } from "../../utils/send-mail.js";
 import {loginInputValidation} from "../validation/loginInputs.js";
 import {corsHeaders} from "../corsHeaders.js";
-import { initModels } from "../../models/index.js";
+import { initModels, User, UserDevices } from "../../models/index.js";
 
 
 
@@ -17,8 +16,8 @@ interface UserAttributes {
     password: string;
 };
 
-const sequelize = initModels();
 export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

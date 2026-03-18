@@ -1,11 +1,11 @@
-import { initModels } from '../../models/index.js';
+import { initModels } from "../../models/controllersInitModels.js";
 import { ParkingSession } from '../../models/parking-sessions.js';
 import { User, userRole } from '../../models/user.js';
 import type { Request, Response, NextFunction } from 'express';
 
 
-const sequelize = initModels();
 export const getAllParkingSessions = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
     const currentPage = Number(req.query.currentPage) || 1;

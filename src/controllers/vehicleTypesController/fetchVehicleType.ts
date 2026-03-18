@@ -2,15 +2,15 @@ import type{Response, Request, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
 import {VehicleType} from "../../models/vehicle-types.js";
 import {User, userRole} from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
-const sequelize = initModels();
 /**
  * Fetch vehicle-types by their name.
- */
+*/
 export const getVehicleByName = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const vehicleName: string = req.body.vehicleName;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -50,6 +50,7 @@ export const getVehicleByName = async (req: Request, res: Response, next: NextFu
  * Fetch all vehicle-types. 
  */
 export const getAllVehicles = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
     const currentPage = Number(req.query.currentPage) || 1;

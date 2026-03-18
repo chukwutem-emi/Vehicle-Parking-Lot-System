@@ -1,10 +1,9 @@
-import {ParkingSession, User, VehicleType, ParkingSlot} from "../model/index.js";
 import {userRole} from "../../models/user.js";
 import {withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import {vehicleExitTimeInputValidation} from "../validation/vehicleExitTimeInput.js";
 import { parkingStatus } from "../../models/parking-sessions.js";
-import { initModels } from "../../models/index.js";
+import { initModels, ParkingSession, User, VehicleType, ParkingSlot } from "../../models/index.js";
 
 
 
@@ -14,8 +13,8 @@ interface VehicleAttributes {
 };
 
 
-const sequelize = initModels();
 export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
+    const sequelize = initModels();
     const trans = await sequelize.transaction()
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");

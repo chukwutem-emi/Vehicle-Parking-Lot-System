@@ -4,11 +4,11 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import {sendMail} from "../../utils/send-mail.js";
 import * as validation from "../../utils/validation.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels()
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const email: string = req.body.email;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");

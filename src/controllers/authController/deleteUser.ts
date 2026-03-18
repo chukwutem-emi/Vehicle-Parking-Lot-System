@@ -1,11 +1,11 @@
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 import {User, userRole} from "../../models/user.js";
 import type{ Request, Response, NextFunction} from "express";
 
 
-const sequelize = initModels();
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const userId: number = Number(req.params.userId);
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");

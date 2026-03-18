@@ -2,11 +2,11 @@ import type{Response, Request, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
 import {VehicleType} from "../../models/vehicle-types.js";
 import {User, userRole} from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels();
 export const updateVehicleType = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const vehicleId      : number = Number(req.params.vehicleId);
     const newVehicleName : string = req.body.newVehicleName;
     const newHourlyRate  : number = req.body.newHourlyRate;

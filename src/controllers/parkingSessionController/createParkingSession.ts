@@ -4,17 +4,17 @@ import { ParkingSlot } from "../../models/parking-slots.js";
 import { VehicleType } from "../../models/vehicle-types.js";
 import * as validation from "../../utils/validation.js";
 import { User, userRole } from "../../models/user.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
 
 
-const sequelize = initModels()
 /**
  *  Assigning a vehicle and reducing the capacity. When a vehicle parks, I  decrees the capacity.
- */
+*/
 export const createParkingSession = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const slotId                       : number = req.body.slotId;
     const vehicleId                    : number = req.body.vehicleId;
     const vehicleNumber                : string = req.body.vehicleNumber;

@@ -2,12 +2,12 @@ import {User, userRole} from "../../models/user.js";
 import {ParkingSlot} from "../../models/parking-slots.js"; 
 import type {Request, Response, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
 
-const sequelize = initModels();
 export const updateParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const vehicleTypeId: number = Number(req.params.vehicleTypeId);
     const maximumCapacity: number = req.body.maximumCapacity;
     const availableCapacity: number = req.body.availableCapacity;

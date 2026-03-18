@@ -6,11 +6,11 @@ import { ParkingSlot } from "../../models/parking-slots.js";
 import {VehicleType} from "../../models/vehicle-types.js";
 import { User, userRole } from "../../models/user.js";
 import * as validation from "../../utils/validation.js";
-import { initModels } from "../../models/index.js";
+import { initModels } from "../../models/controllersInitModels.js";
 
 
-const sequelize = initModels();
 export const vehicleExitTime = async (req: Request, res: Response, next: NextFunction) => {
+    const sequelize = initModels();
     const vehicleNumber: string = req.body.vehicleNumber;
     const exitTime = new Date();
     const vehicleName = req.body.vehicleName;

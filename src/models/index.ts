@@ -1,11 +1,11 @@
 import { getSequelize } from "../utils/db_helpers.js";
-import { initConversation } from "./conversation.js";
-import { initMessageModel } from "./message.js";
-import { initParkingSessionModel } from "./parking-sessions.js";
-import { initParkingSlotModel } from "./parking-slots.js";
-import { initUserDevicesModel } from "./user-devices.js";
-import { initUserModel } from "./user.js";
-import { initVehicleTypeModel } from "./vehicle-types.js";
+import { initConversation,Conversation } from "./conversation.js";
+import { initMessageModel, Message } from "./message.js";
+import { initParkingSessionModel, ParkingSession } from "./parking-sessions.js";
+import { initParkingSlotModel, ParkingSlot } from "./parking-slots.js";
+import { initUserDevicesModel, UserDevices } from "./user-devices.js";
+import { initUserModel, User } from "./user.js";
+import { initVehicleTypeModel, VehicleType } from "./vehicle-types.js";
 
 let initialized = false;
 let sequelize: ReturnType<typeof getSequelize> | null = null;
@@ -26,7 +26,41 @@ export const initModels = () => {
     initUserDevicesModel(sequelize);
     initConversation(sequelize);
 
-    initialized = true;
+    // Associations
+    VehicleType.hasMany(ParkingSlot, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
+    ParkingSlot.belongsTo(VehicleType, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
 
+    ParkingSlot.hasMany(ParkingSession, {foreignKey: "slotId", onDelete: "RESTRICT"});
+    ParkingSession.belongsTo(ParkingSlot, {foreignKey: "slotId", onDelete: "RESTRICT"});
+
+    VehicleType.hasMany(ParkingSession, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
+    ParkingSession.belongsTo(VehicleType, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
+
+    User.hasMany(UserDevices, {foreignKey: "userId", onDelete: "RESTRICT"});
+    UserDevices.belongsTo(User, {foreignKey: "userId", onDelete: "RESTRICT"});
+
+    Conversation.hasMany(Message, { foreignKey: 'conversation_id' });
+    Message.belongsTo(Conversation, { foreignKey: 'conversation_id' });
+
+    Message.belongsTo(Message, { foreignKey: 'reply_id', as: 'reply' });
+    Message.hasMany(Message, { foreignKey: 'reply_id', as: 'replies' });
+
+    Message.belongsTo(User, { foreignKey: 'sender_id' });
+    User.hasMany(Message, { foreignKey: 'sender_id' });
+
+
+    
+    initialized = true;
+    
     return sequelize;
 };
+
+export {
+    Conversation,
+    Message,
+    ParkingSession,
+    ParkingSlot,
+    VehicleType,
+    UserDevices,
+    User
+}
