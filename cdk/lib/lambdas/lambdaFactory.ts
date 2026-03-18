@@ -1,5 +1,5 @@
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs"
-import {Duration, Stack} from "aws-cdk-lib"
+import {Duration, Stack, RemovalPolicy} from "aws-cdk-lib"
 import * as lambda from "aws-cdk-lib/aws-lambda"
 import path from "path";
 
@@ -21,6 +21,9 @@ export const createLambda = (
         environment: envVars,
         timeout: Duration.seconds(30),
         memorySize: 512,
+        currentVersionOptions: {
+            removalPolicy: RemovalPolicy.DESTROY
+        },
         bundling: {
             minify: true,
             externalModules: ["aws-sdk"],
