@@ -13,8 +13,8 @@ interface VehicleAttributes {
 };
 
 
+const sequelize = initModels();
 export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     const trans = await sequelize.transaction()
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -40,7 +40,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
             };
         };
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

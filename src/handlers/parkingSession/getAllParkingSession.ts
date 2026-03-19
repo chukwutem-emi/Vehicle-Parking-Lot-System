@@ -4,8 +4,8 @@ import {corsHeaders} from "../corsHeaders.js";
 import { initModels, ParkingSession, User } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const getAllParkingSessionHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -25,7 +25,7 @@ export const getAllParkingSessionHandler = withAuth( async (event, _context) => 
             };
         };
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,
@@ -44,7 +44,7 @@ export const getAllParkingSessionHandler = withAuth( async (event, _context) => 
                 })
             };
         };
-        if (!user.isAdmin && user.userRole !== userRole.SUPER) {
+        if (user.userRole !== userRole.SUPER) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

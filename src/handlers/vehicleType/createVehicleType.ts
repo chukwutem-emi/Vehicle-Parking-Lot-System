@@ -13,8 +13,8 @@ interface VehicleTypeAttribute {
 };
 
 
+const sequelize = initModels();
 export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -42,7 +42,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
     
         const currentUser = event.userId;
         const getUser = await User.findByPk(currentUser);
-        if (!getUser) {
+        if (getUser === undefined || getUser === null) {
             return {
                 statusCode: 404,
                 headers: corsHeaders,

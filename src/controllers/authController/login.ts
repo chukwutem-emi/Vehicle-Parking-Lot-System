@@ -9,8 +9,8 @@ import { initModels, User, UserDevices } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const login = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const email                : string = req.body.email;
     const password             : string = req.body.password;
     try {
@@ -52,6 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const deviceLabel = `${browser} on ${os} (${deviceType})`;
         const geo      = geoIp.lookup(ip);
         const location = geo ? `${geo.city}, ${geo.country}` : "Unknown";
+        
         const getUserByEmail = await User.findOne({
             where: {
                 email: email

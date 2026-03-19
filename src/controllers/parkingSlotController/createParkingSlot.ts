@@ -4,8 +4,8 @@ import * as validation from "../../utils/validation.js";
 import type{Request, Response, NextFunction} from "express";
 
 
+const sequelize = initModels();
 export const createParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const slotCode: string = req.body.slotCode;
     const vehicleTypeId: number = req.body.vehicleTypeId;
     try {
@@ -31,7 +31,7 @@ export const createParkingSlot = async (req: Request, res: Response, next: NextF
             return res.status(400).json({message: `Invalid Input. Vehicle-type ID is required and it must be a number greater than or equal to: ${vehicleTypeIdInput.minNumber}. Please ensure your vehicle-type ID meets these requirements.`});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "Current user not found."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

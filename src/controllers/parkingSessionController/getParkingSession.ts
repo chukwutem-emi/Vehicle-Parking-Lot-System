@@ -3,8 +3,8 @@ import { userRole } from "../../models/user.js";
 import type { Request, Response, NextFunction } from "express";
 
 
+const sequelize = initModels();
 export const getParkingSession = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const sessionId : number = Number(req.params.sessionId);
 
     try {
@@ -16,7 +16,7 @@ export const getParkingSession = async (req: Request, res: Response, next: NextF
             return res.status(400).json({message: "Invalid session ID. Session ID must be a number."});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

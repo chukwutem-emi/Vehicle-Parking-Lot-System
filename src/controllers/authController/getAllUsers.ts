@@ -3,8 +3,8 @@ import {userRole} from "../../models/user.js";
 import { initModels, User } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const currentPage = Number(req.query.currentPage) || 1;
     const limit = Number(req.query.limit) || 1;
     const offset = (currentPage - 1) * limit;
@@ -17,7 +17,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
         await sequelize.authenticate();
         console.log("Database connected!");
         const getUser = await User.findByPk(currentUser);
-        if (!getUser) {
+        if (getUser === undefined || getUser === null) {
             return res.status(404).json({message: "We could not find the current logged-in user. Please ensure you are logged in."});
         };
         if (!getUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {

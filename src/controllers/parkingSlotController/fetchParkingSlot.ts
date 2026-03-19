@@ -7,11 +7,11 @@ import { initModels, User, ParkingSlot } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 /**
  * Get all the available slots.
 */
 export const getAvailableSlot = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
     const currentPage = Number(req.query.currentPage) || 1;
@@ -22,7 +22,7 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
         await sequelize.authenticate();
         console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-In user."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
@@ -69,10 +69,9 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
  */
 export const getAvailableSlotWithId = async (req: Request, res: Response, next: NextFunction) => {
     const vehicleTypeId: number = Number(req.params.vehicleTypeId);
-    const sequelize = initModels();
     try {
         await sequelize.authenticate();
-        if (isNaN(vehicleTypeId)) {
+        if (! vehicleTypeId || isNaN(vehicleTypeId)) {
             return res.status(400).json({message: "VehicleTypeId has to be a number."});
         }
         const vehicleTypeIdInput: validation.ValidateAble = {
@@ -84,7 +83,7 @@ export const getAvailableSlotWithId = async (req: Request, res: Response, next: 
             return res.status(400).json({message: `Invalid Input. Vehicle-type ID is required and it must be a number greater than or equal to: ${vehicleTypeIdInput.minNumber}. Please ensure your vehicle-type ID meets these requirements.`});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-In user. Please ensure you are logged in."});
         };
         if (!currentUser.isAdmin && currentUser.userRole !== userRole.ADMIN) {

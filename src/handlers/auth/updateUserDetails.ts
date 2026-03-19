@@ -17,8 +17,8 @@ interface UpdateUserDetailsAttributes {
 };
 
 
+const sequelize = initModels();
 export const updateUserDetailsHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -51,7 +51,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 headers: validationResult.headers
             };
         };
-        if (isNaN(userId)) {
+        if (!userId || isNaN(userId)) {
             return {
                 statusCode: 400,
                 headers: corsHeaders,
@@ -71,7 +71,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
             };
         }
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

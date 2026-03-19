@@ -16,9 +16,9 @@ interface CreateUserBody {
   phone: string;
 };
 
+const sequelize = initModels();
 export const createUserHandler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

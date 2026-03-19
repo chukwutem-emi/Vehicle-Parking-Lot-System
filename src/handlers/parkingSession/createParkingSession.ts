@@ -18,8 +18,8 @@ interface ParkingSessionAttributes {
 };
 
 
+const sequelize = initModels();
 export const createParkingSessionHandler = withAuth(async (event, _context) => {
-    const sequelize = initModels();
     const t = await sequelize.transaction();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -48,7 +48,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
 
 
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

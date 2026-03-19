@@ -12,8 +12,8 @@ interface ParkingSlotAttributes {
 
 
 
+const sequelize = initModels();
 export const createParkingSlotHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -39,7 +39,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
         }
     
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

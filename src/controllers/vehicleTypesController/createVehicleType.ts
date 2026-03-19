@@ -5,8 +5,8 @@ import { initModels, User, VehicleType } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const uploadVehicleType = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const vehicleName : string = req.body.vehicleName;
     const hourlyRate  : number = req.body.hourlyRate;
     try {
@@ -33,7 +33,7 @@ export const uploadVehicleType = async (req: Request, res: Response, next: NextF
             return res.status(400).json({message: `Invalid input. Hourly rate is required and it must be a number between: ${hourlyRateInput.minNumber} - ${hourlyRateInput.maxNumber}. Please ensure your hourly rate meets these requirements.`});
         };
         const getUser = await User.findByPk(req.userId);
-        if (!getUser) {
+        if (getUser === undefined || getUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
         if (!getUser.userRole || ![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {

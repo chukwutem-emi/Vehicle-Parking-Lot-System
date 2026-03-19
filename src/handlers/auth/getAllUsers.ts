@@ -5,8 +5,8 @@ import { initModels, User } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const getAllUsersHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -26,7 +26,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             };
         };
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,
@@ -45,7 +45,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (!getUser.isAdmin && getUser.userRole !== userRole.SUPER) {
+        if (getUser.userRole !== userRole.SUPER) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

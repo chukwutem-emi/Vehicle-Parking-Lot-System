@@ -7,11 +7,11 @@ import { initModels, User, VehicleType, ParkingSession, ParkingSlot } from "../.
 
 
 
+const sequelize = initModels();
 /**
  *  Assigning a vehicle and reducing the capacity. When a vehicle parks, I  decrees the capacity.
 */
 export const createParkingSession = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const slotId                       : number = req.body.slotId;
     const vehicleId                    : number = req.body.vehicleId;
     const vehicleNumber                : string = req.body.vehicleNumber;
@@ -103,7 +103,7 @@ export const createParkingSession = async (req: Request, res: Response, next: Ne
             return res.status(400).json({message: "Invalid vehicleOwnerNextOfKinAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

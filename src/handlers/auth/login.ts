@@ -16,8 +16,8 @@ interface UserAttributes {
     password: string;
 };
 
+const sequelize = initModels();
 export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");

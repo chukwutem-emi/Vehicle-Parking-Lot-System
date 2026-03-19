@@ -12,8 +12,8 @@ interface VehicleTypeAttribute {
 };
 
 
+const sequelize = initModels();
 export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -40,7 +40,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
         };
         const currentUser = event.userId;
         const user = await User.findByPk(currentUser);
-        if (!user) {
+        if (user === undefined || user === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,
@@ -58,7 +58,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
             };
         };
         const vehicleId = Number(event.pathParameters?.vehicleId);
-        if (isNaN(vehicleId)) {
+        if (!vehicleId || isNaN(vehicleId)) {
             return {
                 statusCode: 400,
                 headers: corsHeaders,

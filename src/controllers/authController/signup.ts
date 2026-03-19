@@ -5,8 +5,8 @@ import bcrypt from "bcryptjs";
 import { initModels, User } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const username        : string = req.body.username;
     const password        : string = req.body.password;
     const userAddress     : string = req.body.userAddress;

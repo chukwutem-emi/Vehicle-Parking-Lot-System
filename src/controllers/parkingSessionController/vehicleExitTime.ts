@@ -7,8 +7,8 @@ import * as validation from "../../utils/validation.js";
 import { initModels, User, VehicleType, ParkingSession, ParkingSlot } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const vehicleExitTime = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const vehicleNumber: string = req.body.vehicleNumber;
     const exitTime = new Date();
     const vehicleName = req.body.vehicleName;
@@ -37,7 +37,7 @@ export const vehicleExitTime = async (req: Request, res: Response, next: NextFun
             return res.status(400).json({message: "Invalid vehicleName. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

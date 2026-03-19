@@ -5,8 +5,8 @@ import { initModels, User } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const demoteUserHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -20,7 +20,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
             };
         };
         const userId = Number(event.pathParameters?.userId);
-        if (isNaN(userId)) {
+        if (!userId || isNaN(userId)) {
             return {
                 statusCode: 400,
                 headers: corsHeaders,
@@ -31,7 +31,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
         };
         const currentUser = event.userId;
         const getSuperAdmin = await User.findByPk(currentUser);
-        if (!getSuperAdmin) {
+        if (getSuperAdmin === undefined || getSuperAdmin === null) {
             return {
                 statusCode: 404,
                 headers: corsHeaders,
@@ -40,7 +40,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
                 })
             };
         }
-        if (!getSuperAdmin.isAdmin && getSuperAdmin.userRole !== userRole.SUPER) {
+        if (getSuperAdmin.userRole !== userRole.SUPER) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

@@ -5,8 +5,8 @@ import { initModels, User } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const  promoteUserHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -21,7 +21,7 @@ export const  promoteUserHandler = withAuth( async (event, _context) => {
         };
         const userId = Number(event.pathParameters?.userId);
         const currentUser = event.userId
-        if (isNaN(userId)) {
+        if (!userId || isNaN(userId)) {
             return {
                 statusCode: 400,
                 headers: corsHeaders,
@@ -30,7 +30,7 @@ export const  promoteUserHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,
@@ -49,7 +49,7 @@ export const  promoteUserHandler = withAuth( async (event, _context) => {
                 })
             };
         }
-        if (!getSuperAdmin.isAdmin && getSuperAdmin.userRole !== userRole.SUPER) {
+        if (getSuperAdmin.userRole !== userRole.SUPER) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

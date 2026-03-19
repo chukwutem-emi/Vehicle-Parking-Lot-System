@@ -4,8 +4,8 @@ import type{ Request, Response, NextFunction} from "express";
 
 
 
+const sequelize = initModels();
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const userId: number = Number(req.params.userId);
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -16,10 +16,10 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
             return res.status(400).json({message: "Invalid user ID."});
         };
         const superAdmin = await User.findByPk(req.userId);
-        if (!superAdmin) {
+        if (superAdmin === undefined || superAdmin === null) {
             return res.status(404).json({message: "We could not find the current logged-in user."});
         }
-        if (!superAdmin.isAdmin && superAdmin.userRole !== userRole.SUPER) {
+        if (superAdmin.userRole !== userRole.SUPER) {
             return res.status(401).json({message: "Unauthorized request. Only Super Admins can delete users."});
         };
         const userInfo = await User.findByPk(userId);

@@ -5,11 +5,11 @@ import { initModels, User, VehicleType } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 /**
  * Fetch vehicle-types by their name.
 */
 export const getVehicleByName = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const vehicleName: string = req.body.vehicleName;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -26,7 +26,7 @@ export const getVehicleByName = async (req: Request, res: Response, next: NextFu
             return res.status(400).json({message: `Invalid input. Vehicle name is required and it must have a minimum of: ${vehicleNameInput.minimumLength} and a maximum of: ${vehicleNameInput.maximumLength} characters length.`});
         };
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "User with the Logged-In ID not found!."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

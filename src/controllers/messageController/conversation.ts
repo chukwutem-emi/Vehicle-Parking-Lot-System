@@ -2,8 +2,8 @@ import type {Request, Response, NextFunction} from "express"
 import { initModels, User, Conversation } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const getConversationId = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const type: string = "admin_global";
 
     try {
@@ -12,7 +12,7 @@ export const getConversationId = async (req: Request, res: Response, next: NextF
         await sequelize.authenticate();
         console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) return;
+        if (currentUser === undefined || currentUser === null) return;
         if (!currentUser.isAdmin) return;
 
         let conversation = await Conversation.findOne({

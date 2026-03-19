@@ -9,8 +9,8 @@ interface VehicleTypeAttribute {
     vehicleName: string;
 };
 
+const sequelize = initModels();
 export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -37,7 +37,7 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
         };
         const currentUser = event.userId;
         const user = await User.findByPk(currentUser);
-        if (!user) {
+        if (user === undefined || user === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

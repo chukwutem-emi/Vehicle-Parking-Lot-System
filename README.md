@@ -641,11 +641,27 @@ export const corsHeaders = {
 
 #### Payload:
 ```json
+{
+   "password": "",
+   "email": ""
+}
+```
+#### Success Response:
+```json
+"statusCode": 200
+{
+    "message": "You have successfully logged in.",
+    "token": ""
+}
+```
+- PUT https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/promote/{userId}
+
+#### Payload:
+```json
 ```
 #### Success Response:
 ```json
 ```
-
 ## Security Checklist
 - ✅ Always use HTTPS in production.
 - ✅ Restrict CORS origins to specific domains.

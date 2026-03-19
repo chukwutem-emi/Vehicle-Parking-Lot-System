@@ -4,8 +4,8 @@ import {sendMail} from "../../utils/send-mail.js";
 import { initModels, User } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const updateUserDetails = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const username        : string = req.body.username;
     const password        : string = req.body.password;
     const userAddress     : string = req.body.userAddress;
@@ -74,11 +74,11 @@ export const updateUserDetails = async (req: Request, res: Response, next: NextF
         if (!validation.validate(phoneInput)) {
             return res.status(400).json({phoneInputError: `Invalid phone number. Phone number is required and it must be a valid phone number with a length of ${phoneInput.minimumLength} - ${phoneInput.maximumLength} digits. Please ensure your phone number meets these requirements.`});
         };
-        if (isNaN(userId)) {
+        if (!userId || isNaN(userId)) {
             return res.status(400).json({message: "Invalid userId. UserId must be a number."});
         };
         const getUserInfo = await User.findByPk(userId);
-        if (!getUserInfo) {
+        if (getUserInfo === undefined || getUserInfo === null) {
             return res.status(404).json({message: "User with the specified userId not found. Please ensure you have the correct userId."});
         }
         if (getUserInfo.id !== currentUser) {

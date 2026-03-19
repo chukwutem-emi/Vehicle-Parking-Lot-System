@@ -5,8 +5,8 @@ import { initModels, User, ParkingSlot } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const updateParkingSlot = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const vehicleTypeId: number = Number(req.params.vehicleTypeId);
     const maximumCapacity: number = req.body.maximumCapacity;
     const availableCapacity: number = req.body.availableCapacity;

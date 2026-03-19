@@ -7,8 +7,8 @@ import { initModels, ParkingSlot, User } from "../../models/index.js";
 
 
 
+const sequelize = initModels();
 export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -23,7 +23,7 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
         };
         const vehicleTypeId: number = Number(event.pathParameters?.vehicleTypeId);
     
-        if (isNaN(vehicleTypeId)) {
+        if (!vehicleTypeId || isNaN(vehicleTypeId)) {
             return { 
                 statusCode: 400,
                 headers: corsHeaders,
@@ -31,7 +31,7 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
             };
         };
         const currentUser = event.userId;
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

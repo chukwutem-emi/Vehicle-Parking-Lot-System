@@ -13,8 +13,8 @@ interface UserAttribute {
     confirmPassword: string
 };
 
+const sequelize = initModels();
 export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<APIGatewayProxyResult> => {
-    const sequelize = initModels();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
@@ -51,7 +51,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
             };
         };
 
-        if (!resetToken) {
+        if (resetToken === undefined || resetToken === null) {
             return {
                 statusCode: 401,
                 headers: corsHeaders,

@@ -3,8 +3,8 @@ import { userRole } from '../../models/user.js';
 import type { Request, Response, NextFunction } from 'express';
 
 
+const sequelize = initModels();
 export const getAllParkingSessions = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const limit = Number(req.query.limit) || 1;
     const sort = req.query.sort || "createdAt";
     const currentPage = Number(req.query.currentPage) || 1;
@@ -16,10 +16,10 @@ export const getAllParkingSessions = async (req: Request, res: Response, next: N
         await sequelize.authenticate();
         console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });
         };
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.SUPER) {
+        if (currentUser.userRole !== userRole.SUPER) {
             return res.status(403).json({ message: "You do not have permission to create parking sessions. Please ensure you are an admin user and try again. If you believe this is an error, please contact support." });
         };
         const where: any = {};

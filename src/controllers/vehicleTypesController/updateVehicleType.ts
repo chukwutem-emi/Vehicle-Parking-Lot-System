@@ -4,8 +4,8 @@ import {userRole} from "../../models/user.js";
 import { initModels, User, VehicleType } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const updateVehicleType = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const vehicleId      : number = Number(req.params.vehicleId);
     const newVehicleName : string = req.body.newVehicleName;
     const newHourlyRate  : number = req.body.newHourlyRate;
@@ -32,11 +32,11 @@ export const updateVehicleType = async (req: Request, res: Response, next: NextF
         if (!validation.validate(hourlyRateInput)) {
             return res.status(400).json({message: `Invalid input. Hourly rate is required and it must be a number between: ${hourlyRateInput.minNumber} - ${hourlyRateInput.maxNumber}. Please ensure your hourly rate meets these requirements.`});
         };
-        if (isNaN(vehicleId)) {
+        if (!vehicleId || isNaN(vehicleId)) {
             return res.status(400).json({message: `Invalid input. Vehicle ID is required and it must be a valid number.`});
         }
         const currentUser = await User.findByPk(req.userId);
-        if (!currentUser) {
+        if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
         if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {

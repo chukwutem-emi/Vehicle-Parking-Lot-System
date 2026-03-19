@@ -6,8 +6,8 @@ import * as validation from "../../utils/validation.js";
 import { initModels, User } from "../../models/index.js";
 
 
+const sequelize = initModels();
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
-    const sequelize = initModels();
     const email: string = req.body.email;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
