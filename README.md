@@ -2,7 +2,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue) ![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![Express](https://img.shields.io/badge/Express-5.x-black) ![License](https://img.shields.io/badge/license-ISC-orange) ![AWS CDK](https://img.shields.io/badge/AWS-CDK-yellow)
 
 ```bash
-curl -X POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/signup \
+curl -X POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/signup \
 -H "Content-Type: application/json" \
 -d '{"username": "Stephen", "password": "12345678", "userAddress": "59 example street", "email": "example@gmail.com", "phone": "123456789", "confirmPassword": "123455678"}'
 ```
@@ -618,7 +618,7 @@ export const corsHeaders = {
 
 ## Lambda API Gateway
 ### Authentication API Gateway (cdk/lib/endpoints/authEndpoints)
-- POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/signup - user signup.
+- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/signup - user signup.
 #### Payload:
 ```json
 {
@@ -637,7 +637,7 @@ export const corsHeaders = {
     "message": "User created successfully!"
 }
 ```
-- POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/login - User login.
+- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/login - User login.
 
 #### Payload:
 ```json
@@ -648,19 +648,49 @@ export const corsHeaders = {
 ```
 #### Success Response:
 ```json
-"statusCode": 200
+"statusCode": 200,
 {
     "message": "You have successfully logged in.",
     "token": ""
 }
 ```
-- PUT https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/promote/{userId}
+- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/user - Get user
 
-#### Payload:
-```json
-```
 #### Success Response:
 ```json
+"statusCode": 200,
+{
+    "userDetails": {
+        "id": 4,
+        "username": "",
+        "password": "",
+        "userAddress": "",
+        "phone": "",
+        "email": "",
+        "userRole": "",
+        "isAdmin": ,
+        "updatedBy": ,
+        "resetToken": ,
+        "resetTokenExpiration": ,
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
+```
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/users - Get all users
+
+#### Success Response:
+```json
+"statusCode":
+```
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/promote/{userId} - Promote user
+
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "message": "<The username> has been promoted to admin successfully!"
+}
 ```
 ## Security Checklist
 - ✅ Always use HTTPS in production.
@@ -778,8 +808,8 @@ For issues and bug reports, please use the [GitHub Issues](https://github.com/ch
 - Sequelize ORM: https://sequelize.org/.
 - AWS CDK: https://aws.amazon.com/cdk/.
 
-## Base URL: [URL](https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/)
-https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/
+## Base URL: [URL](https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/)
+https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/
 
 ## ⚠️ Warning
 

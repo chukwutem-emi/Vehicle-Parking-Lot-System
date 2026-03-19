@@ -64,9 +64,9 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
 
         if (typeof sort === "string") {
             if (sort.startsWith("-")) {
-                order = [sort.substring(1), "DESC"];
+                order = [[sort.substring(1), "DESC"]];
             } else {
-                order = [sort, "ASC"];
+                order = [[sort, "ASC"]];
             };
         };
         const {count, rows} = await User.findAndCountAll({

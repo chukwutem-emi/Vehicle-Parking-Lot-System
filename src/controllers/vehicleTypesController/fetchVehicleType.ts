@@ -70,9 +70,9 @@ export const getAllVehicles = async (req: Request, res: Response, next: NextFunc
 
         if (typeof sort === "string") {
             if (sort.startsWith("-")) {
-                order = [sort.substring(1), "DESC"];
+                order = [[sort.substring(1), "DESC"]];
             } else {
-                order = [sort, "ASC"];
+                order = [[sort, "ASC"]];
             };
         };
         const {count, rows} = await VehicleType.findAndCountAll({

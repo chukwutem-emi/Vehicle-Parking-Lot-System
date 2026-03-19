@@ -32,9 +32,9 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
 
         if (typeof sort === "string") {
             if (sort.startsWith("-")) {
-                order = [sort.substring(1), "DESC"]
+                order = [[sort.substring(1), "DESC"]]
             } else {
-                order = [sort, "ASC"]
+                order = [[sort, "ASC"]]
             };
         };
         const {count, rows} = await ParkingSlot.findAndCountAll({

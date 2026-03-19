@@ -34,7 +34,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
             if (sort.startsWith("-")) {
                 order = [[sort.substring(1), "DESC"]]
             } else {
-                order = [sort, "ASC"]
+                order = [[sort, "ASC"]]
             }
         };
         const {count, rows} = await User.findAndCountAll({
