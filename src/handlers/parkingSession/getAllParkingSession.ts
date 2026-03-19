@@ -89,11 +89,12 @@ export const getAllParkingSessionHandler = withAuth( async (event, _context) => 
             })
         };
     } catch (err: any) {
+        console.error("ERROR:", err)
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Internal Server Error. Please try again later."
+                message: err.message
             }) 
         };
     };

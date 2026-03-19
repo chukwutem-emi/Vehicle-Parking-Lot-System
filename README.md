@@ -637,7 +637,14 @@ export const corsHeaders = {
     "message": "User created successfully!"
 }
 ```
-- POST 
+- POST https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/auth/login - User login.
+
+#### Payload:
+```json
+```
+#### Success Response:
+```json
+```
 
 ## Security Checklist
 - ✅ Always use HTTPS in production.
@@ -755,7 +762,7 @@ For issues and bug reports, please use the [GitHub Issues](https://github.com/ch
 - Sequelize ORM: https://sequelize.org/.
 - AWS CDK: https://aws.amazon.com/cdk/.
 
-## Base URL:
+## Base URL: [URL](https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/)
 https://6r88ogmvih.execute-api.us-east-1.amazonaws.com/prod/
 
 ## ⚠️ Warning

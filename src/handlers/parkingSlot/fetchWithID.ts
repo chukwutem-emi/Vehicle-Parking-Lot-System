@@ -82,13 +82,13 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
                 AvailableSlot: availableSlots
             })
         };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error fetching available parking slot:", error);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "An error occurred while fetching the available parking slot."
+                message: error.message
             })
         };
     }

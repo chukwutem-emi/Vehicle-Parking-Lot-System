@@ -157,7 +157,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                Message: "Internal Server Error. Please try again later."
+                Message: err.message
             })
         };
     }

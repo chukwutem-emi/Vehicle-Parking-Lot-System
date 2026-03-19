@@ -108,7 +108,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Internal server error. Please try again later."
+                message: err.message
             })
         };
     };

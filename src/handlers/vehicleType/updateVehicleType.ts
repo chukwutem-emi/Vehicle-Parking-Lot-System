@@ -92,7 +92,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "An error occurred while updating the vehicle type. Please try again later.",
+                message: err.message
             })
         };
      };
