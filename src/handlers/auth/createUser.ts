@@ -53,7 +53,20 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 })
             };
         };
-
+        // check if phone number exist
+        const checkPhone = await User.findOne({
+            where: {
+                phone: phone
+            }
+        });
+        if (checkPhone) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    message: `A user with this phone number: ${phone} already exist. Please use another phone number.`
+                })
+            };
+        }
         // check if email already exist.
         const checkEmail = await User.findOne({
             where: {
@@ -65,7 +78,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 statusCode: 409,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    existingEmailErr: "A user with this email address already exists. Please use a different email address."
+                    existingEmailErr: `A user with this email address: ${email} already exists. Please use a different email address.`
                 })
             };
         };
