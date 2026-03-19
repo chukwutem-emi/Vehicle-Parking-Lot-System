@@ -45,7 +45,7 @@ export class BackendStack extends Stack {
         // connection
         const connectionLambda = testConnectionLambda(this, env);
         // create API
-        const api = new apigw.RestApi(this, "ParkingAPIEndpoint", {
+        const api = new apigw.RestApi(this, "ParkingAPIEndpointV2", {
             defaultCorsPreflightOptions: {
                 allowOrigins: apigw.Cors.ALL_ORIGINS,
                 allowMethods: apigw.Cors.ALL_METHODS,
@@ -62,7 +62,7 @@ export class BackendStack extends Stack {
         // Output API URL
         new CfnOutput(this, `${api.node.id}Output`, {
             value: api.url,
-            exportName: "ParkingAPIEndpoint"
+            exportName: "ParkingAPIEndpointV2"
         });
     };
 };

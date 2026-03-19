@@ -51,7 +51,7 @@ jobs:
       - name: Show API URL
         id: show-api
         run: |
-          API_URL=$(jq -r '.BackendStack | to_entries[] | select(.key | contains("ParkingAPIEndpoint")) | .value' cdk-outputs.json | head -n 1)
+          API_URL=$(jq -r '.BackendStack | to_entries[] | select(.key | contains("ParkingAPIEndpointV2")) | .value' cdk-outputs.json | head -n 1)
           echo "Parking API Endpoint: $API_URL"
           echo "API_URL=$API_URL" >> $GITHUB_ENV
 
