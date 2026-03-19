@@ -4,7 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import {ParkingSession} from "./models/parking-sessions.js";
 import {ParkingSlot} from "./models/parking-slots.js";
-import VehicleType from "./models/vehicle-types.js";
+import {VehicleType} from "./models/vehicle-types.js";
 import type{Response, Request, NextFunction} from "express";
 import {UserDevices} from "./models/user-devices.js";
 import {User} from "./models/user.js";
