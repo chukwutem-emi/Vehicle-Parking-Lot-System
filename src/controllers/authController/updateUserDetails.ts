@@ -1,8 +1,7 @@
 import type{Request, Response, NextFunction} from "express";
-import {User} from "../../models/user.js";
 import * as validation from "../../utils/validation.js";
 import {sendMail} from "../../utils/send-mail.js";
-import { initModels } from "../../models/controllersInitModels.js";
+import { initModels, User } from "../../models/index.js";
 
 
 export const updateUserDetails = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,6 +1,5 @@
-import { initModels } from "../../models/controllersInitModels.js";
-import {UserDevices} from "../../models/user-devices.js";
-import { User, userRole } from "../../models/user.js";
+import { initModels, User, UserDevices } from "../../models/index.js";
+import { userRole } from "../../models/user.js";
 import type {Request, Response, NextFunction} from "express";
 
 

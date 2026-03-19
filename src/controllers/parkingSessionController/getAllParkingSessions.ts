@@ -1,6 +1,5 @@
-import { initModels } from "../../models/controllersInitModels.js";
-import { ParkingSession } from '../../models/parking-sessions.js';
-import { User, userRole } from '../../models/user.js';
+import { initModels, ParkingSession, User } from "../../models/index.js";
+import { userRole } from '../../models/user.js';
 import type { Request, Response, NextFunction } from 'express';
 
 

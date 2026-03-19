@@ -3,11 +3,9 @@ import bcrypt from "bcryptjs";
 import {UAParser} from "ua-parser-js";
 import geoIp from "geoip-lite";
 import type{Response, Request, NextFunction} from "express";
-import {User} from "../../models/user.js"
-import {UserDevices} from "../../models/user-devices.js";
 import * as validation from "../../utils/validation.js";
 import { sendMail } from "../../utils/send-mail.js";
-import { initModels } from "../../models/controllersInitModels.js";
+import { initModels, User, UserDevices } from "../../models/index.js";
 
 
 

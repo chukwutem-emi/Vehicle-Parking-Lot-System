@@ -1,8 +1,8 @@
-import { User, userRole } from "../../models/user.js";
+import { userRole } from "../../models/user.js";
 import type{Request, Response, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
 import bcrypt from "bcryptjs";
-import { initModels } from "../../models/controllersInitModels.js";
+import { initModels, User } from "../../models/index.js";
 
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {

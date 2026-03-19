@@ -1,9 +1,8 @@
-import { ParkingSlot } from "../../models/parking-slots.js";
-import { User, userRole } from "../../models/user.js";
+import { userRole } from "../../models/user.js";
 import type { Request, Response, NextFunction } from "express";
 import * as validation from "../../utils/validation.js";
 import {Op} from "sequelize";
-import { initModels } from "../../models/controllersInitModels.js";
+import { initModels, User, ParkingSlot } from "../../models/index.js";
 
 
 

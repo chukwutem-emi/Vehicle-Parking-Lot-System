@@ -1,8 +1,7 @@
 import type{Response, Request, NextFunction} from "express";
 import * as validation from "../../utils/validation.js";
-import {VehicleType} from "../../models/vehicle-types.js";
-import {User, userRole} from "../../models/user.js";
-import { initModels } from "../../models/controllersInitModels.js";
+import {userRole} from "../../models/user.js";
+import { initModels, User, VehicleType } from "../../models/index.js";
 
 
 

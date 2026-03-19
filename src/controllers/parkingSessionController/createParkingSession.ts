@@ -1,10 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import {ParkingSession} from "../../models/parking-sessions.js"
-import { ParkingSlot } from "../../models/parking-slots.js";
-import { VehicleType } from "../../models/vehicle-types.js";
 import * as validation from "../../utils/validation.js";
-import { User, userRole } from "../../models/user.js";
-import { initModels } from "../../models/controllersInitModels.js";
+import { userRole } from "../../models/user.js";
+import { initModels, User, VehicleType, ParkingSession, ParkingSlot } from "../../models/index.js";
 
 
 

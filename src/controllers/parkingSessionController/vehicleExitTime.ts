@@ -1,12 +1,10 @@
 // Express types
 import type { Request, Response, NextFunction } from "express";
 // Models
-import {ParkingSession, parkingStatus} from "../../models/parking-sessions.js";
-import { ParkingSlot } from "../../models/parking-slots.js";
-import {VehicleType} from "../../models/vehicle-types.js";
-import { User, userRole } from "../../models/user.js";
+import {parkingStatus} from "../../models/parking-sessions.js";
+import { userRole } from "../../models/user.js";
 import * as validation from "../../utils/validation.js";
-import { initModels } from "../../models/controllersInitModels.js";
+import { initModels, User, VehicleType, ParkingSession, ParkingSlot } from "../../models/index.js";
 
 
 export const vehicleExitTime = async (req: Request, res: Response, next: NextFunction) => {
