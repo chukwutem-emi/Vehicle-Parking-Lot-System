@@ -70,8 +70,3 @@ export const initParkingSlotModel = (sequelize: Sequelize) => {
         }
     );
 };
-ParkingSlot.beforeCreate((slot) => {
-    if (slot.availableCapacity == null) {
-        slot.availableCapacity = slot.maximumCapacity
-    }
-});
