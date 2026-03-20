@@ -16,7 +16,7 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 - Github: [chukwutem-emi](https://github.com/chukwutem-emi)
 - License: ISC.
 - Language: TypeScript.
-- Last Updated: March 15, 2026.
+- Last Updated: March 20, 2026.
 
 
 ## 🚀 Features
@@ -677,11 +677,51 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/users - Get all users
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/users?limit=2&sort=-createdAt - Get all users
 
 #### Success Response:
 ```json
-"statusCode":
+"statusCode": 200
+{
+    "data": [
+        {
+            "id": ,
+            "username": "",
+            "password": "",
+            "userAddress": "",
+            "phone": "",
+            "email": "",
+            "userRole": "",
+            "isAdmin": ,
+            "updatedBy": ,
+            "resetToken": ,
+            "resetTokenExpiration": ,
+            "createdAt": "",
+            "updatedAt": ""
+        },
+        {
+            "id": ,
+            "username": "",
+            "password": "",
+            "userAddress": "",
+            "phone": "",
+            "email": "",
+            "userRole": "",
+            "isAdmin": ,
+            "updatedBy": ,
+            "resetToken": ,
+            "resetTokenExpiration": ,
+            "createdAt": "",
+            "updatedAt": ""
+        }
+    ],
+    "pagination": {
+        "currentPage": 1,
+        "limit": 2,
+        "total": 2,
+        "totalPages": 1
+    }
+}
 ```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/promote/{userId} - Promote user
 
@@ -692,6 +732,17 @@ export const corsHeaders = {
     "message": "<The username> has been promoted to admin successfully!"
 }
 ```
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/demote/{userId} - Demote user
+#### Success Response: 
+```json
+"statusCode": 200
+{
+    "message": "<The username> has been demoted to a regular user successfully!"
+}
+``` 
+- POST  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
+- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
 ## Security Checklist
 - ✅ Always use HTTPS in production.
 - ✅ Restrict CORS origins to specific domains.
@@ -787,7 +838,7 @@ npx cdk deploy
 | Version | 1.0.0 |
 | Author | Chukwutem Stephen Emi |
 | Created | February 13, 2026 |
-| Last updated | March 15, 2026 |
+| Last updated | March 20, 2026 |
 | Size | 560KB |
 
 

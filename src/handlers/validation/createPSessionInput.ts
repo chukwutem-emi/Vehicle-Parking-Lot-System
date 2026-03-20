@@ -51,7 +51,7 @@ type ValidationReturnStatement = {
  */
 export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress}: ParkingSessionAttributes): ValidationReturnStatement => {
     const slotIdInput: validation.ValidateAble = {
-        value     : slotId,
+        value     : Number(slotId),
         required  : true,
         minNumber : 1
     };
@@ -65,7 +65,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
          };
     }
     const vehicleIdInput: validation.ValidateAble = {
-        value     : vehicleId,
+        value     : Number(vehicleId),
         required  : true,
         minNumber : 1
     };

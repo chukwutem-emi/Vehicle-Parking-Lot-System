@@ -47,10 +47,10 @@ export const vehicleTypeInputsValidation = ({vehicleName, hourlyRate}: VehicleTy
         };
     };
     const hourlyRateInput: validation.ValidateAble = {
-        value     : hourlyRate,
+        value     : Number(hourlyRate),
         required  : true,
-        maxNumber : 10,
-        minNumber : 4
+        maxNumber : 1000000,
+        minNumber : 1
     };
     if (!validation.validate(hourlyRateInput)) {
         return {

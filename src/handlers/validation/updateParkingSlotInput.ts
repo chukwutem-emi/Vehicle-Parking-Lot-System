@@ -47,10 +47,10 @@ export const updateParkingSlotInputsValidation = ({slotCode, maximumCapacity, av
         };
     }
     const maximumCapacityInput: validation.ValidateAble = {
-        value     : maximumCapacity,
+        value     : Number(maximumCapacity),
         required  : true,
-        minNumber : 10,
-        maxNumber : 1000
+        minNumber : 1,
+        maxNumber : 1000000
     };
     if (!validation.validate(maximumCapacityInput)) {
         return {
@@ -62,10 +62,10 @@ export const updateParkingSlotInputsValidation = ({slotCode, maximumCapacity, av
         };
     }
     const availableCapacityInput: validation.ValidateAble = {
-        value     : availableCapacity,
+        value     : Number(availableCapacity),
         required  : true,
-        minNumber : 10,
-        maxNumber : 1000
+        minNumber : 1,
+        maxNumber : 1000000
     };
     if (!validation.validate(availableCapacityInput)) {
         return {

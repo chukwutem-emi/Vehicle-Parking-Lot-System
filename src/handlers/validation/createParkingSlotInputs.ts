@@ -39,7 +39,7 @@ export const createParkingSlotInputsValidation = (slotCode: string, vehicleTypeI
         };
     }
     const vehicleTypeIdInput: validation.ValidateAble = {
-        value     : vehicleTypeId,
+        value     : Number(vehicleTypeId),
         required  : true,
         minNumber : 1
     };
