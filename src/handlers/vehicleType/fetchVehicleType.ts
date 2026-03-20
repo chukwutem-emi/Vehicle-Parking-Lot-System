@@ -1,13 +1,9 @@
-import {fetchVehicleTypeInputValidation} from "../validation/fetchVehicleTypeInput.js";
 import {withAuth} from "../lambdaAuth.js"
 import {corsHeaders} from "../corsHeaders.js";
 import {userRole} from "../../models/user.js";
 import { initModels, VehicleType, User } from "../../models/index.js";
 
 
-interface VehicleTypeAttribute {
-    vehicleName: string;
-};
 
 const sequelize = initModels();
 export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
@@ -24,17 +20,8 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
             };
         };
         
-        const body: VehicleTypeAttribute = JSON.parse(event.body || "{}");
-        const {vehicleName} = body;
+        const vehicleName = event.queryStringParameters?.vehicleName
     
-        const validationResult = fetchVehicleTypeInputValidation(vehicleName);
-        if (validationResult !== undefined) {
-            return {
-                statusCode: validationResult.statusCode,
-                body: validationResult.body,
-                headers: validationResult.headers
-            };
-        };
         const currentUser = event.userId;
         const user = await User.findByPk(currentUser);
         if (user === undefined || user === null) {

@@ -740,8 +740,29 @@ export const corsHeaders = {
     "message": "<The username> has been demoted to a regular user successfully!"
 }
 ``` 
-- POST  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
-- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
+- POST  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/create - Upload vehicleType
+
+#### Payload:
+```json
+{
+    "vehicleName": "",
+    "hourlyRate": 
+}
+```
+#### Success Response:
+```json
+{
+    "message": "",
+    "details": {
+        "createdAt": "",
+        "updatedAt": "",
+        "id": ,
+        "vehicleName": "",
+        "hourlyRate": 
+    }
+}
+```
+- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
 ## Security Checklist
 - ✅ Always use HTTPS in production.
