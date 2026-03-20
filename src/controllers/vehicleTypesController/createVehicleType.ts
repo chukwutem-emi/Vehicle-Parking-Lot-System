@@ -36,7 +36,7 @@ export const uploadVehicleType = async (req: Request, res: Response, next: NextF
         if (getUser === undefined || getUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
-        if (!getUser.userRole || ![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
             return res.status(401).json({message: "Unauthorized request. Only Admins or Super Admins can upload vehicle-type."});
         };
         const createVehicleType = await VehicleType.create({

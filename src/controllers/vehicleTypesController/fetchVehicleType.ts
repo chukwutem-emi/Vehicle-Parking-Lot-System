@@ -63,7 +63,7 @@ export const getAllVehicles = async (req: Request, res: Response, next: NextFunc
         if (!currentUser) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
-        if (!currentUser.isAdmin && currentUser.userRole !== userRole.SUPER) {
+        if (currentUser.userRole !== userRole.SUPER) {
             return res.status(401).json({message: "Unauthorized request. Only Super Admins can fetch all vehicle-types."});
         };
         let order: any = [["createdAt", "DESC"]];

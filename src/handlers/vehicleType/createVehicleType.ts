@@ -51,7 +51,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (getUser.userRole || ![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

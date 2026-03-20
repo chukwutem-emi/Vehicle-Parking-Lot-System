@@ -25,7 +25,7 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-In user."});
         };
-        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({message: "Unauthorized request. Only Admin users can perform this type of request."});
         }
         let order: any = [["createdAt", "DESC"]];

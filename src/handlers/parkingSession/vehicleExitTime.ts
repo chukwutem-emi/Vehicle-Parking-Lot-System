@@ -59,7 +59,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (!user.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

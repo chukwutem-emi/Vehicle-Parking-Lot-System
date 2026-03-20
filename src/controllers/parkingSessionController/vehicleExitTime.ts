@@ -40,7 +40,7 @@ export const vehicleExitTime = async (req: Request, res: Response, next: NextFun
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});
         };
-        if (!currentUser.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(currentUser.userRole)) {
             return res.status(401).json({message: "Unauthorized request. Only Admins can record vehicle exit time."});
         };
         const vehicleInfo = await VehicleType.findOne({

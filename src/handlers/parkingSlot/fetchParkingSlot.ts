@@ -17,7 +17,7 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
         const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
         const offset = (currentPage - 1) * limit;
         const sort = event.queryStringParameters?.sort || "createdAt";
-        const vehicleTypeId = Number(event.queryStringParameters?.limit)
+        const vehicleTypeId = Number(event.queryStringParameters?.vehicleTypeId)
        
         if (event.httpMethod === "OPTIONS") {
             return {
@@ -46,7 +46,7 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (!user.isAdmin || ![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,
@@ -54,11 +54,6 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                     message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
                 })
             };
-        };
-        const where: any = {};
-
-        if (vehicleTypeId) {
-            where.vehicleTypeId = vehicleTypeId;
         };
 
         let order: any = [["createdAt", "DESC"]];
@@ -75,8 +70,12 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 isAvailable: true,
                 availableCapacity: {
                   [Op.gt]: 0 
-                }
-            }
+                },
+                vehicleTypeId: vehicleTypeId
+            },
+            offset: offset,
+            order: order,
+            limit: limit
         });
         if (!rows || rows.length === 0) {
             return {
