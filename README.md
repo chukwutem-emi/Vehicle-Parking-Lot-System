@@ -783,7 +783,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/get-vehicle?vehicleName
+- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/get-vehicle?vehicleName - Get vehicle by name
 #### Success Response:
 ```json
 "statusCode": 200,
@@ -799,7 +799,94 @@ export const corsHeaders = {
 }
 ```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/update-vehicle/{vehicleId}
-
+#### Payload:
+```json
+{
+    "newVehicleName": "",
+    "newHourlyRate": ""
+}
+```
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "message": "Vehicle-type updated successfully.",
+    "details": {
+        "id": ,
+        "vehicleName": "",
+        "hourlyRate": "",
+        "updatedBy": "",
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
+```
+- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/create-slot - Create Parking Slot
+ #### Payload:
+ ```json
+ {
+    "slotCode": "",
+    "vehicleTypeId": 
+}
+ ```
+ #### Success Response:
+ ```json
+ "statusCode": 201,
+ {
+    "message": "Parking slot created successfully."
+}
+ ```
+ - GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slots?vehicleTypeId=?&limit=?&sort=?&currentPage=? - Get all the parking slot.
+ #### Success Response:
+ ```json
+ "statusCode": 200,
+ {
+    "data": [
+        {
+            "id": ,
+            "slotCode": "",
+            "isAvailable": ,
+            "maximumCapacity": ,
+            "availableCapacity": ,
+            "updatedBy": ,
+            "vehicleTypeId": ,
+            "createdAt": "",
+            "updatedAt": ""
+        }
+    ],
+    "pagination": {
+        "currentPage": 1,
+        "limit": 1,
+        "total": 1,
+        "totalPages": 1
+    }
+}
+ ```
+ - GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slot/{vehicleTypeId} - Get parking slot by ID.
+ #### Success Response:
+ ```json
+ "statusCode": 200
+ {
+    "AvailableSlot": {
+        "id": ,
+        "slotCode": "",
+        "isAvailable": ,
+        "maximumCapacity": ,
+        "availableCapacity": ,
+        "updatedBy": ,
+        "vehicleTypeId": ,
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
+ ```
+ - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/update-slot/{vehicleTypeId} - Update parking slot.
+ #### Payload:
+ ```json
+ ```
+ #### Success Response:
+ ```json
+ ```
 ## Security Checklist
 - ✅ Always use HTTPS in production.
 - ✅ Restrict CORS origins to specific domains.

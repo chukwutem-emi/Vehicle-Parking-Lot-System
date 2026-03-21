@@ -15,5 +15,5 @@ export const parkingSlotEndpoints = (api: apigw.RestApi, lambda: Record<string, 
     slot.addResource("get-slot").addResource("{vehicleTypeId}").addMethod("GET", new apigw.LambdaIntegration(lambda.getAvailableSlotWithIdLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 
     // update parking slot endpoint
-    slot.addResource("update-slot").addMethod("PUT", new apigw.LambdaIntegration(lambda.updateParkingSlotLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
+    slot.addResource("update-slot").addResource("{vehicleTypeId}").addMethod("PUT", new apigw.LambdaIntegration(lambda.updateParkingSlotLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 };
