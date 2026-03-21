@@ -91,13 +91,6 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        getUserInfo.email       = email;
-        getUserInfo.username    = username;
-        getUserInfo.password    = hashedPassword;
-        getUserInfo.userAddress = userAddress;
-        getUserInfo.phone       = phone;
-        getUserInfo.updatedBy   = getUserInfo.username;
-
         const verifyEmail = await User.findOne({
             where: {
                 email: email
@@ -126,6 +119,13 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 })
             };
         };
+        getUserInfo.email       = email;
+        getUserInfo.username    = username;
+        getUserInfo.password    = hashedPassword;
+        getUserInfo.userAddress = userAddress;
+        getUserInfo.phone       = phone;
+        getUserInfo.updatedBy   = getUserInfo.username;
+
 
         await getUserInfo.save();
 

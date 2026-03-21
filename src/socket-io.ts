@@ -34,7 +34,7 @@ export const socketIOServer = (httpServer: http.Server) => {
             socket.on("join_conversation", async ({conversationId}) => {
                 const conversation = await Conversation.findByPk(conversationId);
                 if (!conversation) return;
-                const room = `Conversation_${conversationId}`;
+                const room = `conversation_${conversationId}`;
                 socket.join(room);
 
                 // send an existing message to this admin

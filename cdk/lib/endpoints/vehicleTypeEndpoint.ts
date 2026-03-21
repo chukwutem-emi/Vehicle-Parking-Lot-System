@@ -13,5 +13,5 @@ export const vehicleTypeEndpoints = (api: apigw.RestApi, lambda: Record<string, 
     vehicle.addResource("get-vehicle").addMethod("GET", new apigw.LambdaIntegration(lambda.fetchVehicleTypeLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 
     // update vehicle-type endpoint
-    vehicle.addResource("update-vehicle").addMethod("PUT", new apigw.LambdaIntegration(lambda.updateVehicleTypeLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
+    vehicle.addResource("update-vehicle").addResource("{vehicleId}").addMethod("PUT", new apigw.LambdaIntegration(lambda.updateVehicleTypeLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 };

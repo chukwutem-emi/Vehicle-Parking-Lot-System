@@ -734,7 +734,24 @@ export const corsHeaders = {
 ```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/update/{userId} - Update user details
 
-#### 
+#### Payload:
+```json
+{
+    "username": "",
+    "password": "",
+    "userAddress": "",
+    "phone": "",
+    "confirmPassword": "",
+    "email": ""
+}
+```
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "message": "User details updated successfully."
+}
+```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/demote/{userId} - Demote user
 #### Success Response: 
 ```json
@@ -781,7 +798,8 @@ export const corsHeaders = {
     }
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/update-vehicle/{vehicleId}
+
 ## Security Checklist
 - ✅ Always use HTTPS in production.
 - ✅ Restrict CORS origins to specific domains.

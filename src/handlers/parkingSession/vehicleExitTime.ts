@@ -30,6 +30,20 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
         };
         const body: VehicleAttributes = JSON.parse(event.body || "{}");
         const {vehicleName, vehicleNumber} = body;
+        
+        const requiredFields = ["vehicleName", "vehicleNumber"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
     
         const validationResult = vehicleExitTimeInputValidation({vehicleNumber, vehicleName});
         if (validationResult !== undefined) {

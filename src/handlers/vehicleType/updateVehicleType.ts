@@ -30,6 +30,18 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
         const body: VehicleTypeAttribute = JSON.parse(event.body || "{}");
         const {newHourlyRate, newVehicleName} = body;
     
+        const requiredFields = ["newVehicleName", "newHourlyRate"];
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            }
+        };
         const validationResult = updateVehicleTypeInputsValidation({newHourlyRate, newVehicleName});
         if (validationResult !== undefined) {
             return {

@@ -29,6 +29,19 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
         const body: UserAttribute = JSON.parse(event.body || "{}");
 
         const {email} = body;
+        const requiredFields = ["email"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
 
         const validationResult = resetPasswordInputValidation(email);
         if (validationResult !== undefined) {

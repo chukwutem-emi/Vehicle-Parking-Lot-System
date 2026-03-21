@@ -28,6 +28,20 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
         };
         const body: ParkingSlotAttributes = JSON.parse(event.body || "{}");
         const { slotCode, vehicleTypeId } = body;
+
+        const requiredFields = ["slotCode", "vehicleTypeId"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
     
         const validationResult = createParkingSlotInputsValidation(slotCode, vehicleTypeId);
         if (validationResult !== undefined) {

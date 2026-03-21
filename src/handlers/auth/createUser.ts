@@ -34,6 +34,19 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
         const body: CreateUserBody = JSON.parse(event.body || "{}");
         const {username, password, confirmPassword, userAddress, email, phone} = body;
 
+        const requiredFields = ["username", "password", "confirmPassword", "userAddress", "email", "phone"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
         // validation
         const validationResult = createUserInputValidation(username, password, userAddress, email, phone);
         if (validationResult !== undefined) {

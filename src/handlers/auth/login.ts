@@ -33,6 +33,19 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         const body: UserAttributes = JSON.parse(event.body || "{}");
         const {email, password} = body;
 
+        const requiredFields = ["email", "password"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
         const validationResult =  loginInputValidation(email, password);
         if (validationResult !== undefined) {
             return {

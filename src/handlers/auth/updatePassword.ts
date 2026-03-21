@@ -30,6 +30,20 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
         const body: UserAttribute = JSON.parse(event.body || "{}");
         const {password, confirmPassword} = body;
 
+        const requiredFields = ["password", "confirmPassword"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
+
         const resetToken = event.pathParameters?.userId;
 
         if (confirmPassword !== password) {

@@ -30,6 +30,20 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
         const body: VehicleTypeAttribute = JSON.parse(event.body || "{}");
     
         const {vehicleName, hourlyRate} = body;
+        
+        const requiredFields = ["vehicleName", "hourlyRate"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
     
         const validationResult = vehicleTypeInputsValidation({vehicleName: vehicleName, hourlyRate: hourlyRate});
         if (validationResult !== undefined) {

@@ -36,6 +36,20 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
         const body: ParkingSessionAttributes = JSON.parse(event.body || "{}");
         const {slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress} = body;
 
+        const requiredFields = ["slotId", "vehicleId", "vehicleNumber", "vehicleOwnerPhone", "vehicleOwnerAddress", "vehicleOwnerNextOfKin", "vehicleOwnerNextOfKinPhone", "vehicleOwnerNextOfKinAddress"];
+
+        for (const field of requiredFields) {
+            if (!(field in body)) {
+                return {
+                    statusCode: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        message: `Missing required field: ${field}`
+                    })
+                };
+            };
+        };
+
         const validationResult = createPSessionInputValidation({slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress});
 
         if (validationResult !== undefined) {
