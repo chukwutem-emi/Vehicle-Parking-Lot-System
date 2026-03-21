@@ -732,6 +732,9 @@ export const corsHeaders = {
     "message": "<The username> has been promoted to admin successfully!"
 }
 ```
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/update/{userId} - Update user details
+
+#### 
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/demote/{userId} - Demote user
 #### Success Response: 
 ```json
@@ -751,6 +754,7 @@ export const corsHeaders = {
 ```
 #### Success Response:
 ```json
+"statusCode": 201,
 {
     "message": "",
     "details": {
@@ -762,7 +766,21 @@ export const corsHeaders = {
     }
 }
 ```
-- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/
+- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/get-vehicle?vehicleName
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "vehicleDetails": {
+        "id": ,
+        "vehicleName": "",
+        "hourlyRate": "",
+        "updatedBy": ,
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
+```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/
 ## Security Checklist
 - ✅ Always use HTTPS in production.

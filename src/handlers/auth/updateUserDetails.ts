@@ -3,7 +3,7 @@ import { withAuth } from "../lambdaAuth.js";
 import {updateUserInputValidation} from "../validation/updateUserDetailsInput.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
-
+import bcrypt from "bcryptjs"
 
 
 
@@ -89,13 +89,46 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 })
             };
         }
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         getUserInfo.email       = email;
         getUserInfo.username    = username;
-        getUserInfo.password    = password;
+        getUserInfo.password    = hashedPassword;
         getUserInfo.userAddress = userAddress;
         getUserInfo.phone       = phone;
         getUserInfo.updatedBy   = getUserInfo.username;
+
+        const verifyEmail = await User.findOne({
+            where: {
+                email: email
+            }
+        });
+        if (verifyEmail) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: "A user with this e-mail address already exist. Please use another email"
+                })
+            };
+        };
+        const verifyPhone = await User.findOne({
+            where: {
+                phone: phone
+            }
+        });
+        if (verifyPhone) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: "A user with this phone number already exist. Please use another phone number"
+                })
+            };
+        };
+
         await getUserInfo.save();
+
         sendMail({
             to: email,
             subject: "User Details Updated",
