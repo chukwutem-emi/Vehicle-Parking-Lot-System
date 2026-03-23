@@ -836,7 +836,7 @@ export const corsHeaders = {
     "message": "Parking slot created successfully."
 }
  ```
- - GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slots?vehicleTypeId=?&limit=?&sort=?&currentPage=? - Get all the parking slot.
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slots?vehicleTypeId=?&limit=?&sort=?&currentPage=? - Get all the parking slot.
  #### Success Response:
  ```json
  "statusCode": 200,
@@ -862,7 +862,7 @@ export const corsHeaders = {
     }
 }
  ```
- - GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slot/{vehicleTypeId} - Get parking slot by ID.
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slot/{vehicleTypeId} - Get parking slot by ID.
  #### Success Response:
  ```json
  "statusCode": 200
@@ -880,13 +880,107 @@ export const corsHeaders = {
     }
 }
  ```
- - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/update-slot/{vehicleTypeId} - Update parking slot.
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/update-slot/{vehicleTypeId} - Update parking slot.
  #### Payload:
  ```json
+ {
+    "maximumCapacity": ,
+    "availableCapacity": ,
+    "slotCode": ""
+}
  ```
  #### Success Response:
  ```json
+ "statusCode": 200,
+ {
+    "message": "Parking slot updated successfully."
+}
  ```
+- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/create - Create Parking session.
+#### Payload:
+```json
+{
+    "slotId": , 
+    "vehicleId": , 
+    "vehicleNumber": "", 
+    "vehicleOwnerPhone": "", 
+    "vehicleOwnerAddress": "", 
+    "vehicleOwnerNextOfKin": "", 
+    "vehicleOwnerNextOfKinPhone": "", 
+    "vehicleOwnerNextOfKinAddress": ""
+}
+```
+#### Success Response:
+```json
+"statusCode": 201,
+{
+    "Message": "Parking session created successfully.",
+    "ParkingSession": {
+        "isCleared": ,
+        "entryTime": "",
+        "parkingStatus": "",
+        "id": ,
+        "slotId": ,
+        "vehicleTypeId": ,
+        "vehicleNumber": "",
+        "vehicleOwnerPhone": "",
+        "vehicleOwnerAddress": "",
+        "vehicleOwnerNextOfKin": "",
+        "vehicleOwnerNextOfKinPhone": "",
+        "vehicleOwnerNextOfKinAddress": "",
+        "updatedAt": "",
+        "createdAt": ""
+    }
+}
+```
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-sessions - Get all parking sessions.
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "message": "Parking sessions retrieved successfully.",
+    "pagination": {
+        "data": [
+            {
+                "id": ,
+                "vehicleNumber": "",
+                "vehicleOwnerPhone": "",
+                "vehicleOwnerAddress": "",
+                "vehicleOwnerNextOfKin": "",
+                "vehicleOwnerNextOfKinPhone": "",
+                "vehicleOwnerNextOfKinAddress": "",
+                "isCleared": ,
+                "entryTime": "",
+                "exitTime": ,
+                "parkingStatus": "",
+                "totalAmount": ,
+                "slotId": ,
+                "vehicleTypeId": ,
+                "createdAt": "",
+                "updatedAt": ""
+            }
+        ],
+        "currentPage": 1,
+        "limit": 1,
+        "total": 1,
+        "totalPages": 1
+    }
+}
+```
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-session - Get one parking session.
+#### Payload:
+```json
+```
+#### Success Response:
+```json
+```
+- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/update - Update parking session during vehicle exit.
+#### Payload:
+```json
+```
+#### Success Response:
+```json
+```
 ## Security Checklist
 - ✅ Always use HTTPS in production.
 - ✅ Restrict CORS origins to specific domains.

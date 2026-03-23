@@ -136,7 +136,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Invalid vehicleOwnerNextOfKin. It must be a string with a minimum length of 3 and a maximum length of 100 characters."
+                message: "Invalid vehicleOwnerNextOfKin. It must be a string with a minimum length of 10 and a maximum length of 100 characters."
             })
          };
     };

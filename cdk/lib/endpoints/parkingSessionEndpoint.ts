@@ -15,7 +15,7 @@ export const parkingSessionEndpoints = (api: apigw.RestApi, lambda: Record<strin
 
     // getParkingSession endpoint
 
-    session.addResource("get-session").addMethod("GET", new apigw.LambdaIntegration(lambda.getParkingSessionLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
+    session.addResource("get-session").addResource("{sessionId}").addMethod("GET", new apigw.LambdaIntegration(lambda.getParkingSessionLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 
     // vehicleExitTime endpoint
 
