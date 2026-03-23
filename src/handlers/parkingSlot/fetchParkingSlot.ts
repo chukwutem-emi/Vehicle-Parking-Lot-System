@@ -10,9 +10,6 @@ const sequelize = initModels();
 export const getAvailableSlotHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         const limit = Number(event.queryStringParameters?.limit) || 1;
         const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
         const offset = (currentPage - 1) * limit;

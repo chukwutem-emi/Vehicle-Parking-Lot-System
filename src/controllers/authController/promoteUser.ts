@@ -10,9 +10,6 @@ export const promoteUser = async (req: Request, res: Response, next: NextFunctio
 
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         if (!userId || isNaN(userId)) {
             return res.status(400).json({message: "Invalid user ID. User ID must be a number."});
         };

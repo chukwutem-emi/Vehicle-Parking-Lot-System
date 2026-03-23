@@ -15,9 +15,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const password             : string = req.body.password;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const passwordInput: validation.ValidateAble = {
             value                        : password,
             required                     : true,

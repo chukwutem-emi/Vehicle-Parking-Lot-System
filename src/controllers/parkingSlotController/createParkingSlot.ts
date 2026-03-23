@@ -10,9 +10,6 @@ export const createParkingSlot = async (req: Request, res: Response, next: NextF
     const vehicleTypeId: number = req.body.vehicleTypeId;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const slotCodeInput: validation.ValidateAble = {
             value: slotCode,
             required: true,

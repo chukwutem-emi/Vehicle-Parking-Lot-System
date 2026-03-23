@@ -9,9 +9,6 @@ export const getParkingSession = async (req: Request, res: Response, next: NextF
 
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         if (isNaN(sessionId)) {
             return res.status(400).json({message: "Invalid session ID. Session ID must be a number."});
         };

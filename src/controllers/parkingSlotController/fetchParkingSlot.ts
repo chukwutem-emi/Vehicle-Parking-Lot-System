@@ -18,9 +18,6 @@ export const getAvailableSlot = async (req: Request, res: Response, next: NextFu
     const offset = (currentPage - 1) * limit;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-In user."});

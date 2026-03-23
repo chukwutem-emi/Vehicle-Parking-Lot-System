@@ -13,9 +13,6 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
     const currentUser = req.userId;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const getUser = await User.findByPk(currentUser);
         if (getUser === undefined || getUser === null) {
             return res.status(404).json({message: "We could not find the current logged-in user. Please ensure you are logged in."});

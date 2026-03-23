@@ -11,9 +11,6 @@ const sequelize = initModels();
 export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -79,7 +76,7 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
         return {
             statusCode: 200,
             body: JSON.stringify({
-                AvailableSlot: availableSlots
+                AvailableSlot: availableSlots.toJSON()
             })
         };
     } catch (error: any) {

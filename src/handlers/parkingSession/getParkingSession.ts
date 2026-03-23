@@ -6,12 +6,10 @@ import { initModels, ParkingSession, User } from "../../models/index.js";
 
 
 const sequelize = initModels();
+
 export const getParkingSessionHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -73,7 +71,8 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: `Parking session retrieved successfully. ${parkingSession}`
+                message: "Parking session retrieved successfully.",
+                data: parkingSession.toJSON()
             })
         };
     } catch (err: any) {

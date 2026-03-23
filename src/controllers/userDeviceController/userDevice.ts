@@ -15,9 +15,6 @@ export const getLoggedInUserDevice = async (req: Request, res: Response, next: N
 
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         if (isNaN(userId)) {
             return res.status(400).json({message: "User ID must be a number."});
         };
@@ -46,9 +43,6 @@ export const getLoggedInUserDevice = async (req: Request, res: Response, next: N
 export const getAllLoggedInUserDevices = async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const currentUser = await User.findByPk(req.userId);
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."});

@@ -9,9 +9,6 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     const userId: number = Number(req.params.userId);
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database.....");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (isNaN(userId)){
             return res.status(400).json({message: "Invalid user ID."});
         };

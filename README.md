@@ -967,7 +967,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-session - Get one parking session.
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-session/{sessionId} - Get one parking session.
 #### Payload:
 ```json
 ```

@@ -15,9 +15,6 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     const confirmPassword : string = req.body.confirmPassword;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         if (confirmPassword !== password) {
             return res.status(400).json({confirmPasswordErr: "Password and confirm password do not match. Please ensure both passwords are the same."});
         };

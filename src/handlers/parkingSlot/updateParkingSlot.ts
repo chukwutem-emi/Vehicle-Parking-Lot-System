@@ -18,9 +18,6 @@ const sequelize = initModels();
 export const updateParkingSlotHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,

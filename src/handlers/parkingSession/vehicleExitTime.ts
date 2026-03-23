@@ -18,9 +18,6 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
     const trans = await sequelize.transaction()
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -150,7 +147,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
             headers: corsHeaders,
             body: JSON.stringify({
                 message: "Vehicle exit time recorded successfully.",
-                details: session
+                details: session.toJSON()
             })
         };
     } catch (err: any) {

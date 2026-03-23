@@ -7,9 +7,6 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) =
     const userId = req.userId;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const getUserById = await User.findByPk(userId)
         if (getUserById === undefined || getUserById === null) {
             return res.status(404).json({message: "User not found!."});

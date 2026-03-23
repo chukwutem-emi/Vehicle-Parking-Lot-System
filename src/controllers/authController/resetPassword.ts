@@ -11,9 +11,6 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     const email: string = req.body.email;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const emailInput: validation.ValidateAble = {
             value         : email,
             required      : true,

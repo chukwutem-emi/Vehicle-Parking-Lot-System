@@ -24,9 +24,6 @@ export const createParkingSession = async (req: Request, res: Response, next: Ne
     const t = await sequelize.transaction();
     try{
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         const slotIdInput: validation.ValidateAble = {
             value: slotId,
             required: true,

@@ -16,9 +16,6 @@ const sequelize = initModels();
 export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -96,7 +93,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({message: "Vehicle-type updated successfully.", details: vehicleDetails})
+            body: JSON.stringify({message: "Vehicle-type updated successfully.", details: vehicleDetails.toJSON()})
          };
     } catch (err: any) {
         console.error("Error:", err)

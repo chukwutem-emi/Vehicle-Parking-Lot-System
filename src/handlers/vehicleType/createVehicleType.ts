@@ -17,9 +17,6 @@ const sequelize = initModels();
 export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
-        await sequelize.authenticate();
-        console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
             return {
                 statusCode: 204,
@@ -97,7 +94,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Vehicle-type has been uploaded successfully.", details: createVehicleType
+                message: "Vehicle-type has been uploaded successfully.", details: createVehicleType.toJSON()
             })
         };
     } catch (err: any) {

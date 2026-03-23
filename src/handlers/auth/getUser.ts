@@ -40,7 +40,7 @@ export const getUserHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                userDetails: getUserById
+                userDetails: getUserById.toJSON()
             })
         };
     } catch (err: any) {

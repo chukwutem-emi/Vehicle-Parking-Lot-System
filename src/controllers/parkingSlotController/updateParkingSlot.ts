@@ -13,9 +13,6 @@ export const updateParkingSlot = async (req: Request, res: Response, next: NextF
     const slotCode: string = req.body.slotCode;
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database..........");
-        await sequelize.authenticate();
-        console.log("Database connected!");
         if (isNaN(vehicleTypeId) || vehicleTypeId <= 0) {
             return res.status(400).json({message: "Invalid vehicleTypeId. It must be a positive integer."});
         };
