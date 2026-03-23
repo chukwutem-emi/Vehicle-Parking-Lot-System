@@ -968,11 +968,29 @@ export const corsHeaders = {
 }
 ```
 - GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-session/{sessionId} - Get one parking session.
-#### Payload:
-```json
-```
 #### Success Response:
 ```json
+{
+    "message": "Parking session retrieved successfully.",
+    "data": {
+        "id": ,
+        "vehicleNumber": "",
+        "vehicleOwnerPhone": "",
+        "vehicleOwnerAddress": "",
+        "vehicleOwnerNextOfKin": "",
+        "vehicleOwnerNextOfKinPhone": "",
+        "vehicleOwnerNextOfKinAddress": "",
+        "isCleared": ,
+        "entryTime": "",
+        "exitTime": ,
+        "parkingStatus": "",
+        "totalAmount": ,
+        "slotId": 1,
+        "vehicleTypeId": ,
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
 ```
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/update - Update parking session during vehicle exit.
 #### Payload:

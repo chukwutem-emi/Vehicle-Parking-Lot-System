@@ -114,7 +114,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
         const exitTime = new Date();
         const vehicleEntryTime = session.entryTime as Date;
         const duration = exitTime.getTime() - vehicleEntryTime.getTime();
-        const durationHour = Math.ceil(duration / 1000 * 60 * 60);
+        const durationHour = Math.ceil(duration / (1000 * 60 * 60));
     
         session.exitTime = exitTime;
         session.totalAmount = durationHour * vehicleInfo.hourlyRate;
