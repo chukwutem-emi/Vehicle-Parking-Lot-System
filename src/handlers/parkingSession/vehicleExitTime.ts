@@ -138,10 +138,6 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (slot.availableCapacity < slot.maximumCapacity) {
-            slot.availableCapacity += 1;
-            await slot.save({transaction: trans})
-        };
         if (slot.availableCapacity >= slot.maximumCapacity) {
             await trans.rollback();
             return {
@@ -152,6 +148,10 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 })
             };
         }
+        if (slot.availableCapacity < slot.maximumCapacity) {
+            slot.availableCapacity += 1;
+            await slot.save({transaction: trans})
+        };
         await trans.commit();
         return {
             statusCode: 200,

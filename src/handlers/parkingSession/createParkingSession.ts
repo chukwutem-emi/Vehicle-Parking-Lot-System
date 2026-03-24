@@ -113,7 +113,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
         slot.isAvailable = slot.availableCapacity > 0;
 
         await slot.save({transaction: t});
-        
+
         const vehicle = await VehicleType.findByPk(vehicleId, {transaction: t, lock: t.LOCK.UPDATE});
         if (!vehicle) {
             return {
@@ -160,7 +160,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
             headers: corsHeaders,
             body: JSON.stringify({
                 Message: "Parking session created successfully.",
-                ParkingSession: parkingSession
+                ParkingSession: parkingSession.toJSON()
             })
         };
     } catch (err: any) { 
