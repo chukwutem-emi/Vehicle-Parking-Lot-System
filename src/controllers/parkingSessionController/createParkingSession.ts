@@ -21,84 +21,85 @@ export const createParkingSession = async (req: Request, res: Response, next: Ne
     const vehicleOwnerNextOfKinPhone   : string = req.body.vehicleOwnerNextOfKinPhone;
     const vehicleOwnerNextOfKinAddress : string = req.body.vehicleOwnerNextOfKinAddress;
 
+    if (!sequelize) throw new Error("Sequelize instance not initialized");
+    
+    const slotIdInput: validation.ValidateAble = {
+        value: slotId,
+        required: true,
+        minNumber: 1
+    };
+    if (!validation.validate(slotIdInput)) {
+        return res.status(400).json({message: "Invalid slotId. It must be a positive integer greater than 0."});
+    }
+    const vehicleIdInput: validation.ValidateAble = {
+        value: vehicleId,
+        required: true,     
+        minNumber: 1
+    };
+    if (!validation.validate(vehicleIdInput)) {
+        return res.status(400).json({message: "Invalid vehicleId. It must be a positive integer greater than 0."});
+    };
+    const vehicleNumberInput: validation.ValidateAble = {
+        value: vehicleNumber,
+        required: true,
+        maximumLength: 100,
+        minimumLength: 3
+    };
+    if (!validation.validate(vehicleNumberInput)) {
+        return res.status(400).json({message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
+    };
+    const vehicleOwnerPhoneInput: validation.ValidateAble = {
+        value: vehicleOwnerPhone,
+        required: true,
+        isPhone: true,
+        maximumLength: 15,
+        minimumLength: 7
+    };
+    if (!validation.validate(vehicleOwnerPhoneInput)) {
+        return res.status(400).json({message: "Invalid vehicleOwnerPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."});
+    };
+    const vehicleOwnerAddressInput: validation.ValidateAble = {
+        value: vehicleOwnerAddress,
+        required: true,
+        maximumLength: 200,
+        minimumLength: 10,
+        minNumber: 1
+    };
+    if (!validation.validate(vehicleOwnerAddressInput)) {
+        return res.status(400).json({message: "Invalid vehicleOwnerAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."});
+    };
+    const vehicleOwnerNextOfKinInput: validation.ValidateAble = {
+        value: vehicleOwnerNextOfKin,
+        required: true,
+        maximumLength: 100,
+        minimumLength: 10
+    };
+    if (!validation.validate(vehicleOwnerNextOfKinInput)) {
+        return res.status(400).json({message: "Invalid vehicleOwnerNextOfKin. It must be a string with a minimum length of 10 and a maximum length of 100 characters."});
+    };
+
+    const vehicleOwnerNextOfKinPhoneInput: validation.ValidateAble = {
+        value: vehicleOwnerNextOfKinPhone,
+        required: true,
+        isPhone: true,
+        maximumLength: 15,
+        minimumLength: 7
+    };
+    if (!validation.validate(vehicleOwnerNextOfKinPhoneInput)) {
+        return res.status(400).json({message: "Invalid vehicleOwnerNextOfKinPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."});
+    };
+    const vehicleOwnerNextOfKinAddressInput: validation.ValidateAble = {
+        value: vehicleOwnerNextOfKinAddress,
+        required: true,
+        maximumLength: 200,
+        minimumLength: 10,
+        minNumber: 1
+    };
+    if (!validation.validate(vehicleOwnerNextOfKinAddressInput)) {
+        return res.status(400).json({message: "Invalid vehicleOwnerNextOfKinAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."});
+    };
     const t = await sequelize.transaction();
     try{
-        if (!sequelize) throw new Error("Sequelize instance not initialized");
-        const slotIdInput: validation.ValidateAble = {
-            value: slotId,
-            required: true,
-            minNumber: 1
-        };
-        if (!validation.validate(slotIdInput)) {
-            return res.status(400).json({message: "Invalid slotId. It must be a positive integer greater than 0."});
-        }
-        const vehicleIdInput: validation.ValidateAble = {
-            value: vehicleId,
-            required: true,     
-            minNumber: 1
-        };
-        if (!validation.validate(vehicleIdInput)) {
-            return res.status(400).json({message: "Invalid vehicleId. It must be a positive integer greater than 0."});
-        };
-        const vehicleNumberInput: validation.ValidateAble = {
-            value: vehicleNumber,
-            required: true,
-            maximumLength: 100,
-            minimumLength: 3
-        };
-        if (!validation.validate(vehicleNumberInput)) {
-            return res.status(400).json({message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
-        };
-        const vehicleOwnerPhoneInput: validation.ValidateAble = {
-            value: vehicleOwnerPhone,
-            required: true,
-            isPhone: true,
-            maximumLength: 15,
-            minimumLength: 7
-        };
-        if (!validation.validate(vehicleOwnerPhoneInput)) {
-            return res.status(400).json({message: "Invalid vehicleOwnerPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."});
-        };
-        const vehicleOwnerAddressInput: validation.ValidateAble = {
-            value: vehicleOwnerAddress,
-            required: true,
-            maximumLength: 200,
-            minimumLength: 10,
-            minNumber: 1
-        };
-        if (!validation.validate(vehicleOwnerAddressInput)) {
-            return res.status(400).json({message: "Invalid vehicleOwnerAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."});
-        };
-        const vehicleOwnerNextOfKinInput: validation.ValidateAble = {
-            value: vehicleOwnerNextOfKin,
-            required: true,
-            maximumLength: 100,
-            minimumLength: 10
-        };
-        if (!validation.validate(vehicleOwnerNextOfKinInput)) {
-            return res.status(400).json({message: "Invalid vehicleOwnerNextOfKin. It must be a string with a minimum length of 10 and a maximum length of 100 characters."});
-        };
-
-        const vehicleOwnerNextOfKinPhoneInput: validation.ValidateAble = {
-            value: vehicleOwnerNextOfKinPhone,
-            required: true,
-            isPhone: true,
-            maximumLength: 15,
-            minimumLength: 7
-        };
-        if (!validation.validate(vehicleOwnerNextOfKinPhoneInput)) {
-            return res.status(400).json({message: "Invalid vehicleOwnerNextOfKinPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."});
-        };
-        const vehicleOwnerNextOfKinAddressInput: validation.ValidateAble = {
-            value: vehicleOwnerNextOfKinAddress,
-            required: true,
-            maximumLength: 200,
-            minimumLength: 10,
-            minNumber: 1
-        };
-        if (!validation.validate(vehicleOwnerNextOfKinAddressInput)) {
-            return res.status(400).json({message: "Invalid vehicleOwnerNextOfKinAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."});
-        };
         const currentUser = await User.findByPk(req.userId);
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again." });

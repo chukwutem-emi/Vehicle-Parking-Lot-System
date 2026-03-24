@@ -15,6 +15,30 @@ interface VehicleAttributes {
 
 const sequelize = initModels();
 export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
+    const body: VehicleAttributes = JSON.parse(event.body || "{}");
+    const {vehicleName, vehicleNumber} = body;
+    
+    const requiredFields = ["vehicleName", "vehicleNumber"];
+
+    for (const field of requiredFields) {
+        if (!(field in body)) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: `Missing required field: ${field}`
+                })
+            };
+        };
+    };
+    const validationResult = vehicleExitTimeInputValidation({vehicleNumber, vehicleName});
+    if (validationResult !== undefined) {
+        return {
+            statusCode: validationResult.statusCode,
+            body: validationResult.body,
+            headers: validationResult.headers
+        };
+    };
     const trans = await sequelize.transaction()
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -25,31 +49,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 body:""
             };
         };
-        const body: VehicleAttributes = JSON.parse(event.body || "{}");
-        const {vehicleName, vehicleNumber} = body;
-        
-        const requiredFields = ["vehicleName", "vehicleNumber"];
-
-        for (const field of requiredFields) {
-            if (!(field in body)) {
-                return {
-                    statusCode: 400,
-                    headers: corsHeaders,
-                    body: JSON.stringify({
-                        message: `Missing required field: ${field}`
-                    })
-                };
-            };
-        };
     
-        const validationResult = vehicleExitTimeInputValidation({vehicleNumber, vehicleName});
-        if (validationResult !== undefined) {
-            return {
-                statusCode: validationResult.statusCode,
-                body: validationResult.body,
-                headers: validationResult.headers
-            };
-        };
         const currentUser = event.userId;
         if (currentUser === undefined || currentUser === null) {
             return {
@@ -97,7 +97,8 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
         };
         const session = await ParkingSession.findOne({
             where: {
-                vehicleNumber: vehicleNumber
+                vehicleNumber: vehicleNumber,
+                parkingStatus: parkingStatus.ACTIVE
             },
             transaction: trans,
             lock: trans.LOCK.UPDATE
@@ -123,24 +124,14 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
     
         await session.save({transaction: trans});
     
-        const updateAvailableCapacity = await ParkingSlot.findOne({
-            where: {
-                id: session.id
-            },
-            transaction: trans,
-            lock: trans.LOCK.UPDATE
-        });
-        if (!updateAvailableCapacity) {
-            return {
-                statusCode: 404,
-                body: JSON.stringify({
-                    message: "Parking slot with the specified ID not found. Please ensure the slot ID is correct."
-                })
-            };
-        }
-        updateAvailableCapacity.availableCapacity += 1;
-        updateAvailableCapacity.save({transaction: trans});
-    
+        await ParkingSlot.increment(
+            {availableCapacity: 1},
+            {
+                where: {id: session.slotId},
+                transaction: trans
+            }
+        );
+        
         await trans.commit();
         return {
             statusCode: 200,

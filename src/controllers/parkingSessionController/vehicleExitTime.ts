@@ -12,27 +12,29 @@ export const vehicleExitTime = async (req: Request, res: Response, next: NextFun
     const vehicleNumber: string = req.body.vehicleNumber;
     const exitTime = new Date();
     const vehicleName = req.body.vehicleName;
+
+    if (!sequelize) throw new Error("Sequelize instance not initialized");
+
+    const vehicleNumberInput: validation.ValidateAble = {
+        value: vehicleNumber,
+        required: true,
+        maximumLength: 100,
+        minimumLength: 3
+    };
+    if (!validation.validate(vehicleNumberInput)) {
+        return res.status(400).json({message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
+    };
+    const vehicleNameInput: validation.ValidateAble = {
+        value         : vehicleName,        
+        required      : true,
+        maximumLength : 100,
+        minimumLength : 3
+    };
+    if (!validation.validate(vehicleNameInput)) {
+        return res.status(400).json({message: "Invalid vehicleName. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
+    };
     const trans = await sequelize.transaction();
     try {
-        if (!sequelize) throw new Error("Sequelize instance not initialized");
-        const vehicleNumberInput: validation.ValidateAble = {
-            value: vehicleNumber,
-            required: true,
-            maximumLength: 100,
-            minimumLength: 3
-        };
-        if (!validation.validate(vehicleNumberInput)) {
-            return res.status(400).json({message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
-        };
-        const vehicleNameInput: validation.ValidateAble = {
-            value         : vehicleName,        
-            required      : true,
-            maximumLength : 100,
-            minimumLength : 3
-        };
-        if (!validation.validate(vehicleNameInput)) {
-            return res.status(400).json({message: "Invalid vehicleName. It must be a string with a minimum length of 3 and a maximum length of 100 characters."});
-        };
         const currentUser = await User.findByPk(req.userId);
         if (currentUser === undefined || currentUser === null) {
             return res.status(404).json({message: "We couldn't find the current logged-in user. Please ensure you are logged in."});

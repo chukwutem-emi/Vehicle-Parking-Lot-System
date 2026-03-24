@@ -20,6 +20,33 @@ interface ParkingSessionAttributes {
 
 const sequelize = initModels();
 export const createParkingSessionHandler = withAuth(async (event, _context) => {
+    const body: ParkingSessionAttributes = JSON.parse(event.body || "{}");
+    const {slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress} = body;
+
+    const requiredFields = ["slotId", "vehicleId", "vehicleNumber", "vehicleOwnerPhone", "vehicleOwnerAddress", "vehicleOwnerNextOfKin", "vehicleOwnerNextOfKinPhone", "vehicleOwnerNextOfKinAddress"];
+
+    for (const field of requiredFields) {
+        if (!(field in body)) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: `Missing required field: ${field}`
+                })
+            };
+        };
+    };
+
+    const validationResult = createPSessionInputValidation({slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress});
+
+    if (validationResult !== undefined) {
+        return {
+            statusCode: validationResult.statusCode,
+            body: validationResult.body,
+            headers: validationResult.headers
+        };
+    };
+
     const t = await sequelize.transaction();
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
@@ -28,35 +55,8 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 204,
                 headers: corsHeaders,
                 body: ""
-            };
-        };
-        const body: ParkingSessionAttributes = JSON.parse(event.body || "{}");
-        const {slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress} = body;
-
-        const requiredFields = ["slotId", "vehicleId", "vehicleNumber", "vehicleOwnerPhone", "vehicleOwnerAddress", "vehicleOwnerNextOfKin", "vehicleOwnerNextOfKinPhone", "vehicleOwnerNextOfKinAddress"];
-
-        for (const field of requiredFields) {
-            if (!(field in body)) {
-                return {
-                    statusCode: 400,
-                    headers: corsHeaders,
-                    body: JSON.stringify({
-                        message: `Missing required field: ${field}`
-                    })
-                };
-            };
-        };
-
-        const validationResult = createPSessionInputValidation({slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress});
-
-        if (validationResult !== undefined) {
-            return {
-                statusCode: validationResult.statusCode,
-                body: validationResult.body,
-                headers: validationResult.headers
-            };
-        };
-
+            };    
+        };    
 
         const currentUser = event.userId;
         if (currentUser === undefined || currentUser === null) {
