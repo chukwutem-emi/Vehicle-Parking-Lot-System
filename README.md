@@ -16,7 +16,7 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 - Github: [chukwutem-emi](https://github.com/chukwutem-emi)
 - License: ISC.
 - Language: TypeScript.
-- Last Updated: March 20, 2026.
+- Last Updated: March 24, 2026.
 
 
 ## 🚀 Features
@@ -97,7 +97,7 @@ Socket --> DB
 <summary> View Full Project Structure </summary>
 
 ```bash
-Vehicle-Parking-Lot-System/
+Vehicle-Parking-Lot-System
 ├── README.md
 ├── cdk
 │   ├── bin
@@ -108,12 +108,16 @@ Vehicle-Parking-Lot-System/
 │   │   │   ├── authEndpoints.ts
 │   │   │   ├── parkingSessionEndpoint.ts
 │   │   │   ├── parkingSlotEndpoint.ts
+│   │   │   ├── testConnectionEndpoint.ts
+│   │   │   ├── userDeviceEndpoints.ts
 │   │   │   └── vehicleTypeEndpoint.ts
 │   │   └── lambdas
 │   │       ├── authLambdas.ts
 │   │       ├── lambdaFactory.ts
 │   │       ├── parkingSessionLambda.ts
 │   │       ├── parkingSlotLambda.ts
+│   │       ├── testConnectionLambda.ts
+│   │       ├── userDeviceLambda.ts
 │   │       └── vehicleTypeLambda.ts
 │   └── tsconfig.json
 ├── cdk.json
@@ -125,6 +129,8 @@ Vehicle-Parking-Lot-System/
 ├── seeders
 ├── src
 │   ├── app.ts
+│   ├── certificate
+│   │   └── ca.pem
 │   ├── controllers
 │   │   ├── authController
 │   │   │   ├── deleteUser.ts
@@ -169,8 +175,6 @@ Vehicle-Parking-Lot-System/
 │   │   │   └── updateUserDetails.ts
 │   │   ├── corsHeaders.ts
 │   │   ├── lambdaAuth.ts
-│   │   ├── model
-│   │   │   └── index.ts
 │   │   ├── parkingSession
 │   │   │   ├── createParkingSession.ts
 │   │   │   ├── getAllParkingSession.ts
@@ -181,6 +185,9 @@ Vehicle-Parking-Lot-System/
 │   │   │   ├── fetchParkingSlot.ts
 │   │   │   ├── fetchWithID.ts
 │   │   │   └── updateParkingSlot.ts
+│   │   ├── test-connection.ts
+│   │   ├── usersDevice
+│   │   │   └── user-device.ts
 │   │   ├── validation
 │   │   │   ├── createPSessionInput.ts
 │   │   │   ├── createParkingSlotInputs.ts
@@ -201,6 +208,7 @@ Vehicle-Parking-Lot-System/
 │   │   └── is-auth.ts
 │   ├── models
 │   │   ├── conversation.ts
+│   │   ├── index.ts
 │   │   ├── message.ts
 │   │   ├── parking-sessions.ts
 │   │   ├── parking-slots.ts
@@ -995,9 +1003,107 @@ export const corsHeaders = {
 - PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/update - Update parking session during vehicle exit.
 #### Payload:
 ```json
+{
+    "vehicleName": "",
+    "vehicleNumber": ""
+}
 ```
 #### Success Response:
 ```json
+"statusCode": 200,
+{
+    "message": "Vehicle exit time recorded successfully.",
+    "details": {
+        "id": 3,
+        "vehicleNumber": "",
+        "vehicleOwnerPhone": "",
+        "vehicleOwnerAddress": "",
+        "vehicleOwnerNextOfKin": "",
+        "vehicleOwnerNextOfKinPhone": "",
+        "vehicleOwnerNextOfKinAddress": "",
+        "isCleared": ,
+        "entryTime": "",
+        "exitTime": "",
+        "parkingStatus": "",
+        "totalAmount": ,
+        "slotId": ,
+        "vehicleTypeId": ,
+        "createdAt": "",
+        "updatedAt": ""
+    }
+}
+```
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/device/get-device/{userId} - Get user logged-in device.
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "Message": "Logged-in user device retrieved successfully.",
+    "userDevice": {
+        "id": ,
+        "userId": ,
+        "deviceLabel": "",
+        "ip": "",
+        "userAgent": "",
+        "location": "",
+        "loginTime": ""
+    }
+}
+```
+- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/device/get-devices - Get all users devices.
+#### Success Response:
+```json
+"statusCode": 200,
+{
+    "message": "UserDevices retrieved successfully.",
+    "userDevices": [
+        {
+            "id": ,
+            "userId": ,
+            "deviceLabel": "",
+            "ip": "",
+            "userAgent": "",
+            "location": "",
+            "loginTime": ""
+        },
+        {
+            "id": ,
+            "userId": ,
+            "deviceLabel": "",
+            "ip": "",
+            "userAgent": "",
+            "location": "",
+            "loginTime": ""
+        },
+        {
+            "id": ,
+            "userId": ,
+            "deviceLabel": "",
+            "ip": "",
+            "userAgent": "",
+            "location": "",
+            "loginTime": ""
+        },
+        {
+            "id": ,
+            "userId": ,
+            "deviceLabel": "",
+            "ip": "",
+            "userAgent": "",
+            "location": "",
+            "loginTime": ""
+        },
+        {
+            "id": ,
+            "userId": ,
+            "deviceLabel": "",
+            "ip": "",
+            "userAgent": "",
+            "location": "",
+            "loginTime": ""
+        }
+    ]
+}
 ```
 ## Security Checklist
 - ✅ Always use HTTPS in production.
@@ -1094,7 +1200,7 @@ npx cdk deploy
 | Version | 1.0.0 |
 | Author | Chukwutem Stephen Emi |
 | Created | February 13, 2026 |
-| Last updated | March 20, 2026 |
+| Last updated | March 24, 2026 |
 | Size | 560KB |
 
 
