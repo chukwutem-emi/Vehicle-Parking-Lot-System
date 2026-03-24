@@ -90,6 +90,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
 
         const slot = await ParkingSlot.findByPk(slotId, {transaction: t, lock: t.LOCK.UPDATE});
         if (!slot) {
+            await t.rollback();
             return {
                 statusCode: 404,
                 headers: corsHeaders,
@@ -98,7 +99,8 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 })
             };
         }
-        if (!slot.isAvailable || slot.availableCapacity <= 0) {
+        if (slot.availableCapacity <= 0) {
+            await t.rollback();
             return {
                 statusCode: 400,
                 headers: corsHeaders,
@@ -107,11 +109,11 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 })
             };
         };
-        if (slot.availableCapacity === 0) {
-            slot.isAvailable = false;
-        }
         slot.availableCapacity -= 1;
+        slot.isAvailable = slot.availableCapacity > 0;
 
+        await slot.save({transaction: t});
+        
         const vehicle = await VehicleType.findByPk(vehicleId, {transaction: t, lock: t.LOCK.UPDATE});
         if (!vehicle) {
             return {

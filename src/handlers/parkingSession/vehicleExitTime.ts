@@ -124,14 +124,34 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
     
         await session.save({transaction: trans});
     
-        await ParkingSlot.increment(
-            {availableCapacity: 1},
-            {
-                where: {id: session.slotId},
-                transaction: trans
-            }
-        );
-        
+        const slot = await ParkingSlot.findByPk(session.slotId, {
+            transaction: trans,
+            lock: trans.LOCK.UPDATE
+        });
+        if (!slot) {
+            await trans.rollback();
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: "Parking slot not found."
+                })
+            };
+        };
+        if (slot.availableCapacity < slot.maximumCapacity) {
+            slot.availableCapacity += 1;
+            await slot.save({transaction: trans})
+        };
+        if (slot.availableCapacity >= slot.maximumCapacity) {
+            await trans.rollback();
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: "Parking slot capacity exceeded"
+                })
+            };
+        }
         await trans.commit();
         return {
             statusCode: 200,
