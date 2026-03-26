@@ -75,6 +75,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
         if (checkPhone) {
             return {
                 statusCode: 400,
+                headers: corsHeaders,
                 body: JSON.stringify({
                     message: `A user with this phone number: ${phone} already exist. Please use another phone number.`
                 })
