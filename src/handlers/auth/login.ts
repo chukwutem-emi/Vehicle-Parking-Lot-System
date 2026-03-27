@@ -90,7 +90,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                 body: JSON.stringify({message: "Wrong password!."})
             };
         };
-        const token = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.SECRET_KEY as string, {expiresIn: "1h"});
+        const accessToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.SECRET_KEY as string, {expiresIn: "1h"});
+        
+        const refreshToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.REFRESH_SECRET as string, {expiresIn: "7d"});
         
         const existingDevice = await UserDevices.findOne({
             where: {
@@ -125,9 +127,12 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         });
         return {
             statusCode: 200,
-            headers: corsHeaders,
+            headers: {
+                ...corsHeaders,
+                "Set-Cookies": `refreshToken${refreshToken}; HttpOnly; Secure; SameSite=None; path=/; Max-Age=604800`
+            },
             body: JSON.stringify({
-                message: "You have successfully logged in.", token: token
+                message: "You have successfully logged in.", token: accessToken
             })
         }
     } catch (err: any) {

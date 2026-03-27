@@ -669,7 +669,7 @@ export const corsHeaders = {
 "statusCode": 200,
 {
     "userDetails": {
-        "id": 4,
+        "id": ,
         "username": "",
         "password": "",
         "userAddress": "",
