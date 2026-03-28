@@ -1,10 +1,17 @@
 import {corsHeaders} from "./corsHeaders";
-import {APIGatewayProxyEvent} from "aws-lambda";
+import {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
 import jwt from "jsonwebtoken";
 
 
-export const refreshHandler = async (event: APIGatewayProxyEvent) => {
+export const refreshHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
+    if (event.httpMethod === "OPTIONS") {
+      return {
+        statusCode: 204,
+        headers: corsHeaders,
+        body: ""
+      };
+    };
     const cookies = event.headers.Cookie || event.headers.cookie;
 
     if (!cookies) {

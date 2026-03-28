@@ -2,7 +2,7 @@ import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
 import {corsHeaders} from "../corsHeaders";
 
 
-export const logoutHandler = (event: APIGatewayProxyEvent): APIGatewayProxyResult => {
+export const logoutHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     if (event.httpMethod === "OPTIONS") {
         return {
             statusCode: 204,
