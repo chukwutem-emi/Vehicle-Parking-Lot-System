@@ -43,11 +43,12 @@ export const refreshHandler = async (event: APIGatewayProxyEvent) => {
         accessToken: newAccessToken
       })
     };
-  } catch (err) {
+  } catch (err: any) {
+    console.error("Error refreshing token:", err);
     return {
       statusCode: 401,
       headers: corsHeaders,
-      body: JSON.stringify({ message: "Invalid or expired refresh token" })
+      body: JSON.stringify({ message: err.message || "Failed to refresh token" })
     };
   }
 };
