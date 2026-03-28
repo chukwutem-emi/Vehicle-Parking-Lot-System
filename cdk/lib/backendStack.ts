@@ -17,13 +17,14 @@ import {userDeviceEndpoints} from "./endpoints/userDeviceEndpoints.js";
 
 interface BackendStackProps extends StackProps {
     envVars: {
-        DB_NAME: string;
-        DB_HOST: string;
-        DB_PASSWORD: string;
-        DB_USER: string;
-        DB_PORT:  string;
-        SECRET_KEY: string;
-        RESET_PASSWORD: string;
+        DB_NAME        : string;
+        DB_HOST        : string;
+        DB_PASSWORD    : string;
+        DB_USER        : string;
+        DB_PORT        :  string;
+        SECRET_KEY     : string;
+        RESET_PASSWORD : string;
+        REFRESH_SECRET : string;
     };
 };
 export class BackendStack extends Stack {

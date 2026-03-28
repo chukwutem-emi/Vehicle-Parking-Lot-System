@@ -35,7 +35,7 @@ export const createAuthLambdas = (stack: Stack, envVars: Record<string, string>)
     updatePasswordLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
     const logoutLambda = createLambda({stack, envVars}, "logoutLambda", "src/handlers/auth/logout.ts", "logoutHandler");
     logoutLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
-    const refreshTokenLambda = createLambda({stack, envVars}, "refreshTokenLambda", "src/handlers/auth/refreshToken.ts", "updatePasswordHandler");
+    const refreshTokenLambda = createLambda({stack, envVars}, "refreshTokenLambda", "src/handlers/refreshToken.ts", "updatePasswordHandler");
     refreshTokenLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
     
     const authLambdas = {
