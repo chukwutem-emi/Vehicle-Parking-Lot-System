@@ -53,9 +53,10 @@ export class BackendStack extends Stack {
         // create API
         const api = new apigw.RestApi(this, "ParkingAPIEndpointV2", {
             defaultCorsPreflightOptions: {
-                allowOrigins: apigw.Cors.ALL_ORIGINS,
+                allowOrigins: ["http://localhost:1234"],
                 allowMethods: apigw.Cors.ALL_METHODS,
-                allowHeaders: ["Content-Type", "Authorization"]
+                allowHeaders: ["Content-Type", "Authorization"],
+                allowCredentials: true
             }
         });
         // Add endpoints
