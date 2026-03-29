@@ -18,8 +18,7 @@ jobs:
       DB_PASSWORD: ${{secrets.DB_PASSWORD}}
       DB_PORT: ${{secrets.DB_PORT}}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      RESET_PASSWORD: ${{ secrets.RESET_PASSWORD }}
-      REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }} 
+      RESET_PASSWORD: ${{ secrets.RESET_PASSWORD }} 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

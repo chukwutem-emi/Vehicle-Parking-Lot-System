@@ -1,11 +1,6 @@
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue) ![Node.js](https://img.shields.io/badge/Node.js-18+-green) ![Express](https://img.shields.io/badge/Express-5.x-black) ![License](https://img.shields.io/badge/license-ISC-orange) ![AWS CDK](https://img.shields.io/badge/AWS-CDK-yellow)
 
-```bash
-curl -X POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/signup \
--H "Content-Type: application/json" \
--d '{"username": "Stephen", "password": "12345678", "userAddress": "59 example street", "email": "example@gmail.com", "phone": "123456789", "confirmPassword": "123455678"}'
-```
 # 🚗 Vehicle Parking Lot System
 
 ## 📋 Project Overview
@@ -16,7 +11,7 @@ Vehicle Parking Lot System is a TypeScript-based backend application for managin
 - Github: [chukwutem-emi](https://github.com/chukwutem-emi)
 - License: ISC.
 - Language: TypeScript.
-- Last Updated: March 24, 2026.
+- Last Updated: March 29, 2026.
 
 
 ## 🚀 Features
@@ -626,7 +621,7 @@ export const corsHeaders = {
 
 ## Lambda API Gateway
 ### Authentication API Gateway (cdk/lib/endpoints/authEndpoints)
-- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/signup - user signup.
+- POST  /auth/signup - user signup.
 #### Payload:
 ```json
 {
@@ -645,7 +640,7 @@ export const corsHeaders = {
     "message": "User created successfully!"
 }
 ```
-- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/login - User login.
+- POST /auth/login - User login.
 
 #### Payload:
 ```json
@@ -662,7 +657,7 @@ export const corsHeaders = {
     "token": ""
 }
 ```
-- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/user - Get user
+- GET  /auth/user - Get user
 
 #### Success Response:
 ```json
@@ -685,7 +680,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/users?limit=2&sort=-createdAt - Get all users
+- GET /auth/users?limit=2&sort=-createdAt - Get all users
 
 #### Success Response:
 ```json
@@ -731,7 +726,7 @@ export const corsHeaders = {
     }
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/promote/{userId} - Promote user
+- PUT /auth/promote/{userId} - Promote user
 
 #### Success Response:
 ```json
@@ -740,7 +735,7 @@ export const corsHeaders = {
     "message": "<The username> has been promoted to admin successfully!"
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/update/{userId} - Update user details
+- PUT /auth/update/{userId} - Update user details
 
 #### Payload:
 ```json
@@ -760,7 +755,7 @@ export const corsHeaders = {
     "message": "User details updated successfully."
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/auth/demote/{userId} - Demote user
+- PUT /auth/demote/{userId} - Demote user
 #### Success Response: 
 ```json
 "statusCode": 200
@@ -768,7 +763,7 @@ export const corsHeaders = {
     "message": "<The username> has been demoted to a regular user successfully!"
 }
 ``` 
-- POST  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/create - Upload vehicleType
+- POST  /vehicle/create - Upload vehicleType
 
 #### Payload:
 ```json
@@ -791,7 +786,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET  https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/get-vehicle?vehicleName - Get vehicle by name
+- GET  /vehicle/get-vehicle?vehicleName - Get vehicle by name
 #### Success Response:
 ```json
 "statusCode": 200,
@@ -806,7 +801,7 @@ export const corsHeaders = {
     }
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/vehicle/update-vehicle/{vehicleId}
+- PUT  /vehicle/update-vehicle/{vehicleId}
 #### Payload:
 ```json
 {
@@ -829,7 +824,7 @@ export const corsHeaders = {
     }
 }
 ```
-- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/create-slot - Create Parking Slot
+- POST /slot/create-slot - Create Parking Slot
  #### Payload:
  ```json
  {
@@ -844,7 +839,7 @@ export const corsHeaders = {
     "message": "Parking slot created successfully."
 }
  ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slots?vehicleTypeId=?&limit=?&sort=?&currentPage=? - Get all the parking slot.
+- GET /slot/get-slots?vehicleTypeId=?&limit=?&sort=?&currentPage=? - Get all the parking slot.
  #### Success Response:
  ```json
  "statusCode": 200,
@@ -870,7 +865,7 @@ export const corsHeaders = {
     }
 }
  ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/get-slot/{vehicleTypeId} - Get parking slot by ID.
+- GET /slot/get-slot/{vehicleTypeId} - Get parking slot by ID.
  #### Success Response:
  ```json
  "statusCode": 200
@@ -888,7 +883,7 @@ export const corsHeaders = {
     }
 }
  ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/slot/update-slot/{vehicleTypeId} - Update parking slot.
+- PUT /slot/update-slot/{vehicleTypeId} - Update parking slot.
  #### Payload:
  ```json
  {
@@ -904,7 +899,7 @@ export const corsHeaders = {
     "message": "Parking slot updated successfully."
 }
  ```
-- POST https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/create - Create Parking session.
+- POST /session/create - Create Parking session.
 #### Payload:
 ```json
 {
@@ -941,7 +936,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-sessions - Get all parking sessions.
+- GET /session/get-sessions - Get all parking sessions.
 #### Success Response:
 ```json
 "statusCode": 200,
@@ -975,7 +970,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/get-session/{sessionId} - Get one parking session.
+- GET /session/get-session/{sessionId} - Get one parking session.
 #### Success Response:
 ```json
 {
@@ -1000,7 +995,7 @@ export const corsHeaders = {
     }
 }
 ```
-- PUT https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/session/update - Update parking session during vehicle exit.
+- PUT /session/update - Update parking session during vehicle exit.
 #### Payload:
 ```json
 {
@@ -1033,7 +1028,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/device/get-device/{userId} - Get user logged-in device.
+- GET /device/get-device/{userId} - Get user logged-in device.
 #### Success Response:
 ```json
 "statusCode": 200,
@@ -1050,7 +1045,7 @@ export const corsHeaders = {
     }
 }
 ```
-- GET https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/device/get-devices - Get all users devices.
+- GET /device/get-devices - Get all users devices.
 #### Success Response:
 ```json
 "statusCode": 200,
@@ -1200,7 +1195,7 @@ npx cdk deploy
 | Version | 1.0.0 |
 | Author | Chukwutem Stephen Emi |
 | Created | February 13, 2026 |
-| Last updated | March 24, 2026 |
+| Last updated | March 29, 2026 |
 | Size | 560KB |
 
 
@@ -1221,8 +1216,6 @@ For issues and bug reports, please use the [GitHub Issues](https://github.com/ch
 - Sequelize ORM: https://sequelize.org/.
 - AWS CDK: https://aws.amazon.com/cdk/.
 
-## Base URL: [URL](https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/)
-https://13qnjn2m56.execute-api.us-east-1.amazonaws.com/prod/
 
 ## ⚠️ Warning
 

@@ -4,8 +4,7 @@
  * Note: In a production environment, you should restrict the allowed origins to enhance security.
  */
 export const corsHeaders = {
-    "Access-Control-Allow-Origin": "http://localhost:1234",
-    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE, PATCH",
     "Access-Control-Allow-Headers": "Content-Type, Authorization"
 };

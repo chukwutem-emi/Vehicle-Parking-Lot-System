@@ -33,10 +33,6 @@ export const createAuthLambdas = (stack: Stack, envVars: Record<string, string>)
 
     const updatePasswordLambda = createLambda({stack, envVars}, "updatePasswordLambda", "src/handlers/auth/updatePassword.ts", "updatePasswordHandler");
     updatePasswordLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
-    const logoutLambda = createLambda({stack, envVars}, "logoutLambda", "src/handlers/auth/logout.ts", "logoutHandler");
-    logoutLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
-    const refreshTokenLambda = createLambda({stack, envVars}, "refreshTokenLambda", "src/handlers/refreshToken.ts", "updatePasswordHandler");
-    refreshTokenLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
     
     const authLambdas = {
         createUserLambda: createUserLambda,
@@ -48,9 +44,7 @@ export const createAuthLambdas = (stack: Stack, envVars: Record<string, string>)
         demoteUserLambda: demoteUserLambda,
         deleteUserLambda: deleteUserLambda,
         resetPasswordLambda: resetPasswordLambda,
-        updatePasswordLambda: updatePasswordLambda,
-        logoutLambda: logoutLambda,
-        refreshTokenLambda: refreshTokenLambda
+        updatePasswordLambda: updatePasswordLambda
     };
 
     return authLambdas;

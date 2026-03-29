@@ -127,10 +127,7 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         });
         return {
             statusCode: 200,
-            headers: {
-                ...corsHeaders,
-                "Set-Cookies": `refreshToken${refreshToken}; HttpOnly; Secure; SameSite=None; path=/; Max-Age=604800`
-            },
+            headers: corsHeaders,
             body: JSON.stringify({
                 message: "You have successfully logged in.", token: accessToken
             })

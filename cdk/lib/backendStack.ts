@@ -24,7 +24,6 @@ interface BackendStackProps extends StackProps {
         DB_PORT        :  string;
         SECRET_KEY     : string;
         RESET_PASSWORD : string;
-        REFRESH_SECRET : string;
     };
 };
 export class BackendStack extends Stack {
@@ -53,10 +52,9 @@ export class BackendStack extends Stack {
         // create API
         const api = new apigw.RestApi(this, "ParkingAPIEndpointV2", {
             defaultCorsPreflightOptions: {
-                allowOrigins: ["http://localhost:1234"],
+                allowOrigins: apigw.Cors.ALL_ORIGINS,
                 allowMethods: apigw.Cors.ALL_METHODS,
-                allowHeaders: ["Content-Type", "Authorization"],
-                allowCredentials: true
+                allowHeaders: ["Content-Type", "Authorization"]
             }
         });
         // Add endpoints
