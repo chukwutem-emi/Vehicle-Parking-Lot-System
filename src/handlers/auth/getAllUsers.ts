@@ -12,7 +12,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
         console.log("Connecting database......");
         await sequelize.authenticate();
         console.log("Database connected!.");
-        const limit = Number(event.queryStringParameters?.limit) || 1;
+        const limit = Number(event.queryStringParameters?.limit) || 100;
         const currentPage = Number(event.queryStringParameters?.currentPage) || 1;
         const sort = event.queryStringParameters?.sort || "createdAt";
         const role = event.queryStringParameters?.role;
