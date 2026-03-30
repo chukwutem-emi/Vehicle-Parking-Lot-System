@@ -62,14 +62,17 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 order = [[sort, "ASC"]];
             };
         };
+        const whereClause: any = {
+            isAvailable: true,
+            availableCapacity: {
+                [Op.gt]: 0 
+            }
+        };
+        if (vehicleTypeId) {
+            whereClause.vehicleTypeId = vehicleTypeId;
+        };
         const {count, rows} = await ParkingSlot.findAndCountAll({
-            where: {
-                isAvailable: true,
-                availableCapacity: {
-                  [Op.gt]: 0 
-                },
-                vehicleTypeId: vehicleTypeId
-            },
+            where: whereClause,
             offset: offset,
             order: order,
             limit: limit
