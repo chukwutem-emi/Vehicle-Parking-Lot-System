@@ -92,8 +92,6 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         };
         const accessToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.SECRET_KEY as string, {expiresIn: "1h"});
         
-        const refreshToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.REFRESH_SECRET as string, {expiresIn: "7d"});
-        
         const existingDevice = await UserDevices.findOne({
             where: {
                 deviceLabel: deviceLabel,
