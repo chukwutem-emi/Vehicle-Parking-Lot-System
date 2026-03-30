@@ -27,6 +27,8 @@ interface ParkingSessionAttribute {
     totalAmount?                 : number;
     slotId                       : number;
     vehicleTypeId                : number;
+    createdAt?                   : Date;
+    updatedAt?                   : Date;
 };
 
 interface ParkingSessionOptionalAttribute extends Optional<ParkingSessionAttribute, "id" | "entryTime" | "isCleared" | "parkingStatus"> {};
@@ -46,7 +48,8 @@ export class ParkingSession extends Model<ParkingSessionAttribute, ParkingSessio
     public totalAmount?                  : number;
     public slotId!                       : number;
     public vehicleTypeId!                : number;
-    
+    public createdAt?                    : Date;
+    public updatedAt?                    : Date;
 };
 export const initParkingSessionModel = (sequelize: Sequelize) => {
     if (ParkingSession.sequelize) return;
@@ -123,6 +126,14 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
                 allowNull: false,
                 onDelete: "RESTRICT",
                 onUpdate: "CASCADE"
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                field: 'created_at'
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                field: 'updated_at'
             }
         },
         {

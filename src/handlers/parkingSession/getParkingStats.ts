@@ -26,9 +26,9 @@ export const getParkingStatsHandler = withAuth( async (event, _context) => {
         };
         const statistics = await ParkingSession.findAll({
             attributes: [
-                [sequelize.fn("DATE", sequelize.col("createdAt")), "date"],
+                [sequelize.fn("DATE", sequelize.col("created_at")), "date"],
                 [sequelize.fn("COUNT", sequelize.col("id")), "entries"],
-                [sequelize.fn("COUNT", sequelize.col("exitTime")), "exits"]
+                [sequelize.fn("COUNT", sequelize.col("exit_time")), "exits"]
             ],
             group: ["date"],
             order: [[sequelize.literal("date"), "ASC"]]
