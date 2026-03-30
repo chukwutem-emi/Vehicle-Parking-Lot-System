@@ -17,12 +17,16 @@ export const createSessionLambda = (stack: Stack, envVars: Record<string, string
     const vehicleExitTimeLambda = createLambda({stack, envVars}, "vehicleExitTimeLambda", "src/handlers/parkingSession/vehicleExitTime.ts", "vehicleExitTimeHandler");
     vehicleExitTimeLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
 
+    const getParkingStatsLambda = createLambda({stack, envVars}, "getParkingStatsLambda", "src/handlers/parkingSession/getParkingStats.ts", "getParkingStatsHandler");
+    getParkingStatsLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
+
 
     const parkingSessionLambda = {
         createParkingSessionLambda: createParkingSessionLambda,
         getAllParkingSessionLambda: getAllParkingSessionLambda,
         getParkingSessionLambda: getParkingSessionLambda,
-        vehicleExitTimeLambda: vehicleExitTimeLambda
+        vehicleExitTimeLambda: vehicleExitTimeLambda,
+        getParkingStatsLambda: getParkingStatsLambda
     };
 
     return parkingSessionLambda;

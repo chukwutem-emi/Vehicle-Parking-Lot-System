@@ -46,6 +46,7 @@ export class ParkingSession extends Model<ParkingSessionAttribute, ParkingSessio
     public totalAmount?                  : number;
     public slotId!                       : number;
     public vehicleTypeId!                : number;
+    
 };
 export const initParkingSessionModel = (sequelize: Sequelize) => {
     if (ParkingSession.sequelize) return;
