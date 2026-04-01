@@ -73,7 +73,8 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             where: where,
             offset: offset,
             limit: limit,
-            order: order
+            order: order,
+            attributes: ["id", "username", "user_address", "phone", "email", "user_role", "is_admin", "updated_by", "created_at", "updated_at"]
         });
         if (rows.length === 0) {
             return {

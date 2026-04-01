@@ -36,11 +36,23 @@ export const getUserHandler = withAuth( async (event, _context) => {
                 })
             };
         };
+        const user = getUserById.toJSON();
+
+        const safeUser = {
+            id          : user.id,
+            username    : user.username,
+            userAddress : user.userAddress,
+            phone       : user.phone,
+            email       : user.email,
+            userRole    : user.userRole,
+            isAdmin     : user.isAdmin,
+            updatedBy   : user.updatedBy
+        };
         return {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                userDetails: getUserById.toJSON()
+                userDetails: safeUser
             })
         };
     } catch (err: any) {
