@@ -22,7 +22,9 @@ interface UserAttribute {
     isAdmin?             : boolean;
     updatedBy?           : string;
     resetToken?          : string;
-    resetTokenExpiration? : Date
+    resetTokenExpiration? : Date;
+    createdAt?            : Date;
+    updatedAt?            : Date;
 };
 
 export class User extends Model<UserAttribute> implements UserAttribute {
@@ -37,6 +39,8 @@ export class User extends Model<UserAttribute> implements UserAttribute {
     public updatedBy?            : string;
     public resetToken?           : string;
     public resetTokenExpiration? : Date;
+    public createdAt?            : Date;
+    public updatedAt?            : Date;
 };
 export const initUserModel = (sequelize: Sequelize) => {
     if (User.sequelize) return;
@@ -88,6 +92,16 @@ export const initUserModel = (sequelize: Sequelize) => {
             resetTokenExpiration: {
                 type: DataTypes.DATE,
                 allowNull: true
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW,
+                field: "created_at"
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW,
+                field: "updated_at",
             }
         },
         {

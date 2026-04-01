@@ -46,7 +46,9 @@ export const getUserHandler = withAuth( async (event, _context) => {
             email       : user.email,
             userRole    : user.userRole,
             isAdmin     : user.isAdmin,
-            updatedBy   : user.updatedBy
+            updatedBy   : user.updatedBy,
+            createdAt   : user.createdAt,
+            updatedAt   : user.updatedAt
         };
         return {
             statusCode: 200,
