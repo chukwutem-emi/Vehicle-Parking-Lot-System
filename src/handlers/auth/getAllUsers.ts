@@ -81,7 +81,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 200,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    data: [],
+                    usersDetails: [],
                     pagination: {
                     currentPage,
                     limit,
