@@ -57,7 +57,11 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
         const where: any = {};
 
         if (role) {
-            where.userRole = role;
+            if (role === "ADMIN") {
+                where.userRole = "SUPER-ADMIN";
+            } else if (role === "USER") {
+                where.userRole = "REGULAR-USER"
+            }
         };
 
         let order: any = [["createdAt", "DESC"]];
