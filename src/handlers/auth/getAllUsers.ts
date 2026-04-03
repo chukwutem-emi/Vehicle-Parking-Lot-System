@@ -81,13 +81,19 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 200,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "The user database is empty.",
-                    usersDetails: []
+                    data: [],
+                    pagination: {
+                    currentPage,
+                    limit,
+                    total: 0,
+                    totalPages: 0
+                }
                 })
             };
         };
         return {
             statusCode: 200,
+            headers: corsHeaders,
             body: JSON.stringify({
                 data: rows,
                 pagination: {
