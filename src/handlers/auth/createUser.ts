@@ -110,7 +110,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "User created successfully!"
+                message: "User created successfully!. Please login."
             })       
         };
     } catch (err: any) {
