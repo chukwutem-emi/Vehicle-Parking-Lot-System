@@ -61,7 +61,7 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         const result      = parser.getResult();
 
         const deviceType       = result.device.type || "desktop";
-        const os      : string = `${result.os.name ?? "unknown os"} ${result.os.version ?? ""}`.trim();  // "??" => nullish coercion. meaning if the left side is null, then use the right.
+        const os      : string = `${result.os.name ?? "unknown os"} ${result.os.version ?? ""}`.trim();  // "??" => nullish coalescing. meaning if the left side is null, then use the right.
         const browser : string = `${result.browser.name ?? "unknown browser"} ${result.browser.version ?? ""}`.trim();
         const ip = event.requestContext?.identity?.sourceIp ?? "0.0.0.0";
         const deviceLabel = `${browser} on ${os} (${deviceType})`;

@@ -39,13 +39,13 @@ export const initMessageModel = (sequelize: Sequelize) => {
         },
         senderId: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           field: "sender_id",
           references: {
             model: "user",
             key: "id"
           },
-          onDelete: "RESTRICT",
+          onDelete: "SET NULL",
           onUpdate: "CASCADE"
         },
         content: {

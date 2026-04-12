@@ -942,27 +942,27 @@ export const corsHeaders = {
 "statusCode": 200,
 {
     "message": "Parking sessions retrieved successfully.",
+    "data": [
+        {
+            "id": ,
+            "vehicleNumber": "",
+            "vehicleOwnerPhone": "",
+            "vehicleOwnerAddress": "",
+            "vehicleOwnerNextOfKin": "",
+            "vehicleOwnerNextOfKinPhone": "",
+            "vehicleOwnerNextOfKinAddress": "",
+            "isCleared": ,
+            "entryTime": "",
+            "exitTime": ,
+            "parkingStatus": "",
+            "totalAmount": ,
+            "slotId": ,
+            "vehicleTypeId": ,
+            "createdAt": "",
+            "updatedAt": ""
+        }
+    ],
     "pagination": {
-        "data": [
-            {
-                "id": ,
-                "vehicleNumber": "",
-                "vehicleOwnerPhone": "",
-                "vehicleOwnerAddress": "",
-                "vehicleOwnerNextOfKin": "",
-                "vehicleOwnerNextOfKinPhone": "",
-                "vehicleOwnerNextOfKinAddress": "",
-                "isCleared": ,
-                "entryTime": "",
-                "exitTime": ,
-                "parkingStatus": "",
-                "totalAmount": ,
-                "slotId": ,
-                "vehicleTypeId": ,
-                "createdAt": "",
-                "updatedAt": ""
-            }
-        ],
         "currentPage": 1,
         "limit": 1,
         "total": 1,

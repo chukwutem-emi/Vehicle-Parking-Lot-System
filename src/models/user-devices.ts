@@ -31,12 +31,12 @@ export const initUserDevicesModel = (sequelize: Sequelize) => {
             userId: {
                 type: DataTypes.INTEGER,
                 field: "user_id",
-                allowNull: false,
+                allowNull: true,
                 references: {
                     model: "user",
                     key: "id"
             },
-            onDelete: "RESTRICT",
+            onDelete: "SET NULL",
             onUpdate: "CASCADE"
             },
             deviceLabel: {

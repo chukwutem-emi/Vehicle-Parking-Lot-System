@@ -62,13 +62,11 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
             },
             vehicleNumber: {
                 type: DataTypes.STRING(50),
-                allowNull: false,
-                unique: true
+                allowNull: false
             },
             vehicleOwnerPhone: {
                 type: DataTypes.STRING(12),
-                allowNull: false,
-                unique: true
+                allowNull: false
             },
             vehicleOwnerAddress: {
                 type: DataTypes.STRING(200),
@@ -80,8 +78,7 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
             },
             vehicleOwnerNextOfKinPhone: {
                 type: DataTypes.STRING(12),
-                allowNull: false,
-                unique: true
+                allowNull: false
             },
             vehicleOwnerNextOfKinAddress: {
                 type: DataTypes.STRING(200),
@@ -113,8 +110,8 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
                     model: "parking_slot",
                     key: "id"
                 },
-                allowNull: false,
-                onDelete: "RESTRICT",
+                allowNull: true,
+                onDelete: "SET NULL",
                 onUpdate: "CASCADE"
             },
             vehicleTypeId: {
@@ -123,8 +120,8 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
                     model: "vehicle_type",
                     key: "id",
                 },
-                allowNull: false,
-                onDelete: "RESTRICT",
+                allowNull: true,
+                onDelete: "SET NULL",
                 onUpdate: "CASCADE"
             },
             createdAt: {
