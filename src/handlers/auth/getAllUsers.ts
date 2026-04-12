@@ -57,10 +57,12 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
         const where: any = {};
 
         if (role) {
-            if (role === "ADMIN") {
+            if (role === "SUPER-ADMIN") {
                 where.userRole = "SUPER-ADMIN";
-            } else if (role === "USER") {
+            } else if (role === "REGULAR-USER") {
                 where.userRole = "REGULAR-USER"
+            } else if (role === "ADMIN") {
+                where.userRole = "ADMIN"
             }
         };
 
