@@ -30,11 +30,11 @@ export const initModels = () => {
     VehicleType.hasMany(ParkingSlot, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
     ParkingSlot.belongsTo(VehicleType, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
 
-    ParkingSlot.hasMany(ParkingSession, {foreignKey: "slotId", onDelete: "SET NULL"});
-    ParkingSession.belongsTo(ParkingSlot, {foreignKey: "slotId", onDelete: "SET NULL"});
+    ParkingSlot.hasMany(ParkingSession, {foreignKey: "slotId", onDelete: "RESTRICT"});
+    ParkingSession.belongsTo(ParkingSlot, {foreignKey: "slotId", onDelete: "RESTRICT"});
 
-    VehicleType.hasMany(ParkingSession, {foreignKey: "vehicleTypeId", onDelete: "SET NULL"});
-    ParkingSession.belongsTo(VehicleType, {foreignKey: "vehicleTypeId", onDelete: "SET NULL"});
+    VehicleType.hasMany(ParkingSession, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
+    ParkingSession.belongsTo(VehicleType, {foreignKey: "vehicleTypeId", onDelete: "RESTRICT"});
 
     User.hasMany(UserDevices, {foreignKey: "userId", onDelete: "SET NULL"});
     UserDevices.belongsTo(User, {foreignKey: "userId", onDelete: "SET NULL"});

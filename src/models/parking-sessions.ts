@@ -110,8 +110,8 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
                     model: "parking_slot",
                     key: "id"
                 },
-                allowNull: true,
-                onDelete: "SET NULL",
+                allowNull: false,
+                onDelete: "RESTRICT",
                 onUpdate: "CASCADE"
             },
             vehicleTypeId: {
@@ -120,8 +120,8 @@ export const initParkingSessionModel = (sequelize: Sequelize) => {
                     model: "vehicle_type",
                     key: "id",
                 },
-                allowNull: true,
-                onDelete: "SET NULL",
+                allowNull: false,
+                onDelete: "RESTRICT",
                 onUpdate: "CASCADE"
             },
             createdAt: {
