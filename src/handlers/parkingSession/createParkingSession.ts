@@ -124,25 +124,6 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 })
             };
         };
-        // check for existing session
-        const checkExistingSession = await ParkingSession.findOne({
-            where: {
-                vehicleNumber: vehicleNumber,
-                vehicleOwnerPhone: vehicleOwnerPhone,
-                vehicleOwnerNextOfKinPhone: vehicleOwnerNextOfKinPhone
-            },
-            transaction: t,
-            lock: t.LOCK.UPDATE
-        });
-        if (checkExistingSession) {
-            return {
-                statusCode: 409,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    message: "A parking-session with the provided details already exists."
-                })
-            };
-        };
         const parkingSession = await ParkingSession.create({
             slotId                       : slotId,
             vehicleTypeId                : vehicle.id,
