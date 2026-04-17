@@ -49,7 +49,7 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "That typeof vehicle is not allowed here. Please ensure you have entered a valid vehicle type."
+                    message: "That type of vehicle is not allowed here. Please ensure you have entered a valid vehicle type."
                 })
             };
             
