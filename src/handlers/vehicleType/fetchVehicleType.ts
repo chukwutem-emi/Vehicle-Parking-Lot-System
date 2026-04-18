@@ -18,7 +18,15 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
         };
         
         const vehicleName = event.queryStringParameters?.vehicleName
-    
+        if (vehicleName === undefined || vehicleName === null) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    message: "Bad request!. Please enter a valid value."
+                })
+            }
+        };
         const currentUser = event.userId;
         const user = await User.findByPk(currentUser);
         if (user === undefined || user === null) {
