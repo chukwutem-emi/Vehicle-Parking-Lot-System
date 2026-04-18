@@ -18,7 +18,7 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
         };
         
         const vehicleName = event.queryStringParameters?.vehicleName
-        if (vehicleName === undefined || vehicleName === null) {
+        if (!vehicleName) {
             return {
                 statusCode: 400,
                 headers: corsHeaders,
