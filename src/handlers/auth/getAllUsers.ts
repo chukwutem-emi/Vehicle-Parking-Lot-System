@@ -31,7 +31,9 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "You haven't authenticated yet. Please login."
+                    success: false,
+                    message: "You haven't authenticated yet. Please login.",
+                    data: null
                 })
             };
         };
@@ -41,7 +43,9 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We could not find the current logged-in user. Please ensure you are logged in."
+                    success: false,
+                    message: "We could not find the current logged-in user. Please ensure you are logged in.",
+                    data: null
                 })
             };
         };
@@ -50,6 +54,8 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
+                    data: null,
                     message: "Forbidden request. Only Super-Admin users can perform this type of request."
                 })
             };
@@ -87,7 +93,9 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 statusCode: 200,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    usersDetails: [],
+                    success: true,
+                    message: "No users found!",
+                    data: [],
                     pagination: {
                     currentPage,
                     limit,
@@ -101,6 +109,8 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
+                message: "Users fetched successfully!",
                 data: rows,
                 pagination: {
                     currentPage,
@@ -116,7 +126,9 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err.message,
+                data: null
             })
         };
     };
