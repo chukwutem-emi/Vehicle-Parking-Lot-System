@@ -34,6 +34,7 @@ export const fetchVehicleTypeInputValidation = (vehicleName: string): Validation
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid input. Vehicle name is required and it must have a minimum of: ${vehicleNameInput.minimumLength} and a maximum of: ${vehicleNameInput.maximumLength} characters length.`
             })
         };

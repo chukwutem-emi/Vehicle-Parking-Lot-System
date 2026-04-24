@@ -39,7 +39,8 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
-                    confirmPasswordErr: "Password and confirm password do not match. Please ensure both passwords are the same."
+                    success: false,
+                    message: "Password and confirm password do not match. Please ensure both passwords are the same."
                 })
             };
         };
@@ -56,6 +57,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid userId. UserId must be a number."
                 })
             };
@@ -66,6 +68,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "User with the specified userId not found. Please ensure you have the correct userId."
                 })
             };
@@ -76,6 +79,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized: User ID missing. Please login."
                 })
             };
@@ -85,6 +89,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized request. You can only update your own user details."
                 })
             };
@@ -101,6 +106,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "A user with this e-mail address already exist. Please use another email"
                 })
             };
@@ -115,6 +121,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "A user with this phone number already exist. Please use another phone number"
                 })
             };
@@ -138,16 +145,18 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "User details updated successfully."
             })
         }
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

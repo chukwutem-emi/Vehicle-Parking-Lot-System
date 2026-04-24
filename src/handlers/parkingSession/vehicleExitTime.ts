@@ -26,6 +26,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: `Missing required field: ${field}`
                 })
             };
@@ -56,6 +57,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized. Please login."
                 })
             };
@@ -66,6 +68,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "We couldn't find the current logged-in user. Please ensure you are logged in."
                 })
             };
@@ -75,6 +78,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. Only Admin users can perform this type of request."
                 })
             };
@@ -91,6 +95,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Vehicle type with the specified name not found. Please ensure the vehicle name is correct."
                 })
             };
@@ -108,6 +113,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Active parking session for the provided vehicle number not found. Please ensure the vehicle number is correct and that the vehicle is currently parked."
                 })
             };
@@ -134,6 +140,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Parking slot not found."
                 })
             };
@@ -144,6 +151,7 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Parking slot capacity exceeded"
                 })
             };
@@ -157,18 +165,19 @@ export const vehicleExitTimeHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Vehicle exit time recorded successfully.",
-                details: session.toJSON()
+                success: true,
+                message: "Vehicle exit time recorded successfully."
             })
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         await trans.rollback();
         console.error("An error occurred:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

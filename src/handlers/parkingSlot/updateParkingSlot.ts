@@ -36,6 +36,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -57,6 +58,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid vehicleTypeId. It must be a positive integer."
                 })
             };
@@ -67,6 +69,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized. Please log in to access this resource."
                 })
             };
@@ -77,6 +80,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "We could not find the current logged-in user."
                 })
             };
@@ -86,6 +90,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
                 })
             };
@@ -96,6 +101,7 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Parking slot with the specified vehicleTypeId not found."
                 })
             };
@@ -110,16 +116,17 @@ export const updateParkingSlotHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "Parking slot updated successfully."
             })
         };
-    } catch (err: any) {
-        console.error("Error updating parking slot:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

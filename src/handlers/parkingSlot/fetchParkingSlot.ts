@@ -29,7 +29,9 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized request. Please ensure you are logged in."
+                    success: false,
+                    message: "Unauthorized request. Please ensure you are logged in.",
+                    data: null
                 })
             };
         };
@@ -39,7 +41,9 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We couldn't find the current logged-In user. Please ensure you are logged in."
+                    success: false,
+                    message: "We couldn't find the current logged-In user. Please ensure you are logged in.",
+                    data: null
                 })
             };
         };
@@ -48,7 +52,9 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
+                    success: false,
+                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request.",
+                    data: null
                 })
             };
         };
@@ -79,10 +85,12 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
         });
         if (!rows || rows.length === 0) {
             return {
-                statusCode: 404,
+                statusCode: 200,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "No available parking slots at the moment."
+                    success: true,
+                    message: "No available parking slots at the moment.",
+                    data: []
                 })
             };
         };
@@ -90,6 +98,7 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
             statusCode: 200, 
             headers: corsHeaders,  
             body: JSON.stringify({
+                success: true,
                 data: rows,
                 pagination: {
                     currentPage,
@@ -99,13 +108,13 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
                 }
             })
         };
-    } catch (err: any) {
-        console.error("Error fetching available parking slots:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

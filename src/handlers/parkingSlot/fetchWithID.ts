@@ -24,7 +24,11 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
             return { 
                 statusCode: 400,
                 headers: corsHeaders,
-                body: JSON.stringify({message: "VehicleTypeId has to be a number."})
+                body: JSON.stringify({
+                    success: false,
+                    message: "VehicleTypeId has to be a number.",
+                    data: null
+                })
             };
         };
         const currentUser = event.userId;
@@ -33,7 +37,9 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized request. Please ensure you are logged in."
+                    success: false,
+                    message: "Unauthorized request. Please ensure you are logged in.",
+                    data: null
                 })
             };
         };
@@ -43,7 +49,9 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We couldn't find the current logged-In user. Please ensure you are logged in."
+                    success: false,
+                    message: "We couldn't find the current logged-In user. Please ensure you are logged in.",
+                    data: null
                 })
             };
         };
@@ -52,7 +60,9 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
+                    success: false,
+                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request.",
+                    data: null
                 })
             };
         };
@@ -69,23 +79,28 @@ export const getAvailableSlotWithIdHandler = withAuth( async (event, _context) =
             return {
                 statusCode: 404,
                 body: JSON.stringify({
-                    message: "No available parking slots found for the specified vehicle type."
+                    success: false,
+                    message: "No available parking slots found for the specified vehicle type.",
+                    data: null
                 })
             };
         }
         return {
             statusCode: 200,
             body: JSON.stringify({
-                AvailableSlot: availableSlots.toJSON()
+                success: true,
+                message: "Parking slot retrieved successfully!",
+                data: availableSlots.toJSON()
             })
         };
-    } catch (error: any) {
-        console.error("Error fetching available parking slot:", error);
+    } catch (error: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: error.message
+                success: false,
+                message: error instanceof Error ? error.message : "Something went wrong!",
+                data: null
             })
         };
     }

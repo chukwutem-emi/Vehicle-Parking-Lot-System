@@ -20,7 +20,9 @@ export const getParkingStatsHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized. Please login"
+                    success: false,
+                    message: "Unauthorized. Please login",
+                    data: null
                 })
             };
         };
@@ -37,16 +39,19 @@ export const getParkingStatsHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
+                message: "Parking statistics retrieved successfully!",
                 data: statistics
             })
         };
-    } catch (err: any) {
-        console.log("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                data: null
             })
         };
     };

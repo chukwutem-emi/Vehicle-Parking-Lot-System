@@ -42,6 +42,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -62,7 +63,8 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    confirmPasswordErr: "Password and confirm password do not match. Please ensure both passwords are the same."
+                    success: false,
+                    message: "Password and confirm password do not match. Please ensure both passwords are the same."
                 })
             };
         };
@@ -77,6 +79,7 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: `A user with this phone number: ${phone} already exist. Please use another phone number.`
                 })
             };
@@ -92,7 +95,8 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
                 statusCode: 409,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    existingEmailErr: `A user with this email address: ${email} already exists. Please use a different email address.`
+                    success: false,
+                    message: `A user with this email address: ${email} already exists. Please use a different email address.`
                 })
             };
         };
@@ -110,16 +114,18 @@ export const createUserHandler = async (event: APIGatewayProxyEvent, context: Co
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "User created successfully!. Please login."
             })       
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         }
     }

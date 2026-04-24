@@ -55,8 +55,8 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    data: null,
-                    message: "Forbidden request. Only Super-Admin users can perform this type of request."
+                    message: "Forbidden request. Only Super-Admin users can perform this type of request.",
+                    data: null
                 })
             };
         };
@@ -120,14 +120,14 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 }
             })
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
                 success: false,
-                message: err.message,
+                message: err instanceof Error ? err.message : "Something went wrong",
                 data: null
             })
         };

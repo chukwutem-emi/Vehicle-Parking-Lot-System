@@ -41,7 +41,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
-                        message: `Missing required field: ${field}`
+                        success: false,
+                        message: `Missing required field: ${field}`,
+                        token: ""
                     })
                 };
             };
@@ -78,7 +80,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                 statusCode: 409,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "User with this email address not found!."
+                    success: false,
+                    message: "User with this email address not found!.",
+                    token: ""
                 })
             };
         };
@@ -87,7 +91,11 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             return {
                 statusCode: 400,
                 headers: corsHeaders,
-                body: JSON.stringify({message: "Wrong password!."})
+                body: JSON.stringify({
+                    success: false,
+                    message: "Wrong password!.",
+                    token: ""
+                })
             };
         };
         const accessToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.SECRET_KEY as string, {expiresIn: "1h"});
@@ -127,16 +135,20 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "You have successfully logged in.", token: accessToken
+                success: true,
+                message: "You have successfully logged in.", 
+                token: accessToken
             })
         }
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!.",
+                token: ""
             })
         };
     };

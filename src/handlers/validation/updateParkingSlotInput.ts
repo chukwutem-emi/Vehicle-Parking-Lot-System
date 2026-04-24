@@ -42,6 +42,7 @@ export const updateParkingSlotInputsValidation = ({slotCode, maximumCapacity, av
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid Input. Slot-code is required and it must contain at least: ${slotCodeInput.minimumLength} - ${slotCodeInput.maximumLength} length of characters. Please ensure your slot-code meets these requirements.`
             })
         };
@@ -57,6 +58,7 @@ export const updateParkingSlotInputsValidation = ({slotCode, maximumCapacity, av
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid Input. Maximum capacity is required and it must be a number between: ${maximumCapacityInput.minNumber} - ${maximumCapacityInput.maxNumber}. Please ensure your maximum capacity meets these requirements.`
             })
         };
@@ -72,6 +74,7 @@ export const updateParkingSlotInputsValidation = ({slotCode, maximumCapacity, av
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid Input. Available capacity is required and it must be a number between: ${availableCapacityInput.minNumber} - ${availableCapacityInput.maxNumber}. Please ensure your available capacity meets these requirements.`
             })
         };

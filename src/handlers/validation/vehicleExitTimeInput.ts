@@ -40,6 +40,7 @@ export const vehicleExitTimeInputValidation = ({vehicleNumber, vehicleName}: Par
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 characters."
             })
         };
@@ -55,6 +56,7 @@ export const vehicleExitTimeInputValidation = ({vehicleNumber, vehicleName}: Par
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleName. It must be a string with a minimum length of 3 and a maximum length of 100 characters."
             })
         };

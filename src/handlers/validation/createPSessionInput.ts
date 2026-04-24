@@ -60,6 +60,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid slotId. It must be a positive integer greater than 0."
             })
          };
@@ -74,6 +75,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleId. It must be a positive integer greater than 0."
             })
          };
@@ -89,6 +91,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleNumber. It must be a string with a minimum length of 3 and a maximum length of 100 digits."
             })
          };
@@ -105,6 +108,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleOwnerPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."
             })
          };
@@ -121,6 +125,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleOwnerAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."
             })
          };
@@ -136,6 +141,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleOwnerNextOfKin. It must be a string with a minimum length of 10 and a maximum length of 100 characters."
             })
          };
@@ -152,6 +158,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleOwnerNextOfKinPhone. It must be a valid phone number with a minimum length of 7 and a maximum length of 15 digits."
             })
          };
@@ -168,6 +175,7 @@ export const createPSessionInputValidation = ({slotId, vehicleId, vehicleNumber,
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: "Invalid vehicleOwnerNextOfKinAddress. It must be a string with a minimum length of 10 and a maximum length of 200 characters. It must also contain at least one digit number."
             })
          };

@@ -38,7 +38,8 @@ export const createUserInputValidation = (username: string, password: string, us
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                usernameInputError:`Invalid username. Username is required and the length must be: ${usernameInput.minimumLength} - ${usernameInput.maximumLength} characters. Please ensure your username meets these requirements.`
+                success: false,
+                message:`Invalid username. Username is required and the length must be: ${usernameInput.minimumLength} - ${usernameInput.maximumLength} characters. Please ensure your username meets these requirements.`
             })
         };
     };
@@ -56,7 +57,8 @@ export const createUserInputValidation = (username: string, password: string, us
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                passwordInputErr: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters. Please ensure your password meets these requirements.`
+                success: false,
+                message: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters. Please ensure your password meets these requirements.`
             })
         };
     };
@@ -72,7 +74,8 @@ export const createUserInputValidation = (username: string, password: string, us
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                userAddressInputError: `Invalid user address. User address is required and it must have a length of: ${userAddressInput.minimumLength} - ${userAddressInput.maximumLength} characters. It must also contain a house number with at least ${userAddressInput.addressMinHouseNumber} digit number. Please ensure your user address meets these requirements.`
+                success: false,
+                message: `Invalid user address. User address is required and it must have a length of: ${userAddressInput.minimumLength} - ${userAddressInput.maximumLength} characters. It must also contain a house number with at least ${userAddressInput.addressMinHouseNumber} digit number. Please ensure your user address meets these requirements.`
             })
         };
     }
@@ -88,7 +91,8 @@ export const createUserInputValidation = (username: string, password: string, us
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                emailInputErr: `Invalid email address. Email is required and it must be a valid email address with a length of ${emailInput.minimumLength} - ${emailInput.maximumLength} characters. Please ensure your email address meets these requirements.`
+                success: false,
+                message: `Invalid email address. Email is required and it must be a valid email address with a length of ${emailInput.minimumLength} - ${emailInput.maximumLength} characters. Please ensure your email address meets these requirements.`
             })
         };
     };
@@ -104,7 +108,8 @@ export const createUserInputValidation = (username: string, password: string, us
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                phoneInputError: `Invalid phone number. Phone number is required and it must be a valid phone number with a length of ${phoneInput.minimumLength} - ${phoneInput.maximumLength} digit numbers. Please ensure your phone number meets these requirements.`
+                success: false,
+                message: `Invalid phone number. Phone number is required and it must be a valid phone number with a length of ${phoneInput.minimumLength} - ${phoneInput.maximumLength} digit numbers. Please ensure your phone number meets these requirements.`
             })
         };
     };

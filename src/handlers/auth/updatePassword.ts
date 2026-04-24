@@ -38,6 +38,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -51,6 +52,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Input error. Password have to match."
                 })
             };
@@ -70,6 +72,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Password reset token is missing."
                 })
             };
@@ -85,6 +88,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid password reset token. Please ensure you have the correct token."
                 })
             };
@@ -94,6 +98,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Password reset token has expired. Please request for a new password reset token."
                 })
             };
@@ -110,16 +115,18 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "Your password has been reset successfully. You can now log in with your new password."
             })
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

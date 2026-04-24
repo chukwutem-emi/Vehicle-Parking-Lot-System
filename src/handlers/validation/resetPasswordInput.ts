@@ -37,7 +37,8 @@ export const resetPasswordInputValidation = (email: string): ValidationReturnSta
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                emailInputErr: `Invalid email address. Email address is required and it must have a length of: ${emailInput.minimumLength} - ${emailInput.maximumLength} characters. It must also follow this pattern: Your email-username@domain-name.top-domain-name. For example: example@gmail.com, example@test.org, e.t.c.`
+                success: false,
+                message: `Invalid email address. Email address is required and it must have a length of: ${emailInput.minimumLength} - ${emailInput.maximumLength} characters. It must also follow this pattern: Your email-username@domain-name.top-domain-name. For example: example@gmail.com, example@test.org, e.t.c.`
             })
         };
     };
@@ -68,7 +69,8 @@ export const updatePasswordInputValidation = (password: string): ValidationRetur
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                passwordInputErr: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters.`
+                success: false,
+                message: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters.`
             })
         };
     };

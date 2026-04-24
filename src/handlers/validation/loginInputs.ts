@@ -39,7 +39,8 @@ export const loginInputValidation = (email: string, password: string): Validatio
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                passwordInputErr: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters.`
+                success: false,
+                message: `Invalid password. Password is required and it must have a length of: ${passwordInput.minimumLength} - ${passwordInput.maximumLength} characters. It must also contain at least ${passwordInput.passwordMinDigitNumbers} digit numbers, at least ${passwordInput.passwordMinSpecialCharacters} special characters, and at least ${passwordInput.passwordMinUppercase} uppercase letters.`
             })
         };
     };
@@ -55,7 +56,8 @@ export const loginInputValidation = (email: string, password: string): Validatio
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
-                emailInputErr: `Invalid email address. Email is required and it must be a valid email address with a length of ${emailInput.minimumLength} - ${emailInput.maximumLength} characters.`
+                success: false,
+                message: `Invalid email address. Email is required and it must be a valid email address with a length of ${emailInput.minimumLength} - ${emailInput.maximumLength} characters.`
             })
         };
     };

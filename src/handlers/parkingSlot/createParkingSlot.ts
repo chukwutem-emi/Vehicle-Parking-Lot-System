@@ -34,6 +34,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -55,6 +56,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized request. Please log in to access this resource."
                 })
             };
@@ -65,6 +67,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Current user not found."
                 })
             };
@@ -74,6 +77,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. You do not have permission to create parking slots. Please contact your administrator if you think you should have access to this resource."
                 })
             };
@@ -88,6 +92,7 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
                 statusCode: 409,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "A parking slot with the same code already exists."
                 })
             };
@@ -100,16 +105,17 @@ export const createParkingSlotHandler = withAuth( async (event, _context) => {
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "Parking slot created successfully."
             })      
         };  
-    } catch (err: any) {
-        console.error("Error creating parking slot:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     }       

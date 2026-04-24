@@ -23,7 +23,9 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Bad request!. Please enter a valid value."
+                    success: false,
+                    message: "Bad request!. Please enter a valid value.",
+                    data: null
                 })
             }
         };
@@ -34,7 +36,9 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized. Please login."
+                    success: false,
+                    message: "Unauthorized. Please login.",
+                    data: null
                 })
             };
         };
@@ -43,7 +47,9 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
+                    success: false,
+                    message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request.",
+                    data: null
                 })
             };
         };
@@ -57,7 +63,9 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "That type of vehicle is not allowed here. Please ensure you have entered a valid vehicle type."
+                    success: false,
+                    message: "That type of vehicle is not allowed here. Please ensure you have entered a valid vehicle type.",
+                    data: null
                 })
             };
             
@@ -65,15 +73,19 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({vehicleDetails: vehicleDetails.toJSON()})
+            body: JSON.stringify({
+                success: true,
+                message: "Vehicle type retrieved successfully!",
+                data: vehicleDetails.toJSON()
+            })
         };
-    } catch (err: any) {
-        console.error("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

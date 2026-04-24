@@ -23,7 +23,9 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Invalid session ID. Session ID must be a number."
+                    success: false,
+                    message: "Invalid session ID. Session ID must be a number.",
+                    data: null
                 })
             };
         };
@@ -33,7 +35,9 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized. Please login."
+                    success: false,
+                    message: "Unauthorized. Please login.",
+                    data: null
                 })
             };
         };
@@ -43,7 +47,9 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."
+                    success: false,
+                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again.",
+                    data: null
                 })
             };
         };
@@ -53,7 +59,9 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Forbidden request. Only Admin users can perform this type of request. If you believe this is an error, please contact support."
+                    success: false,
+                    message: "Forbidden request. Only Admin users can perform this type of request. If you believe this is an error, please contact support.",
+                    data: null
                 })
             };
         };
@@ -63,7 +71,9 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Parking session not found. Please check the session ID and try again."
+                    success: false,
+                    message: "Parking session not found. Please check the session ID and try again.",
+                    data: null
                 })
             };
         };
@@ -71,17 +81,19 @@ export const getParkingSessionHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: "Parking session retrieved successfully.",
                 data: parkingSession.toJSON()
             })
         };
-    } catch (err: any) {
-        console.error("An error occurred:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                data: null
             })
         };
     };

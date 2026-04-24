@@ -25,6 +25,7 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid user ID."
                 })
             };
@@ -35,6 +36,7 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized. Please login."
                 })
             };
@@ -45,6 +47,7 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "We could not find the current logged-in user."
                 })
             };
@@ -54,6 +57,7 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized request. Only Super Admins can delete users."
                 })
             };
@@ -64,6 +68,7 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "User not found."
                 })
             };
@@ -73,16 +78,18 @@ export const deleteUserHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: `${userInfo.username} has been deleted!.`
             })
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err)
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

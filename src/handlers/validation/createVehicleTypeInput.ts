@@ -42,6 +42,7 @@ export const vehicleTypeInputsValidation = ({vehicleName, hourlyRate}: VehicleTy
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid input. Vehicle name is required and the length must be: ${vehicleNameInput.minimumLength} - ${vehicleNameInput.maximumLength} characters. Please ensure your vehicle name meets these requirements.`
             })
         };
@@ -57,6 +58,7 @@ export const vehicleTypeInputsValidation = ({vehicleName, hourlyRate}: VehicleTy
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid input. Hourly rate is required and it must be a number between: ${hourlyRateInput.minNumber} - ${hourlyRateInput.maxNumber}. Please ensure your hourly rate meets these requirements.`
             })
         };

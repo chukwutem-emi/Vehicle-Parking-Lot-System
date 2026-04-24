@@ -23,7 +23,11 @@ export const getUserHandler = withAuth( async (event, _context) => {
             return {
                 statusCode: 401,
                 headers: corsHeaders,
-                body: JSON.stringify({message: "Unauthorized: User ID missing."})
+                body: JSON.stringify({
+                    success: false,
+                    message: "Unauthorized: User ID missing.",
+                    data: null
+                })
             };
         };
          const getUserById = await User.findByPk(currentUser)
@@ -32,7 +36,9 @@ export const getUserHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "User not found!."
+                    success: false,
+                    message: "User not found!.",
+                    data: null
                 })
             };
         };
@@ -54,16 +60,20 @@ export const getUserHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                userDetails: safeUser
+                success: true,
+                message: "User retrieved successfully!",
+                data: safeUser
             })
         };
-    } catch (err: any) {
+    } catch (err: unknown) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                data: null
             })
         };
     };

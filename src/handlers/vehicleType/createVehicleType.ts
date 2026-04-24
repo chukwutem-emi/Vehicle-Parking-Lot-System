@@ -36,6 +36,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -58,6 +59,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "We couldn't find the current logged-in user. Please ensure you are logged in."
                 })
             };
@@ -67,6 +69,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
                 })
             };
@@ -82,6 +85,7 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 409,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "A Vehicle-type with the same name already exists."
                 })
             };
@@ -94,16 +98,17 @@ export const uploadVehicleTypeHandler = withAuth( async (event, _context) => {
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "Vehicle-type has been uploaded successfully.", details: createVehicleType.toJSON()
+                success: true,
+                message: "Vehicle-type has been uploaded successfully."
             })
         };
-    } catch (err: any) {
-        console.error("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };

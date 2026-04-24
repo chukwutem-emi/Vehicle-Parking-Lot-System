@@ -34,6 +34,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
                     statusCode: 400,
                     headers: corsHeaders,
                     body: JSON.stringify({
+                        success: false,
                         message: `Missing required field: ${field}`
                     })
                 };
@@ -54,6 +55,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Unauthorized. Please login."
                 })
             };
@@ -62,6 +64,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
             return {
                 statusCode: 403,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. Only Admin or Super-Admin users can perform this type of request."
                 })
             };
@@ -72,6 +75,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid input. Vehicle ID is required and it must be a valid number."
                 })
             };
@@ -82,6 +86,7 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Vehicle-type with the specified ID not found. Please ensure the vehicle ID is correct."
                 })
             };
@@ -89,19 +94,24 @@ export const updateVehicleTypeHandler = withAuth( async (event, _context) => {
         vehicleDetails.vehicleName = newVehicleName;
         vehicleDetails.hourlyRate  = newHourlyRate;
         vehicleDetails.updatedBy   = user.username;
+
         await vehicleDetails.save();
+
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({message: "Vehicle-type updated successfully.", details: vehicleDetails.toJSON()})
+            body: JSON.stringify({
+                success: true,
+                message: "Vehicle-type updated successfully.",
+            })
          };
-    } catch (err: any) {
-        console.error("Error:", err)
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
      };

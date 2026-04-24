@@ -31,6 +31,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: `Missing required field: ${field}`
                 })
             };
@@ -64,6 +65,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "Unauthorized. Please login to access this resource."
                 })
             };
@@ -74,6 +76,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "User not found. Please login to access this resource."
                 })
             };
@@ -83,6 +86,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "Forbidden. You do not have permission to access this resource."
                 })
             };
@@ -95,6 +99,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "Parking slot with the specified ID not found. Please ensure the slot ID is correct."
                 })
             };
@@ -105,6 +110,7 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "The parking slot you selected is currently unavailable. Please check back later."
                 })
             };
@@ -120,11 +126,12 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     Message: "Vehicle type with the specified ID not found. Please ensure the vehicle ID is correct."
                 })
             };
         };
-        const parkingSession = await ParkingSession.create({
+        await ParkingSession.create({
             slotId                       : slotId,
             vehicleTypeId                : vehicle.id,
             vehicleNumber                : vehicleNumber,
@@ -140,18 +147,18 @@ export const createParkingSessionHandler = withAuth(async (event, _context) => {
             statusCode: 201,
             headers: corsHeaders,
             body: JSON.stringify({
-                Message: "Parking session created successfully.",
-                ParkingSession: parkingSession.toJSON()
+                success: true,
+                Message: "Parking session created successfully."
             })
         };
-    } catch (err: any) { 
+    } catch (err: unknown) { 
         await t.rollback();    
-        console.error("Error creating parking session:", err);
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                Message: err.message
+                success: false,
+                Message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     }

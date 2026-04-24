@@ -34,6 +34,7 @@ export const createParkingSlotInputsValidation = (slotCode: string, vehicleTypeI
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid Input. Slot-code is required and it must contain at least: ${slotCodeInput.minimumLength} - ${slotCodeInput.maximumLength} length of characters. Please ensure your slot-code meets these requirements.`
             })
         };
@@ -48,6 +49,7 @@ export const createParkingSlotInputsValidation = (slotCode: string, vehicleTypeI
             statusCode: 400,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: false,
                 message: `Invalid Input. Vehicle-type ID is required and it must be a number greater than or equal to: ${vehicleTypeIdInput.minNumber}. Please ensure your vehicle-type ID meets these requirements.`
             })
         };

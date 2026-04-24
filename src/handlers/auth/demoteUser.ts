@@ -25,6 +25,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Invalid user ID. User ID must be a number."
                 })
             };
@@ -36,6 +37,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "We could not find the current logged-in user. Please ensure you are logged in."
                 })
             };
@@ -45,6 +47,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "Forbidden request. Only Super-Admin users can perform this type of request."
                 })
             };
@@ -55,6 +58,7 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
+                    success: false,
                     message: "User not found.  Please ensure the user ID is correct."
                 })
             };
@@ -66,16 +70,17 @@ export const demoteUserHandler = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
+                success: true,
                 message: `${user.username} has been demoted to a regular user successfully!`
             })
         };
-    } catch (err: any) {
-        console.error("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
             })
         };
     };
