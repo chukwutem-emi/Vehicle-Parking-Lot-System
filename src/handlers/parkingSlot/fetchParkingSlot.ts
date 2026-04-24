@@ -99,6 +99,7 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
             headers: corsHeaders,  
             body: JSON.stringify({
                 success: true,
+                message: "Parking slots retrieved successfully!",
                 data: rows,
                 pagination: {
                     currentPage,
@@ -114,7 +115,8 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
             headers: corsHeaders,
             body: JSON.stringify({
                 success: false,
-                message: err instanceof Error ? err.message : "Something went wrong!"
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                data: null
             })
         };
     };
