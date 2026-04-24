@@ -85,7 +85,8 @@ export const fetchVehicleTypeHandler = withAuth( async (event, _context) => {
             headers: corsHeaders,
             body: JSON.stringify({
                 success: false,
-                message: err instanceof Error ? err.message : "Something went wrong!"
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                data: null
             })
         };
     };
