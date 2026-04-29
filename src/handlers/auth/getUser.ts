@@ -1,6 +1,7 @@
 import { withAuth } from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
+import { userRole } from "../../models/user.js";
 
 
 
@@ -17,6 +18,18 @@ export const getUserHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: ""
             };
+        };  
+        const getUserWithId = Number(event.queryStringParameters?.userId);
+        if (!getUserWithId ||isNaN(getUserWithId)) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "Invalid user ID.",
+                    data: null
+                })
+            };
         };
         const currentUser = event.userId;
         if (currentUser === undefined || currentUser === null) {
@@ -25,12 +38,35 @@ export const getUserHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    message: "Unauthorized: User ID missing.",
+                    message: "Unauthorized. Please login.",
                     data: null
                 })
             };
         };
-         const getUserById = await User.findByPk(currentUser)
+        const currentUserData = await User.findByPk(currentUser);
+        if (!currentUserData) {
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again.",
+                    data: null
+                })
+            };
+        };
+        if (![userRole.ADMIN, userRole.SUPER].includes(currentUserData.userRole)) {
+            return {
+                statusCode: 403,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "Access denied. You do not have permission to perform this action.",
+                    data: null
+                })
+            };
+        };
+        const getUserById = await User.findByPk(getUserWithId);
         if (!getUserById) {
             return {
                 statusCode: 404,

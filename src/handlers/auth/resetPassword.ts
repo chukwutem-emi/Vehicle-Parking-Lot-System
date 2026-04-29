@@ -38,7 +38,8 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
                     headers: corsHeaders,
                     body: JSON.stringify({
                         success: false,
-                        message: `Missing required field: ${field}`
+                        message: `Missing required field: ${field}`,
+                        token: ""
                     })
                 };
             };
@@ -76,7 +77,8 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    message: "User with this E-mail address not found."
+                    message: "User with this E-mail address not found.",
+                    token: ""
                 })
             };
         }
@@ -99,7 +101,8 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
             headers: corsHeaders,
             body: JSON.stringify({
                 success: true,
-                message: "Password reset token generated. Please check your email address", token: token
+                message: "Password reset token generated. Please check your email address", 
+                token: token
             })
         };
     } catch (err: unknown) {
@@ -109,7 +112,8 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
             headers: corsHeaders,
             body: JSON.stringify({
                 success: false,
-                message: err instanceof Error ? err.message : "Something went wrong!"
+                message: err instanceof Error ? err.message : "Something went wrong!",
+                token: ""
             })
         };
     };
