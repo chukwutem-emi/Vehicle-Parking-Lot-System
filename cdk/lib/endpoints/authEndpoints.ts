@@ -24,4 +24,6 @@ export const addAuthEndpoints = (api: apigw.RestApi, lambda: Record<string, Node
     auth.addResource("reset").addMethod("POST", new apigw.LambdaIntegration(lambda.resetPasswordLambda, {proxy: true}));
     // update password
     auth.addResource("update-password").addMethod("PUT", new apigw.LambdaIntegration(lambda.updatePasswordLambda, {proxy: true}));
+    // current user endpoint
+    auth.addResource("current-user").addMethod("GET", new apigw.LambdaIntegration(lambda.currentUserLambda, {proxy: true}), {authorizationType: apigw.AuthorizationType.NONE});
 };

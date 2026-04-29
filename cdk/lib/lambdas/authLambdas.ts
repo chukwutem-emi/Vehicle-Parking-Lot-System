@@ -33,6 +33,9 @@ export const createAuthLambdas = (stack: Stack, envVars: Record<string, string>)
 
     const updatePasswordLambda = createLambda({stack, envVars}, "updatePasswordLambda", "src/handlers/auth/updatePassword.ts", "updatePasswordHandler");
     updatePasswordLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
+
+    const currentUserLambda = createLambda({stack, envVars}, "currentUserLambda", "src/handlers/auth/currentUser.ts", "currentUserHandler");
+    currentUserLambda.addToRolePolicy(new iam.PolicyStatement({actions: ["ses:SendEmail", "ses:SendRawEmail"], resources: ["*"]}));
     
     const authLambdas = {
         createUserLambda: createUserLambda,
@@ -44,7 +47,8 @@ export const createAuthLambdas = (stack: Stack, envVars: Record<string, string>)
         demoteUserLambda: demoteUserLambda,
         deleteUserLambda: deleteUserLambda,
         resetPasswordLambda: resetPasswordLambda,
-        updatePasswordLambda: updatePasswordLambda
+        updatePasswordLambda: updatePasswordLambda,
+        currentUserLambda: currentUserLambda
     };
 
     return authLambdas;
