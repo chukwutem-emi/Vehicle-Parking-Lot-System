@@ -37,7 +37,18 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    message: "User not found!.",
+                    message: "User not found!. You may have been deleted by an admin. Please contact support for more information.",
+                    data: null
+                })
+            };
+        };
+        if (getUserById.id !== currentUser) {
+            return {
+                statusCode: 403,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "Forbidden. You are not authorized to access this resource. You can only access your own user information.",
                     data: null
                 })
             };
