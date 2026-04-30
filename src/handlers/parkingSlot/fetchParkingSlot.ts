@@ -69,7 +69,6 @@ export const getAvailableSlotHandler = withAuth( async (event, _context) => {
             };
         };
         const whereClause: any = {
-            isAvailable: true,
             availableCapacity: {
                 [Op.gt]: 0 
             }
