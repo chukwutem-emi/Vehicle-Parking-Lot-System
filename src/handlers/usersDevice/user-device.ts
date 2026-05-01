@@ -27,7 +27,9 @@ export const getLoggedInUserDeviceHandler = withAuth( async (event, _context) =>
                 statusCode: 400,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "User ID must be a number."
+                    success: false,
+                    message: "User ID must be a number.",
+                    data: null      
                 })
             };
         };
@@ -37,7 +39,9 @@ export const getLoggedInUserDeviceHandler = withAuth( async (event, _context) =>
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."
+                    success: false,
+                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again.",
+                    data: null
                 })
             };
         };
@@ -46,7 +50,9 @@ export const getLoggedInUserDeviceHandler = withAuth( async (event, _context) =>
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized request. Only Super Admins can retrieve logged-in user device."
+                    success: false,
+                    message: "Unauthorized request. Only Super Admins can retrieve logged-in user device.",
+                    data: null
                 })
             };
         }
@@ -56,7 +62,9 @@ export const getLoggedInUserDeviceHandler = withAuth( async (event, _context) =>
                 statusCode: 404,
                 headers:corsHeaders,
                 body: JSON.stringify({
-                    message: "Logged-in user device with the provided userID not found."
+                    success: false,
+                    message: "Logged-in user device with the provided userID not found.",
+                    data: null
                 })
             };
         };
@@ -68,17 +76,19 @@ export const getLoggedInUserDeviceHandler = withAuth( async (event, _context) =>
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                Message: "Logged-in user device retrieved successfully.",
-                userDevice: deviceWithLocalTime
+                success: true,
+                message: "Logged-in user device retrieved successfully.",
+                data: deviceWithLocalTime
             })
         };
-    } catch (err: any) {
-        console.log("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "An unexpected error occurred.",
+                data: null
             })
         }
     };
@@ -93,7 +103,9 @@ export  const getAllLoggedInUserDevices = withAuth( async (event, _context) => {
                 statusCode: 404,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again."
+                    success: false,
+                    message: "We couldn't find the current logged-in user. Please ensure you are logged in and try again.",
+                    data: null
                 })
             };
         };
@@ -102,7 +114,9 @@ export  const getAllLoggedInUserDevices = withAuth( async (event, _context) => {
                 statusCode: 401,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "Unauthorized request. Only Super Admins can retrieve logged-in user devices."
+                    success: false,
+                    message: "Unauthorized request. Only Super Admins can retrieve logged-in user devices.",
+                    data: null
                 })
             };
         };
@@ -112,7 +126,9 @@ export  const getAllLoggedInUserDevices = withAuth( async (event, _context) => {
                 statusCode: 200,
                 headers: corsHeaders,
                 body: JSON.stringify({
-                    message: "UserDevices database table is empty.", loggedInUserDevices: []
+                    success: true,
+                    message: "UserDevices database table is empty.",
+                    data: []
                 })
             };
         };
@@ -124,16 +140,19 @@ export  const getAllLoggedInUserDevices = withAuth( async (event, _context) => {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: "UserDevices retrieved successfully.", userDevices: deviceWithLocalTime
+                success: true,
+                message: "UserDevices retrieved successfully.",
+                data: deviceWithLocalTime
             })
         };
-    } catch (err: any) {
-        console.log("ERROR:", err);
+    } catch (err: unknown) {
         return {
             statusCode: 500,
             headers: corsHeaders,
             body: JSON.stringify({
-                message: err.message
+                success: false,
+                message: err instanceof Error ? err.message : "An unexpected error occurred.",
+                data: null
             })
         };
     }
