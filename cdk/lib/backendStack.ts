@@ -24,6 +24,8 @@ interface BackendStackProps extends StackProps {
         DB_PORT        :  string;
         SECRET_KEY     : string;
         RESET_PASSWORD : string;
+        RESEND_API_KEY : string;
+        FRONTEND_URL   : string;
     };
 };
 export class BackendStack extends Stack {

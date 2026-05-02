@@ -1,32 +1,24 @@
-import { MailtrapClient} from "mailtrap";
+import {Resend} from "resend";
 
 type SendMail = {
     to       : string,
     subject  : string,
-    text?    : string,
-    html?    : string
+    html     : string
 };
 
-const client = new MailtrapClient({
-    token: process.env.MAILTRAP_API_TOKEN as string
-});
+const resend = new Resend(
+    process.env.RESEND_API_KEY as string
+);
 
-export const sendMail = async ({to, subject, text, html}: SendMail) => {
+export const sendMail = async ({to, subject, html}: SendMail) => {
     try {
-        const sender = {
-            email: "hello@demomailtrap.co",
-            name: "ChemSten-VehicleParkingLot"
-        };
     
-        const recipients: {email: string}[] = [{email: to}];
     
-        const result = await client.send({
-            from     : sender,
-            to       : recipients,
+        const result = await resend.emails.send({
+            from     : "ParkOps <onboarding@resend.dev>",
+            to       : to,
             subject  : subject,
-            html     : html,
-            text     : text,
-            category : "Transactional"
+            html     : html
         });
         if (result) {
             console.log(`E-mail send successfully to: ${to}`);

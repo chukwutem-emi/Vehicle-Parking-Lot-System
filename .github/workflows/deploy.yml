@@ -19,6 +19,8 @@ jobs:
       DB_PORT: ${{secrets.DB_PORT}}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RESET_PASSWORD: ${{ secrets.RESET_PASSWORD }} 
+      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
+      FRONTEND_URL: ${{secrets.FRONTEND_URL}}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
