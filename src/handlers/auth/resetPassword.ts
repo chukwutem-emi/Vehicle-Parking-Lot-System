@@ -16,7 +16,6 @@ const sequelize = initModels();
 export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
         if (!sequelize) throw new Error("Sequelize instance not initialized");
-        console.log("Connecting database......");
         await sequelize.authenticate();
         console.log("Database connected!.");
         if (event.httpMethod === "OPTIONS") {
