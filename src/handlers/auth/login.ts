@@ -120,15 +120,16 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             subject: !existingDevice ? "New Device Login Detected!" : "Login Detected!",
             to: email,
             html: `
-            <p></p>
             <ul>
-                <h3>Login Details:</h3>
-                <li>Device: ${deviceLabel}</li>
-                <li>:IP ${ip}</li>
-                <li>Location: ${location}</li>
-                <li>UserAgent: ${uaString}</li>
-                <li>UserID: ${getUserByEmail.id}</li>
+            <h3>Login Details:</h3>
+            <li>Device: ${deviceLabel}</li>
+            <li>IP Address: ${ip}</li>
+            <li>Location: ${location}</li>
+            <li>UserAgent: ${uaString}</li>
+            <li>UserID: ${getUserByEmail.id}</li>
             </ul>
+            <p>Please if this login did not originate from you, <br />then let us know by sending an email to chukwutememi@gmail.com. <br />Alternatively, you can call 07025347067 immediately.</p>
+            <p>Best regard! <br /> The team. </p>
             `
         });
         return {
