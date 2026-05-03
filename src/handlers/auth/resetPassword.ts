@@ -92,7 +92,7 @@ export const resetPasswordHandler = async (event: APIGatewayProxyEvent): Promise
             subject: "Password Reset",
             html: `
             <p>You requested for password reset on: ${requestDate}</p>
-            <p>Click this <a href="${process.env.RESET_PASSWORD}${token}">link</a> to set a new password.</p>
+            <p>Click this <a href="${process.env.RESET_PASSWORD}${token}">LINK</a> to set a new password.</p>
             `
         });
         return {
