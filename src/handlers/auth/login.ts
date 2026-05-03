@@ -127,9 +127,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             <li>Location: ${location}</li>
             <li>UserAgent: ${uaString}</li>
             <li>UserID: ${getUserByEmail.id}</li>
+            <li>Please if this login did not originate from you, <br />then let us know by sending an email to chukwutememi@gmail.com. <br />Alternatively, you can call 07025347067 immediately.</li>
+            <li>Best regard! <br /> The team. </li>
             </ul>
-            <p>Please if this login did not originate from you, <br />then let us know by sending an email to chukwutememi@gmail.com. <br />Alternatively, you can call 07025347067 immediately.</p>
-            <p>Best regard! <br /> The team. </p>
             `
         });
         return {
