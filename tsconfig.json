@@ -10,7 +10,8 @@
         "outDir": "dist", // Defines where compile file would go.
         "rootDir": "src", // Specify the root folder within your source files.
         //"erasableSyntaxOnly": true, // Ensures typescript can be removed without runtime impact. 
+        "moduleResolution": "nodenext"
     },
-    "include": ["src"],
-    "exclude": ["src/handlers", "src/validation"]
+    "include": ["src/**/*.ts", "src/**/*.d.ts"],
+    "exclude": ["node_modules", "dist"]
 }
