@@ -45,7 +45,7 @@ export const updatePasswordHandler = async (event: AuthenticatedEvent): Promise<
             };
         };
 
-        const resetToken = event.pathParameters?.userId;
+        const resetToken = event.pathParameters?.resetToken;
 
         if (confirmPassword !== password) {
             return {
