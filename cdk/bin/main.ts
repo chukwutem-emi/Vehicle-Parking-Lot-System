@@ -17,6 +17,7 @@ new BackendStack(app, "BackendStack", {
         SECRET_KEY: process.env.SECRET_KEY!,
         RESET_PASSWORD: process.env.RESET_PASSWORD!,
         RESEND_API_KEY: process.env.RESEND_API_KEY!,
-        FRONTEND_URL: process.env.FRONTEND_URL!
+        FRONTEND_URL: process.env.FRONTEND_URL!,
+        REDIS_URL: process.env.REDIS_URL!
     }
 });

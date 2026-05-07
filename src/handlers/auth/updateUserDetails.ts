@@ -3,7 +3,8 @@ import { withAuth } from "../lambdaAuth.js";
 import {updateUserInputValidation} from "../validation/updateUserDetailsInput.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
-import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs";
+import { getRedisClient } from "../../utils/redisClient.js";
 
 
 
@@ -135,6 +136,9 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
 
 
         await getUserInfo.save();
+
+        const redis = await getRedisClient();
+        await redis.del(`user:${currentUser}`);
 
         sendMail({
             to: email,

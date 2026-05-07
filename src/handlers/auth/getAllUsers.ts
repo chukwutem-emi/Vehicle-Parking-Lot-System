@@ -2,6 +2,7 @@ import {userRole} from "../../models/user.js";
 import {withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
+import { getRedisClient } from "../../utils/redisClient.js";
 
 
 
@@ -81,6 +82,21 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 order = [[sort, "ASC"]];
             };
         };
+        const redis = await getRedisClient();
+        const cacheKey = `users:all${limit}:${currentPage}:${sort}:${role ?? "all"}`;
+        const cachedUsers = await redis.get(cacheKey);
+
+        if (cachedUsers) {
+            return {
+                statusCode: 200,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: true,
+                    message: "Users fetched from cache!",
+                    data: JSON.parse(cachedUsers)
+                })
+            };
+        };
         const {count, rows} = await User.findAndCountAll({
             where: where,
             offset: offset,
@@ -105,6 +121,23 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 })
             };
         };
+        
+        const response = {
+            data: rows,
+            pagination: {
+                currentPage,
+                limit,
+                total: count,
+                totalPages: Math.ceil(count / limit)
+            }
+        };
+        
+        await redis.set(cacheKey, JSON.stringify(response), {
+            expiration: {
+                type: "EX",
+                value: 300
+            }
+        })
         return {
             statusCode: 200,
             headers: corsHeaders,

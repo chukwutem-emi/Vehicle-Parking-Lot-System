@@ -1,6 +1,7 @@
 import { withAuth } from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
+import { getRedisClient } from "../../utils/redisClient.js";
 
 
 
@@ -29,6 +30,21 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                     data: null
                 })
             };
+        };
+        const redis = await getRedisClient();
+        const cacheKey = `user:${currentUser}`;
+        const cachedUser = await redis.get(cacheKey);
+
+        if (cachedUser) {
+            return {
+                statusCode : 200,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: true,
+                    message: "User retrieved from cache!",
+                    data: JSON.parse(cachedUser)
+                })
+            }
         };
         const getUserById = await User.findByPk(currentUser);
         if (!getUserById) {
@@ -67,6 +83,14 @@ export const currentUserHandler = withAuth( async (event, _context) => {
             createdAt   : user.createdAt,
             updatedAt   : user.updatedAt
         };
+
+        await redis.set(cacheKey, JSON.stringify(safeUser), {
+            expiration: {
+                type: "EX",
+                value: 3600
+            }
+        });
+
         return {
             statusCode: 200,
             headers: corsHeaders,
