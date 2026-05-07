@@ -45,7 +45,7 @@ export const getAllParkingSessionHandler = withAuth( async (event, _context) => 
                 })
             };
         };
-        if (user.userRole !== userRole.SUPER) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,

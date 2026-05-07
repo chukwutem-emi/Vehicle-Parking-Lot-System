@@ -139,7 +139,7 @@ export const updateUserDetailsHandler = withAuth( async (event, _context) => {
         sendMail({
             to: email,
             subject: "User Details Updated",
-            text: `Your details have been successfully updated by: ${getUserInfo.username}`
+            html: `<p>Your details have been successfully updated by: ${getUserInfo.username}</p>`
         });
         return {
             statusCode: 200,

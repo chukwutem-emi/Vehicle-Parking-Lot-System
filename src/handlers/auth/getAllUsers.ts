@@ -49,13 +49,13 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 })
             };
         };
-        if (getUser.userRole !== userRole.SUPER) {
+        if (![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
             return {
                 statusCode: 403,
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    message: "Forbidden request. Only Super-Admin users can perform this type of request.",
+                    message: "Forbidden request. Only admin users can perform this type of request.",
                     data: null
                 })
             };
