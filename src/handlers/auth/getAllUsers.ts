@@ -83,7 +83,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             };
         };
         const redis = await getRedisClient();
-        const cacheKey = `users:all${limit}:${currentPage}:${sort}:${role ?? "all"}`;
+        const cacheKey = `users:all:${limit}:${currentPage}:${sort}:${role ?? "all"}`;
         const cachedUsers = await redis.get(cacheKey);
 
         if (cachedUsers) {
@@ -93,7 +93,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 body: JSON.stringify({
                     success: true,
                     message: "Users fetched from cache!",
-                    data: JSON.parse(cachedUsers)
+                    ...JSON.parse(cachedUsers)
                 })
             };
         };
@@ -131,7 +131,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 totalPages: Math.ceil(count / limit)
             }
         };
-        
+
         await redis.set(cacheKey, JSON.stringify(response), {
             expiration: {
                 type: "EX",
