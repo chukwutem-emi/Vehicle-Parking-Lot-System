@@ -2,6 +2,7 @@ import { withAuth } from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
 import { getRedisClient } from "../../utils/redisClient.js";
+import { rateLimiter } from "../../utils/rateLimiter.js";
 
 
 
@@ -31,7 +32,26 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 })
             };
         };
+        
         const redis = await getRedisClient();
+
+        const result = await rateLimiter({
+            key             : `rate_limit:${currentUser}`,
+            limit           : 3,
+            windowInSeconds : 60
+        });
+
+        if (!result.success) {
+            return {
+                statusCode: 429,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: `Too many request. You have exceeded your request limit. Try again in ${result.retryAfter}seconds.`,
+                    data: null
+                })
+            };
+        };
         const cacheKey = `user:${currentUser}`;
         const cachedUser = await redis.get(cacheKey);
 
@@ -41,8 +61,8 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: true,
-                    message: "User retrieved from cache!",
-                    data: JSON.parse(cachedUser)
+                    message: `User retrieved from cache!. You have ${result.remaining} request left.`,
+                    data: JSON.parse(cachedUser),
                 })
             }
         };
@@ -54,7 +74,8 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 body: JSON.stringify({
                     success: false,
                     message: "User not found!. You may have been deleted by an admin. Please contact support for more information.",
-                    data: null
+                    data: null,
+                    retryAfter: null
                 })
             };
         };
@@ -65,7 +86,8 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 body: JSON.stringify({
                     success: false,
                     message: "Forbidden. You are not authorized to access this resource. You can only access your own user information.",
-                    data: null
+                    data: null,
+                    retryAfter: null
                 })
             };
         };
@@ -97,7 +119,8 @@ export const currentUserHandler = withAuth( async (event, _context) => {
             body: JSON.stringify({
                 success: true,
                 message: "User retrieved successfully!",
-                data: safeUser
+                data: safeUser,
+                retryAfter: null
             })
         };
     } catch (err: unknown) {
@@ -108,7 +131,8 @@ export const currentUserHandler = withAuth( async (event, _context) => {
             body: JSON.stringify({
                 success: false,
                 message: err instanceof Error ? err.message : "Something went wrong!",
-                data: null
+                data: null,
+                retryAfter: null
             })
         };
     };

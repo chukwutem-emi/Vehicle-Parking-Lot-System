@@ -3,6 +3,7 @@ import {withAuth} from "../lambdaAuth.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User } from "../../models/index.js";
 import { getRedisClient } from "../../utils/redisClient.js";
+import { rateLimiter } from "../../utils/rateLimiter.js";
 
 
 
@@ -83,6 +84,23 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
             };
         };
         const redis = await getRedisClient();
+
+        const result = await rateLimiter({
+            key             : `fetch_users_rate_limit:${currentUser}`,
+            limit           : 10,
+            windowInSeconds : 60
+        });
+
+        if (!result.success) {
+            return {
+                statusCode: 429,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: `Too many request. You have exceeded the request limit. Try again in ${result.retryAfter}seconds.`
+                })
+            };
+        };
         const cacheKey = `users:all:${limit}:${currentPage}:${sort}:${role ?? "all"}`;
         const cachedUsers = await redis.get(cacheKey);
 
@@ -92,7 +110,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: true,
-                    message: "Users fetched from cache!",
+                    message: `Users fetched from cache!. You have ${result.remaining} request left.`,
                     ...JSON.parse(cachedUsers)
                 })
             };

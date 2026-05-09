@@ -1,5 +1,5 @@
 /**
- * CORS headers to allow cross-origin requests from any domain.
+ * CORS headers to allow cross-origin requests from a specific domain.
  * This is useful for APIs that need to be accessed from different origins.
  * Note: In a production environment, you should restrict the allowed origins to enhance security.
  */
