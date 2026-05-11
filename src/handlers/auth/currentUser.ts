@@ -74,8 +74,7 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 body: JSON.stringify({
                     success: false,
                     message: "User not found!. You may have been deleted by an admin. Please contact support for more information.",
-                    data: null,
-                    retryAfter: null
+                    data: null
                 })
             };
         };
@@ -86,8 +85,7 @@ export const currentUserHandler = withAuth( async (event, _context) => {
                 body: JSON.stringify({
                     success: false,
                     message: "Forbidden. You are not authorized to access this resource. You can only access your own user information.",
-                    data: null,
-                    retryAfter: null
+                    data: null
                 })
             };
         };
@@ -119,8 +117,7 @@ export const currentUserHandler = withAuth( async (event, _context) => {
             body: JSON.stringify({
                 success: true,
                 message: "User retrieved successfully!",
-                data: safeUser,
-                retryAfter: null
+                data: safeUser
             })
         };
     } catch (err: unknown) {
@@ -131,8 +128,7 @@ export const currentUserHandler = withAuth( async (event, _context) => {
             body: JSON.stringify({
                 success: false,
                 message: err instanceof Error ? err.message : "Something went wrong!",
-                data: null,
-                retryAfter: null
+                data: null
             })
         };
     };

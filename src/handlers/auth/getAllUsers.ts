@@ -87,7 +87,7 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
 
         const result = await rateLimiter({
             key             : `fetch_users_rate_limit:${currentUser}`,
-            limit           : 10,
+            limit           : 4,
             windowInSeconds : 60
         });
 
@@ -97,7 +97,8 @@ export const getAllUsersHandler = withAuth( async (event, _context) => {
                 headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
-                    message: `Too many request. You have exceeded the request limit. Try again in ${result.retryAfter}seconds.`
+                    message: `Too many request. You have exceeded the request limit. Try again in ${result.retryAfter}seconds.`,
+                    data: null
                 })
             };
         };
