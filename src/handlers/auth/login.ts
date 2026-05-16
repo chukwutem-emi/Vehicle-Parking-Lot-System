@@ -77,7 +77,8 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         const getUserByEmail = await User.findOne({
             where: {
                 email: email
-            }
+            },
+            attributes: ["id", "email", "password"]
         });
         if (!getUserByEmail) {
             return {
