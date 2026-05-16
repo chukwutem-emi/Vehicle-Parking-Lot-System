@@ -1,0 +1,49 @@
+import * as validation from "../../utils/validation.js";
+import { userRole } from "../../models/user.js";
+import { initModels, User, VehicleType } from "../../models/index.js";
+const sequelize = initModels();
+export const uploadVehicleType = async (req, res, next) => {
+    const vehicleName = req.body.vehicleName;
+    const hourlyRate = req.body.hourlyRate;
+    try {
+        if (!sequelize)
+            throw new Error("Sequelize instance not initialized");
+        const vehicleNameInput = {
+            value: vehicleName,
+            required: true,
+            maximumLength: 100,
+            minimumLength: 2
+        };
+        if (!validation.validate(vehicleNameInput)) {
+            return res.status(400).json({ message: `Invalid input. Vehicle name is required and the length must be: ${vehicleNameInput.minimumLength} - ${vehicleNameInput.maximumLength} characters. Please ensure your vehicle name meets these requirements.` });
+        }
+        ;
+        const hourlyRateInput = {
+            value: hourlyRate,
+            required: true,
+            maxNumber: 10,
+            minNumber: 4
+        };
+        if (!validation.validate(hourlyRateInput)) {
+            return res.status(400).json({ message: `Invalid input. Hourly rate is required and it must be a number between: ${hourlyRateInput.minNumber} - ${hourlyRateInput.maxNumber}. Please ensure your hourly rate meets these requirements.` });
+        }
+        ;
+        const getUser = await User.findByPk(req.userId);
+        if (getUser === undefined || getUser === null) {
+            return res.status(404).json({ message: "We couldn't find the current logged-in user. Please ensure you are logged in." });
+        }
+        ;
+        if (![userRole.ADMIN, userRole.SUPER].includes(getUser.userRole)) {
+            return res.status(401).json({ message: "Unauthorized request. Only Admins or Super Admins can upload vehicle-type." });
+        }
+        ;
+        const createVehicleType = await VehicleType.create({
+            vehicleName: vehicleName,
+            hourlyRate: hourlyRate
+        });
+        return res.status(201).json({ message: "Vehicle-type has been uploaded successfully.", details: createVehicleType });
+    }
+    catch (err) {
+        next(err);
+    }
+};

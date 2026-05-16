@@ -1,0 +1,51 @@
+import * as validation from "../../utils/validation.js";
+import { corsHeaders } from "../corsHeaders.js";
+;
+/**
+ * Validates the inputs for creating a vehicle type. It checks if the vehicle name is provided and meets the length requirements, and if the hourly rate is provided and is a valid number within the specified range. If any of the validations fail, it returns an object containing the status code and an error message. If all validations pass, it returns undefined.
+ * @param vehicleName - The name of the vehicle type, which must be a string with a minimum length of 2 and a maximum length of 100 characters.
+ * @param hourlyRate - The hourly rate for the vehicle type, which must be a number between 4 and 10.
+ * @returns An object containing the status code and an error message if any of the validations fail, or undefined if all validations pass.
+ * @example
+ * const validationResult = vehicleTypeInputsValidation({ vehicleName: "SUV", hourlyRate: 5 });
+ * if (validationResult !== undefined) {
+ *     console.error(validationResult.body);
+ * }
+ */
+export const vehicleTypeInputsValidation = ({ vehicleName, hourlyRate }) => {
+    const vehicleNameInput = {
+        value: vehicleName,
+        required: true,
+        maximumLength: 100,
+        minimumLength: 2
+    };
+    if (!validation.validate(vehicleNameInput)) {
+        return {
+            statusCode: 400,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: false,
+                message: `Invalid input. Vehicle name is required and the length must be: ${vehicleNameInput.minimumLength} - ${vehicleNameInput.maximumLength} characters. Please ensure your vehicle name meets these requirements.`
+            })
+        };
+    }
+    ;
+    const hourlyRateInput = {
+        value: Number(hourlyRate),
+        required: true,
+        maxNumber: 1000000,
+        minNumber: 1
+    };
+    if (!validation.validate(hourlyRateInput)) {
+        return {
+            statusCode: 400,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: false,
+                message: `Invalid input. Hourly rate is required and it must be a number between: ${hourlyRateInput.minNumber} - ${hourlyRateInput.maxNumber}. Please ensure your hourly rate meets these requirements.`
+            })
+        };
+    }
+    ;
+    return undefined;
+};

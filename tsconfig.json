@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es2022", // Tell typescript to assume modern javascript support.
+        "target": "es2017", // Tell typescript to assume modern javascript support.
         "esModuleInterop": true, // Makes imports from commonjs libraries work smoothly.
         "types": ["node"], // Specify type package names to be included without being referenced in a source file
         "strict": true, // Turn ON maximum type safety checks.

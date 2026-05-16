@@ -1,0 +1,152 @@
+import { userRole } from "../../models/user.js";
+import { createPSessionInputValidation } from "../validation/createPSessionInput.js";
+import { withAuth } from "../lambdaAuth.js";
+import { corsHeaders } from "../corsHeaders.js";
+import { initModels, ParkingSession, ParkingSlot, User, VehicleType } from "../../models/index.js";
+;
+const sequelize = initModels();
+export const createParkingSessionHandler = withAuth(async (event, _context) => {
+    const body = JSON.parse(event.body || "{}");
+    const { slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress } = body;
+    const requiredFields = ["slotId", "vehicleId", "vehicleNumber", "vehicleOwnerPhone", "vehicleOwnerAddress", "vehicleOwnerNextOfKin", "vehicleOwnerNextOfKinPhone", "vehicleOwnerNextOfKinAddress"];
+    for (const field of requiredFields) {
+        if (!(field in body)) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: `Missing required field: ${field}`
+                })
+            };
+        }
+        ;
+    }
+    ;
+    const validationResult = createPSessionInputValidation({ slotId, vehicleId, vehicleNumber, vehicleOwnerPhone, vehicleOwnerAddress, vehicleOwnerNextOfKin, vehicleOwnerNextOfKinPhone, vehicleOwnerNextOfKinAddress });
+    if (validationResult !== undefined) {
+        return {
+            statusCode: validationResult.statusCode,
+            body: validationResult.body,
+            headers: validationResult.headers
+        };
+    }
+    ;
+    const t = await sequelize.transaction();
+    try {
+        if (!sequelize)
+            throw new Error("Sequelize instance not initialized");
+        if (event.httpMethod === "OPTIONS") {
+            return {
+                statusCode: 204,
+                headers: corsHeaders,
+                body: ""
+            };
+        }
+        ;
+        const currentUser = event.userId;
+        if (currentUser === undefined || currentUser === null) {
+            return {
+                statusCode: 401,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "Unauthorized. Please login to access this resource."
+                })
+            };
+        }
+        ;
+        const user = await User.findByPk(currentUser);
+        if (!user) {
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "User not found. Please login to access this resource."
+                })
+            };
+        }
+        ;
+        if (![userRole.ADMIN, userRole.SUPER].includes(user.userRole)) {
+            return {
+                statusCode: 403,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "Forbidden. You do not have permission to access this resource."
+                })
+            };
+        }
+        ;
+        const slot = await ParkingSlot.findByPk(slotId, { transaction: t, lock: t.LOCK.UPDATE });
+        if (!slot) {
+            await t.rollback();
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "Parking slot with the specified ID not found. Please ensure the slot ID is correct."
+                })
+            };
+        }
+        if (slot.availableCapacity <= 0) {
+            await t.rollback();
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "The parking slot you selected is currently unavailable. Please check back later."
+                })
+            };
+        }
+        ;
+        slot.availableCapacity -= 1;
+        slot.isAvailable = slot.availableCapacity > 0;
+        await slot.save({ transaction: t });
+        const vehicle = await VehicleType.findByPk(vehicleId, { transaction: t, lock: t.LOCK.UPDATE });
+        if (!vehicle) {
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    Message: "Vehicle type with the specified ID not found. Please ensure the vehicle ID is correct."
+                })
+            };
+        }
+        ;
+        await ParkingSession.create({
+            slotId: slotId,
+            vehicleTypeId: vehicle.id,
+            vehicleNumber: vehicleNumber,
+            vehicleOwnerPhone: vehicleOwnerPhone,
+            vehicleOwnerAddress: vehicleOwnerAddress,
+            vehicleOwnerNextOfKin: vehicleOwnerNextOfKin,
+            vehicleOwnerNextOfKinPhone: vehicleOwnerNextOfKinPhone,
+            vehicleOwnerNextOfKinAddress: vehicleOwnerNextOfKinAddress
+        }, { transaction: t });
+        await t.commit();
+        return {
+            statusCode: 201,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: true,
+                Message: "Parking session created successfully."
+            })
+        };
+    }
+    catch (err) {
+        await t.rollback();
+        return {
+            statusCode: 500,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: false,
+                Message: err instanceof Error ? err.message : "Something went wrong!"
+            })
+        };
+    }
+});

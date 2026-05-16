@@ -1,0 +1,91 @@
+import { userRole } from "../../models/user.js";
+import { withAuth } from "../lambdaAuth.js";
+import { corsHeaders } from "../corsHeaders.js";
+import { initModels, User } from "../../models/index.js";
+const sequelize = initModels();
+export const demoteUserHandler = withAuth(async (event, _context) => {
+    try {
+        if (!sequelize)
+            throw new Error("Sequelize instance not initialized");
+        console.log("Connecting database......");
+        await sequelize.authenticate();
+        console.log("Database connected!.");
+        if (event.httpMethod === "OPTIONS") {
+            return {
+                statusCode: 204,
+                headers: corsHeaders,
+                body: ""
+            };
+        }
+        ;
+        const userId = Number(event.pathParameters?.userId);
+        if (!userId || isNaN(userId)) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "Invalid user ID. User ID must be a number."
+                })
+            };
+        }
+        ;
+        const currentUser = event.userId;
+        const getSuperAdmin = await User.findByPk(currentUser);
+        if (getSuperAdmin === undefined || getSuperAdmin === null) {
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "We could not find the current logged-in user. Please ensure you are logged in."
+                })
+            };
+        }
+        if (getSuperAdmin.userRole !== userRole.SUPER) {
+            return {
+                statusCode: 403,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "Forbidden request. Only Super-Admin users can perform this type of request."
+                })
+            };
+        }
+        ;
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return {
+                statusCode: 404,
+                headers: corsHeaders,
+                body: JSON.stringify({
+                    success: false,
+                    message: "User not found.  Please ensure the user ID is correct."
+                })
+            };
+        }
+        ;
+        user.isAdmin = false;
+        user.userRole = userRole.REGULAR;
+        await user.save();
+        return {
+            statusCode: 200,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: true,
+                message: `${user.username} has been demoted to a regular user successfully!`
+            })
+        };
+    }
+    catch (err) {
+        return {
+            statusCode: 500,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                success: false,
+                message: err instanceof Error ? err.message : "Something went wrong!"
+            })
+        };
+    }
+    ;
+});

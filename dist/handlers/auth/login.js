@@ -1,26 +1,18 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import {UAParser} from "ua-parser-js";
+import { UAParser } from "ua-parser-js";
 import geoIp from "geoip-lite";
-import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
-import {loginInputValidation} from "../validation/loginInputs.js";
-import {corsHeaders} from "../corsHeaders.js";
+import { loginInputValidation } from "../validation/loginInputs.js";
+import { corsHeaders } from "../corsHeaders.js";
 import { initModels, User, UserDevices } from "../../models/index.js";
-import {loginPublisher} from "./rabbitMQ/loginPublisher.js";
+import { loginPublisher } from "./rabbitMQ/loginPublisher.js";
 import { sendMail } from "../../utils/send-mail.js";
-
-
-
-
-interface UserAttributes {
-    email: string;
-    password: string;
-};
-
+;
 const sequelize = initModels();
-export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const loginHandler = async (event) => {
     try {
-        if (!sequelize) throw new Error("Sequelize instance not initialized");
+        if (!sequelize)
+            throw new Error("Sequelize instance not initialized");
         console.log("Connecting database......");
         await sequelize.authenticate();
         console.log("Database connected!.");
@@ -30,15 +22,13 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                 headers: corsHeaders,
                 body: ""
             };
-        };
-        const body: UserAttributes = JSON.parse(event.body || "{}");
-        const {email, password} = body;
-
+        }
+        ;
+        const body = JSON.parse(event.body || "{}");
+        const { email, password } = body;
         console.log("BODY:", event.body);
         console.log("PASSWORD:", password);
-
         const requiredFields = ["email", "password"];
-
         for (const field of requiredFields) {
             if (!(field in body)) {
                 return {
@@ -50,30 +40,30 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                         token: ""
                     })
                 };
-            };
-        };
-        const validationResult =  loginInputValidation(email, password);
+            }
+            ;
+        }
+        ;
+        const validationResult = loginInputValidation(email, password);
         if (validationResult !== undefined) {
             return {
                 statusCode: validationResult.statusCode,
                 body: validationResult.body,
                 headers: validationResult.headers
             };
-        };
-        
+        }
+        ;
         // Detecting login user device
-        const uaString    = event.headers["user-agent"] || event.headers["User-Agent"] || "";
-        const parser      = new UAParser(uaString);
-        const result      = parser.getResult();
-
-        const deviceType       = result.device.type || "desktop";
-        const os      : string = `${result.os.name ?? "unknown os"} ${result.os.version ?? ""}`.trim();  // "??" => nullish coalescing. meaning if the left side is null, then use the right.
-        const browser : string = `${result.browser.name ?? "unknown browser"} ${result.browser.version ?? ""}`.trim();
+        const uaString = event.headers["user-agent"] || event.headers["User-Agent"] || "";
+        const parser = new UAParser(uaString);
+        const result = parser.getResult();
+        const deviceType = result.device.type || "desktop";
+        const os = `${result.os.name ?? "unknown os"} ${result.os.version ?? ""}`.trim(); // "??" => nullish coalescing. meaning if the left side is null, then use the right.
+        const browser = `${result.browser.name ?? "unknown browser"} ${result.browser.version ?? ""}`.trim();
         const ip = event.requestContext?.identity?.sourceIp ?? "0.0.0.0";
         const deviceLabel = `${browser} on ${os} (${deviceType})`;
-        const geo      = geoIp.lookup(ip);
+        const geo = geoIp.lookup(ip);
         const location = geo ? `${geo.city ?? "Unknown city"}, ${geo.country ?? "Unknown country"}` : "Unknown";
-        
         const getUserByEmail = await User.findOne({
             where: {
                 email: email
@@ -90,7 +80,8 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                     token: ""
                 })
             };
-        };
+        }
+        ;
         console.log("PASSWORD FROM REQUEST:", password);
         console.log("PASSWORD FROM DB:", getUserByEmail.password);
         const doMatch = await bcrypt.compare(password, getUserByEmail.password);
@@ -104,9 +95,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                     token: ""
                 })
             };
-        };
-        const accessToken = jwt.sign({email: getUserByEmail.email, userId: getUserByEmail.id}, process.env.SECRET_KEY as string, {expiresIn: "1h"});
-        
+        }
+        ;
+        const accessToken = jwt.sign({ email: getUserByEmail.email, userId: getUserByEmail.id }, process.env.SECRET_KEY, { expiresIn: "1h" });
         const existingDevice = await UserDevices.findOne({
             where: {
                 deviceLabel: deviceLabel,
@@ -116,15 +107,15 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         });
         if (!existingDevice) {
             await UserDevices.create({
-                deviceLabel : deviceLabel,
-                userAgent   : uaString,
-                location    : location,
-                ip          : ip,
-                userId      : getUserByEmail.id
+                deviceLabel: deviceLabel,
+                userAgent: uaString,
+                location: location,
+                ip: ip,
+                userId: getUserByEmail.id
             });
-        };
-
-         await sendMail({
+        }
+        ;
+        await sendMail({
             subject: !existingDevice ? "New Device Login Detected!" : "Login Detected!",
             to: email,
             html: `
@@ -141,32 +132,27 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             `
         });
         const publisher = await loginPublisher();
-
-        publisher.publish(
-            "auth.events",
-            "user.login",
-            Buffer.from(JSON.stringify({
-                userID : getUserByEmail.id,
-                email,
-                deviceLabel,
-                ip,
-                location,
-                uaString
-            })),
-            {
-                persistent: true
-            }
-        );
+        publisher.publish("auth.events", "user.login", Buffer.from(JSON.stringify({
+            userID: getUserByEmail.id,
+            email,
+            deviceLabel,
+            ip,
+            location,
+            uaString
+        })), {
+            persistent: true
+        });
         return {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
                 success: true,
-                message: "You have successfully logged in.", 
+                message: "You have successfully logged in.",
                 token: accessToken
             })
-        }
-    } catch (err: unknown) {
+        };
+    }
+    catch (err) {
         console.error("ERROR:", err);
         return {
             statusCode: 500,
@@ -177,5 +163,6 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                 token: ""
             })
         };
-    };
+    }
+    ;
 };

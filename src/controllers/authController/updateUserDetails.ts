@@ -91,7 +91,9 @@ export const updateUserDetails = async (req: Request, res: Response, next: NextF
         sendMail({
             to: email,
             subject: "User Details Updated",
-            text: `Your details have been successfully updated by: ${getUserInfo.username}`
+            html: `
+            <p>Your details have been successfully updated by: ${getUserInfo.username}</p>
+            `
         });
         return res.status(200).json({message: "User details updated successfully."});
 

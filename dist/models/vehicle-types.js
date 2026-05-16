@@ -1,0 +1,45 @@
+import { DataTypes, Model, Sequelize } from "sequelize";
+;
+export class VehicleType extends Model {
+    id;
+    vehicleName;
+    hourlyRate;
+    updatedBy;
+    createdAt;
+    updatedAt;
+}
+export const initVehicleTypeModel = (sequelize) => {
+    if (VehicleType.sequelize)
+        return;
+    VehicleType.init({
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        vehicleName: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            unique: true
+        },
+        hourlyRate: {
+            type: DataTypes.DECIMAL(10, 2),
+            allowNull: false
+        },
+        updatedBy: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        }
+    }, {
+        sequelize,
+        modelName: "vehicle_type"
+    });
+};
