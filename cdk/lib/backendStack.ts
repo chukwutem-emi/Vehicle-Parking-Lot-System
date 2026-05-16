@@ -27,6 +27,7 @@ interface BackendStackProps extends StackProps {
         RESEND_API_KEY : string;
         FRONTEND_URL   : string;
         REDIS_URL      : string;
+        RABBITMQ_URL   : string;
     };
 };
 export class BackendStack extends Stack {

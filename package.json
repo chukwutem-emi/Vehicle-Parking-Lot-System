@@ -48,6 +48,7 @@
     "@types/express-validator": "^2.20.33",
     "@types/geoip-lite": "^1.4.4",
     "@types/jsonwebtoken": "^9.0.10",
+    "amqplib": "^2.0.1",
     "aws-cdk-lib": "^2.240.0",
     "aws-lambda": "^1.0.7",
     "bcryptjs": "^3.0.3",
