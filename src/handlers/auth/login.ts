@@ -6,7 +6,6 @@ import type {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
 import {loginInputValidation} from "../validation/loginInputs.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User, UserDevices } from "../../models/index.js";
-import {loginPublisher} from "./rabbitMQ/loginPublisher.js";
 import { sendMail } from "../../utils/send-mail.js";
 
 
@@ -140,23 +139,23 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             </ul>
             `
         });
-        const publisher = await loginPublisher();
+        // const publisher = await loginPublisher();
 
-        publisher.publish(
-            "auth.events",
-            "user.login",
-            Buffer.from(JSON.stringify({
-                userID : getUserByEmail.id,
-                email,
-                deviceLabel,
-                ip,
-                location,
-                uaString
-            })),
-            {
-                persistent: true
-            }
-        );
+        // publisher.publish(
+        //     "auth.events",
+        //     "user.login",
+        //     Buffer.from(JSON.stringify({
+        //         userID : getUserByEmail.id,
+        //         email,
+        //         deviceLabel,
+        //         ip,
+        //         location,
+        //         uaString
+        //     })),
+        //     {
+        //         persistent: true
+        //     }
+        // );
         return {
             statusCode: 200,
             headers: corsHeaders,
