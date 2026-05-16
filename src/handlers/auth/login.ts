@@ -7,6 +7,7 @@ import {loginInputValidation} from "../validation/loginInputs.js";
 import {corsHeaders} from "../corsHeaders.js";
 import { initModels, User, UserDevices } from "../../models/index.js";
 import {loginPublisher} from "./rabbitMQ/loginPublisher.js";
+import { sendMail } from "../../utils/send-mail.js";
 
 
 
@@ -117,6 +118,22 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
             });
         };
 
+         await sendMail({
+            subject: !existingDevice ? "New Device Login Detected!" : "Login Detected!",
+            to: email,
+            html: `
+            <ul>
+            <h3>Login Details:</h3>
+            <li>Device: ${deviceLabel}</li>
+            <li>IP Address: ${ip}</li>
+            <li>Location: ${location}</li>
+            <li>UserAgent: ${uaString}</li>
+            <li>UserID: ${getUserByEmail.id}</li>
+            <li>Please if this login did not originate from you, <br />then let us know by sending an email to chukwutememi@gmail.com. <br />Alternatively, you can call 07025347067 immediately.</li>
+            <li>Best regard! <br /> The team. </li>
+            </ul>
+            `
+        });
         const publisher = await loginPublisher();
 
         publisher.publish(
