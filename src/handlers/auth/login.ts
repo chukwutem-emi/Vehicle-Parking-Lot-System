@@ -34,6 +34,9 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
         const body: UserAttributes = JSON.parse(event.body || "{}");
         const {email, password} = body;
 
+        console.log("BODY:", event.body);
+        console.log("PASSWORD:", password);
+
         const requiredFields = ["email", "password"];
 
         for (const field of requiredFields) {
@@ -87,6 +90,8 @@ export const loginHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
                 })
             };
         };
+        console.log("PASSWORD FROM REQUEST:", password);
+        console.log("PASSWORD FROM DB:", getUserByEmail.password);
         const doMatch = await bcrypt.compare(password, getUserByEmail.password);
         if (!doMatch) {
             return {
